@@ -196,6 +196,21 @@
         const cols = 6;
         let selectedCells = new Set();
 
+        let questions = {};
+
+        async function loadQuestions() {
+    try {
+        const res = await fetch("soal/dummy.json");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        questions = Object.fromEntries(data.map(q => [q.id, q]));
+    } catch (err) {
+        alert("Gagal memuat soal: " + err.message + "\n Coba hidupkan server \n php -S localhost:8000");
+        console.error(err);
+    }
+}
+
+
         function createGrid() {
             const grid = document.getElementById('game-grid');
             grid.innerHTML = "";
@@ -233,26 +248,30 @@
         }
 
         async function qPopUp(button) {
-            const cellId = button.dataset.cell; // A3, B2, C1 dst 
+            const cellId = button.dataset.cell; 
             if (!selectedCells.has(cellId)) return { cancelled: true };
-            
+
             const dlg   = document.getElementById('q-dialog');
             const qText = document.getElementById('q-text');
             const okBtn = document.getElementById('q-ok');
-            const wrongBtn   = document.getElementById('q-wrong');
-            const cancelBtn   = document.getElementById('q-cancel');
+            const wrongBtn = document.getElementById('q-wrong');
             const pills = Array.from(dlg.querySelectorAll('.team-pill'));
-            
-            // state popup
+
+            // ambil soal dari dummy.json
+            const soal = questions[cellId];
+            if (!soal) {
+                qText.textContent = "Soal belum tersedia untuk " + cellId;
+            } else {
+                qText.textContent = soal.pertanyaan;
+            }
+
             let team = null;
-            let delta = 100;        
+            let delta = 100;
             let wDelta = -50;
-            qText.textContent = `"soal beneran"`; 
-            
+
             // reset UI
             pills.forEach(p => p.classList.remove('active'));
-            
-            // listeners
+
             const onPill = (e) => {
                 team = e.currentTarget.dataset.team;
                 pills.forEach(p => p.classList.toggle('active', p.dataset.team === team));
@@ -264,50 +283,48 @@
                     p.classList.add('shake');
                     p.addEventListener('animationend', () => p.classList.remove('shake'), { once: true });
                 });
-            }
+            };
+
             const onOk = (e) => {
                 if (!team) {
                     e.preventDefault();
                     shakePills();
                 }
             };
-    
+
             const onWrong = (e) => {
                 if (!team) {
                     e.preventDefault();
                     shakePills();
                 }
             };
-            
+
             okBtn.addEventListener('click', onOk);
             wrongBtn.addEventListener('click', onWrong);
 
-            // Promise hasil popup
             const result = await new Promise((resolve) => {
                 const onClose = () => {
-                dlg.removeEventListener('close', onClose);
-                pills.forEach(p => p.removeEventListener('click', onPill));
-                okBtn.removeEventListener('click', onOk);
-                wrongBtn.removeEventListener('click', onWrong);
+                    dlg.removeEventListener('close', onClose);
+                    pills.forEach(p => p.removeEventListener('click', onPill));
+                    okBtn.removeEventListener('click', onOk);
+                    wrongBtn.removeEventListener('click', onWrong);
 
-                if (dlg.returnValue === 'ok' && team) {
-                    resolve({ cancelled: false, team, delta, cellId });
-                } else if(dlg.returnValue === 'wrong' && team) {
-                    resolve({ cancelled: false, team, delta: wDelta, cellId });
-                } else if (dlg.returnValue === 'cancel') {
-                    resolve({ cancelled: true });
-                }
+                    if (dlg.returnValue === 'ok' && team) {
+                        resolve({ cancelled: false, team, delta, cellId });
+                    } else if (dlg.returnValue === 'wrong' && team) {
+                        resolve({ cancelled: false, team, delta: wDelta, cellId });
+                    } else {
+                        resolve({ cancelled: true });
+                    }
                 };
 
                 dlg.addEventListener('close', onClose, { once: true });
                 dlg.showModal();
             });
 
-        return result;
+            return result;
         }
-
-
-
+        
         function selectCell(button) {
             const cellId = button.dataset.cell;
             if (selectedCells.has(cellId)) {
@@ -331,7 +348,9 @@
         });
 
 
-        window.addEventListener('load', function () {
+        window.addEventListener('load', async function () {
+            resetBoard();
+            await loadQuestions();
             createGrid();
             const buttons = document.querySelectorAll('.game-button');
             buttons.forEach((button, index) => {
