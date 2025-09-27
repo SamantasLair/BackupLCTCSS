@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS 2.0 Game Board</title>
+    <title>CSS 2.0 Game Board</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -48,8 +48,80 @@
         .logo-shield {
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
+
+        /* qPopUp */
+        .team-pill {
+            border: 1px solid #111; border-radius: .25rem; padding: 0 .35rem; font-size: .75rem;
+            background: #eee;
+        }
+
+        .team-pill[data-team="A"].active {
+            background-color: #ff4444; /* merah */
+            color: white;
+        }
+
+        .team-pill[data-team="B"].active {
+            background-color: #3b82ff; /* biru */
+            color: white;
+        }
+
+        .team-pill[data-team="C"].active {
+            background-color: #ffcf15; /* kuning */
+            color: black;
+        }
+
+        .team-pill[data-team="D"].active {
+            background-color: #22dd5e; /* hijau */
+            color: white;
+        }
+
+
+        .team-pill.active { background: #bbb; }
+            @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
+        .team-pill.shake {
+            animation: shake 0.4s;
+        }
+
     </style>
 </head>
+
+<!-- Template -->
+<!-- POPUP -->
+<dialog id="q-dialog" class="rounded-2xl p-0 backdrop:bg-black/50 opacity-80">
+  <form method="dialog" class="bg-gray-300 min-w-[36rem] max-w-[90vw] rounded-2xl">
+    <header class="px-4 py-3 text-center">
+      <h3 class="font-bold text-lg">Pertanyaan</h3>
+    </header>
+
+    <section class="px-4 pb-2 text-center">
+      <blockquote id="q-text" class="italic">"soal beneran"</blockquote>
+    </section>
+
+    <div class="relative px-4 pb-4 flex items-center justify-center">
+      <!-- kiri: tombol cancel -->
+      <button class= "absolute left-4" id="q-cancel" value="cancel" class="w-6 h-6 border rounded text-xs grid place-items-center">–</button>
+
+      <!-- tengah: pilihan tim -->
+      <div class="space-x-2">
+        <button type="button" data-team="A" class="team-pill">A</button>
+        <button type="button" data-team="B" class="team-pill">B</button>
+        <button type="button" data-team="C" class="team-pill">C</button>
+        <button type="button" data-team="D" class="team-pill">D</button>
+      </div>
+
+      <!-- kanan: wrong & ok -->
+      <div class="absolute right-4 space-x-2 flex justify-between">
+        <button id="q-wrong" value="wrong" class="w-6 h-6 border rounded text-xs grid place-items-center">✕</button>
+        <button id="q-ok" value="ok" class="w-6 h-6 border rounded text-xs grid place-items-center">✓</button>
+      </div>
+    </div>
+  </form>
+</dialog>
 
 <body class="min-h-screen flex flex-col">
 
@@ -62,7 +134,7 @@
                     fill="url(#shieldGradient)" stroke="#fbbf24" stroke-width="2" />
                 <circle cx="50" cy="35" r="8" fill="#fbbf24" />
                 <path d="M35 50 L50 65 L65 50" stroke="#fbbf24" stroke-width="3" fill="none" />
-                <text x="50" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#fbbf24">CS</text>
+                <text x="50" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#fbbf24">CSS</text>
                 <defs>
                     <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#374151" />
@@ -70,7 +142,7 @@
                     </linearGradient>
                 </defs>
             </svg>
-            <h1 class="text-white text-xl font-bold">CS<span class="text-sm ml-1">2.0</span></h1>
+            <h1 class="text-white text-xl font-bold">CSS<span class="text-sm ml-1">2.0</span></h1>
         </div>
 
         <!-- Konten -->
@@ -93,32 +165,33 @@
     <script>
         // Daftar tim
         const teams = [
-            { name: "A", score: 100 },
-            { name: "B", score: 200 },
-            { name: "C", score: 300 },
-            { name: "D", score: 400 },
+            { name: "A", score: 0 },
+            { name: "B", score: 0 },
+            { name: "C", score: 0 },
+            { name: "D", score: 0 },
         ];
 
         const container = document.getElementById("team-container");
 
         container.className = `grid grid-cols-${Math.min(teams.length, 4)} gap-4 w-full`;
 
-        teams.forEach(team => {
+        function renderTeams() { // Lmao static
+            container.innerHTML = ""; // bersihin
+            teams.forEach(team => {
             const div = document.createElement("div");
             div.className = "category-button rounded-lg overflow-hidden shadow-md h-20 w-24 flex flex-col justify-between";
-
             div.innerHTML = `
                 <div class="bg-gray-700 text-center py-1">
-                    <span class="text-base font-bold text-white">${team.name}</span>
+                <span class="text-base font-bold text-white">${team.name}</span>
                 </div>
                 <div class="bg-gray-800 text-center py-2">
-                    <span class="text-lg font-extrabold text-white">${team.score}</span>
-                </div>
-            `;
+                <span id="score-${team.name}" class="text-lg font-extrabold text-white">${team.score}</span>
+                </div>`;
             container.appendChild(div);
-        });
-
+            });
+        }
         // 🔧 Atur grid: game board
+        renderTeams();
         const rows = 4;
         const cols = 6;
         let selectedCells = new Set();
@@ -133,14 +206,107 @@
                 for (let c = 1; c <= cols; c++) {
                     const cellId = rowLetter + c;
                     const button = document.createElement('button');
-                    button.className = "game-button h-20 rounded-lg text-gray-800 font-bold text-xl hover:scale-105";
+                    button.className = "bg-opacity-50 game-button h-20 rounded-lg text-gray-800 font-bold text-xl hover:scale-105";
                     button.dataset.cell = cellId;
                     button.innerText = cellId;
-                    button.onclick = () => selectCell(button);
+                    button.onclick = async () => {
+                    selectCell(button);                 // toggle visual & Set terpilih 
+                    const res = await qPopUp(button);   // buka popup
+
+                    if (res.cancelled) {                // batal? balikin state
+                        selectCell(button);
+                        return;
+                    }
+
+                    // Tambah skor tim terpilih
+                    const t = teams.find(x => x.name === res.team);
+                    if (t) {
+                        t.score += res.delta;
+                        // update tampilan skor
+                        const el = document.getElementById(`score-${t.name}`);
+                        if (el) el.textContent = t.score;
+                    }
+                    };
                     grid.appendChild(button);
                 }
             }
         }
+
+        async function qPopUp(button) {
+            const cellId = button.dataset.cell; // A3, B2, C1 dst 
+            if (!selectedCells.has(cellId)) return { cancelled: true };
+            
+            const dlg   = document.getElementById('q-dialog');
+            const qText = document.getElementById('q-text');
+            const okBtn = document.getElementById('q-ok');
+            const wrongBtn   = document.getElementById('q-wrong');
+            const cancelBtn   = document.getElementById('q-cancel');
+            const pills = Array.from(dlg.querySelectorAll('.team-pill'));
+            
+            // state popup
+            let team = null;
+            let delta = 100;        
+            let wDelta = -50;
+            qText.textContent = `"soal beneran"`; 
+            
+            // reset UI
+            pills.forEach(p => p.classList.remove('active'));
+            
+            // listeners
+            const onPill = (e) => {
+                team = e.currentTarget.dataset.team;
+                pills.forEach(p => p.classList.toggle('active', p.dataset.team === team));
+            };
+            pills.forEach(p => p.addEventListener('click', onPill));
+
+            const shakePills = () => {
+                pills.forEach(p => {
+                    p.classList.add('shake');
+                    p.addEventListener('animationend', () => p.classList.remove('shake'), { once: true });
+                });
+            }
+            const onOk = (e) => {
+                if (!team) {
+                    e.preventDefault();
+                    shakePills();
+                }
+            };
+    
+            const onWrong = (e) => {
+                if (!team) {
+                    e.preventDefault();
+                    shakePills();
+                }
+            };
+            
+            okBtn.addEventListener('click', onOk);
+            wrongBtn.addEventListener('click', onWrong);
+
+            // Promise hasil popup
+            const result = await new Promise((resolve) => {
+                const onClose = () => {
+                dlg.removeEventListener('close', onClose);
+                pills.forEach(p => p.removeEventListener('click', onPill));
+                okBtn.removeEventListener('click', onOk);
+                wrongBtn.removeEventListener('click', onWrong);
+
+                if (dlg.returnValue === 'ok' && team) {
+                    resolve({ cancelled: false, team, delta, cellId });
+                } else if(dlg.returnValue === 'wrong' && team) {
+                    resolve({ cancelled: false, team, delta: wDelta, cellId });
+                } else if (dlg.returnValue === 'cancel') {
+                    resolve({ cancelled: true });
+                }
+                };
+
+                dlg.addEventListener('close', onClose, { once: true });
+                dlg.showModal();
+            });
+
+        return result;
+        }
+
+
 
         function selectCell(button) {
             const cellId = button.dataset.cell;
@@ -163,6 +329,7 @@
         document.addEventListener('keydown', function (e) {
             if (e.key.toLowerCase() === 'r') resetBoard();
         });
+
 
         window.addEventListener('load', function () {
             createGrid();
