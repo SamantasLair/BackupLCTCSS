@@ -89,7 +89,7 @@
 
         /* ==== Orbit Background ==== */
         #bg-orbit {
-            position: fixed;          /* selalu di bg */
+            position: fixed;         
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -116,13 +116,13 @@
         .orbit-red {
             width: 500px;
             height: 500px;
-            top: 100px;
+            top: 50px;
         }
 
         .orbit-blue {
             width: 300px;
             height: 300px;
-            top: 150px;
+            top: 100px;
             animation-duration: 6s;
         }
 
@@ -336,7 +336,7 @@
                     button.dataset.cell = cellId;
                     button.innerText = cellId;
                     button.onclick = async () => {
-                    selectCell(button);                 // toggle visual & Set terpilih 
+                    selectCell(button);                 // toggle visual Set terpilih 
                     const res = await qPopUp(button);   // buka popup
 
                     if (res.cancelled) {                // batal? balikin state
