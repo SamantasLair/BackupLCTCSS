@@ -11,16 +11,16 @@
             background:
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                radial-gradient(circle at center, #7f1d1d 0%, #1f2937 50%, #111827 100%);
-            background-size: 20px 20px, 20px 20px, auto;
+                radial-gradient(circle at center, #000 0%, #000 50%, #000 100%);
+            background-size: 10px 10px, 10px 10px, auto;
             font-family: 'Arial', sans-serif;
         }
 
         .game-button {
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(156, 163, 175, 0.8) 0%, rgba(107, 114, 128, 0.9) 100%);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(156, 163, 175, 0.3);
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: rgba(156, 163, 175, 0.4); 
+            border: 2px solid rgba(255, 255, 255, 0.6); 
+            color: black; 
         }
 
         .game-button:hover {
@@ -87,10 +87,121 @@
             animation: shake 0.4s;
         }
 
+        /* ==== Orbit Background ==== */
+        #bg-orbit {
+            position: fixed;          /* selalu di bg */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            pointer-events: none;     /* biar gak ganggu klik UI */
+            z-index: 0;               /* di bawah konten */
+        }
+
+        .center-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .orbit {
+            position: absolute;
+            border-radius: 50%;
+            animation: rotateCounterClockwise 12s linear infinite;
+        }
+
+        .orbit-red {
+            width: 500px;
+            height: 500px;
+            top: 100px;
+        }
+
+        .orbit-blue {
+            width: 300px;
+            height: 300px;
+            top: 150px;
+            animation-duration: 6s;
+        }
+
+        .planet {
+            position: absolute;
+            width: 120px;  
+            height: 120px;
+            border-radius: 50%;
+            background: currentColor;          /* isi solid */
+            box-shadow: 
+                0 0 80px 40px currentColor,    /* glow dekat */
+                0 0 200px 100px currentColor;  /* glow jauh */
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        /* Merah */
+        .planet-red {
+            background: radial-gradient(circle, rgba(245,68,68,0.5));
+            color: rgba(245,68,68,0.4);
+        }
+        
+        /* Biru */
+        .planet-blue {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.5));
+            color: rgba(59, 130, 246, 0.4);
+        }
+
+        /* Denyut supaya lebih hidup */
+        @keyframes glowPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+
+        }
+
+        .planet-red, .planet-blue {
+            animation: glowPulse 6s ease-in-out infinite;
+        }
+
+        /* Animasi orbit */
+        @keyframes rotateCounterClockwise {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(-360deg); }
+        }
+
+        /* Animasi pulse planet */
+        @keyframes planetPulse {
+            0%, 100% {
+                transform: scale(0.9);
+                filter: drop-shadow(0 0 10px currentColor);
+            }
+            50% {
+                transform: scale(1.4);
+                filter: drop-shadow(0 0 20px currentColor);
+            }
+        }
+
+
     </style>
 </head>
 
 <!-- Template -->
+<!-- Animasi orbit -->
+<div class="orbit-container" id="bg-orbit">
+  <div class="center-point"></div>
+
+  <div class="orbit orbit-red">
+    <div class="planet planet-red"></div>
+  </div>
+
+  <div class="orbit orbit-blue">
+    <div class="planet planet-blue"></div>
+  </div>
+</div>
+
 <!-- POPUP -->
 <dialog id="q-dialog" class="rounded-2xl p-0 backdrop:bg-black/50 opacity-80">
   <form method="dialog" class="bg-gray-300 min-w-[36rem] max-w-[90vw] rounded-2xl">
@@ -199,16 +310,16 @@
         let questions = {};
 
         async function loadQuestions() {
-    try {
-        const res = await fetch("soal/dummy.json");
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-        questions = Object.fromEntries(data.map(q => [q.id, q]));
-    } catch (err) {
-        alert("Gagal memuat soal: " + err.message + "\n Coba hidupkan server \n php -S localhost:8000");
-        console.error(err);
-    }
-}
+            try {
+                const res = await fetch("soal/dummy.json");
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                const data = await res.json();
+                questions = Object.fromEntries(data.map(q => [q.id, q]));
+            } catch (err) {
+                alert("Gagal memuat soal: " + err.message + "\nCoba hidupkan server \nphp -S localhost:8000");
+                console.error(err);
+            }
+        }
 
 
         function createGrid() {
@@ -221,7 +332,7 @@
                 for (let c = 1; c <= cols; c++) {
                     const cellId = rowLetter + c;
                     const button = document.createElement('button');
-                    button.className = "bg-opacity-50 game-button h-20 rounded-lg text-gray-800 font-bold text-xl hover:scale-105";
+                    button.className = "bg-opacity-50 game-button h-20 rounded-lg text-black font-bold text-xl hover:scale-105";
                     button.dataset.cell = cellId;
                     button.innerText = cellId;
                     button.onclick = async () => {
@@ -341,6 +452,8 @@
         function resetBoard() {
             selectedCells.clear();
             document.querySelectorAll('.game-button').forEach(button => button.classList.remove('selected'));
+            teams.forEach(t => t.score = 0);
+            renderTeams();
         }
 
         document.addEventListener('keydown', function (e) {
