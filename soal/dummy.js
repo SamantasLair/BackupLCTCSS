@@ -1,4 +1,4 @@
-[
+const dataSoal = [
     {
       "id": "A1",
       "tipe": "hapalan",

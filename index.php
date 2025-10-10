@@ -287,7 +287,8 @@
         </header>
 
         <section class="px-4 pb-2 text-center mb-5 mx-auto flex justify-center w-4/5">
-            <blockquote id="q-text" class="italic text-lg text-center poppins-regular-italic">"soal beneran"</blockquote>
+            <blockquote id="q-text" class="italic text-lg text-center poppins-regular-italic">"soal beneran"
+            </blockquote>
         </section>
 
         <div class="relative px-4 pb-4 flex items-center justify-center">
@@ -296,17 +297,22 @@
 
             <!-- tengah: pilihan tim -->
             <div class="space-x-2 poppins-regular">
-                <button type="button" data-team="A" class="team-pill !text-xl hover:!bg-red-400 hover:text-white transition">A</button>
-                <button type="button" data-team="B" class="team-pill !text-xl hover:!bg-blue-400 hover:text-white transition">B</button>
-                <button type="button" data-team="C" class="team-pill !text-xl hover:!bg-yellow-400 hover:text-white transition">C</button>
-                <button type="button" data-team="D" class="team-pill !text-xl hover:!bg-green-400 hover:text-white transition">D</button>
+                <button type="button" data-team="A"
+                    class="team-pill !text-xl hover:!bg-red-400 hover:text-white transition">A</button>
+                <button type="button" data-team="B"
+                    class="team-pill !text-xl hover:!bg-blue-400 hover:text-white transition">B</button>
+                <button type="button" data-team="C"
+                    class="team-pill !text-xl hover:!bg-yellow-400 hover:text-white transition">C</button>
+                <button type="button" data-team="D"
+                    class="team-pill !text-xl hover:!bg-green-400 hover:text-white transition">D</button>
             </div>
 
             <!-- kanan: wrong & ok -->
             <div class="absolute right-4 bottom-4 space-x-2 flex justify-between poppins-semibold">
                 <button id="q-wrong" value="wrong"
                     class="h-8 border w-10 rounded grid place-items-center cursor-pointer bg-red-500">x</button>
-                <button id="q-ok" value="ok" class="h-8 border w-10 rounded cursor-pointer grid place-items-center bg-green-500">✓</button>
+                <button id="q-ok" value="ok"
+                    class="h-8 border w-10 rounded cursor-pointer grid place-items-center bg-green-500">✓</button>
             </div>
         </div>
     </form>
@@ -331,12 +337,12 @@
                     </linearGradient>
                 </defs>
             </svg>
-            <h1 class="text-white text-xl font-bold">CSS<span class="text-sm ml-1">2.0</span></h1>
+            <h1 class="text-white text-2xl font-bold poppins-semibold">CSS<span class="text-sm ml-1">2.0</span></h1>
         </div>
 
         <!-- Konten -->
         <div class="flex flex-col items-center justify-center flex-grow">
-            <div class="flex mb-6">
+            <div class="flex mb-15">
                 <div id="team-container" class="grid grid-cols-4 justify-center gap-4 items-center"></div>
             </div>
             <div id="game-grid" class="grid gap-4 mb-8"></div>
@@ -345,15 +351,17 @@
         <!-- Reset Button -->
         <div class="fixed bottom-0 left-0 p-4">
             <button onclick="resetBoard()"
-                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105">
+                class="px-6 py-2 bg-red-600 poppins-regular cursor-pointer text-sm hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105">
                 Reset
             </button>
         </div>
     </div>
-
+    <script src="soal/dummy.js"></script>
     <script>
         // Daftar tim
         let teams = [];
+        let selected = [[]];
+
         if (!localStorage.getItem("teams")) {
             teams = [
                 { name: "A", score: 0 },
@@ -371,15 +379,15 @@
 
         function renderTeams() { // Lmao static
             container.innerHTML = ""; // bersihin
-            teams.forEach(team => {
+            teams.forEach((team, i) => {
                 const div = document.createElement("div");
                 div.className = "category-button rounded-lg overflow-hidden shadow-md h-20 w-24 flex flex-col justify-between";
                 div.innerHTML = `
-                <div class="bg-gray-700 text-center py-1">
-                <span class="text-base font-bold text-white">${team.name}</span>
+                <div class="text-center py-1 ${i == 0 ? "bg-red-400" : i == 1 ? "bg-blue-400" : i == 2 ? "bg-yellow-400" : "bg-green-400"}">
+                <span class="text-xl font-bold text-white poppins-semibold">${team.name}</span>
                 </div>
-                <div class="bg-gray-800 text-center py-2">
-                <span id="score-${team.name}" class="text-lg font-extrabold text-white">${team.score}</span>
+                <div class="${i == 0 ? "bg-red-400/40" : i == 1 ? "bg-blue-400/40" : i == 2 ? "bg-yellow-400/40" : "bg-green-400/40"} text-center py-2">
+                <span id="score-${team.name}" class="text-xl font-extrabold text-white poppins-semibold">${team.score}</span>
                 </div>`;
                 container.appendChild(div);
             });
@@ -394,10 +402,8 @@
 
         async function loadQuestions() {
             try {
-                const res = await fetch("soal/dummy.json");
-                if (!res.ok) throw new Error("HTTP " + res.status);
-                const data = await res.json();
-                questions = Object.fromEntries(data.map(q => [q.id, q]));
+                const res = dataSoal;
+                questions = Object.fromEntries(res.map(q => [q.id, q]));
             } catch (err) {
                 alert("Gagal memuat soal: " + err.message + "\nCoba hidupkan server \nphp -S localhost:8000");
                 console.error(err);
@@ -410,19 +416,29 @@
             grid.innerHTML = "";
             grid.style.gridTemplateColumns = `repeat(${cols}, 6rem)`;
 
+            if (localStorage.getItem("selected")) {
+                selected = JSON.parse(localStorage.getItem("selected"));
+            } else {
+                selected = Array(cols).fill(false).map(() => Array(rows).fill(false));
+                localStorage.setItem("selected", JSON.stringify(selected));
+            }
+
             for (let r = 0; r < rows; r++) {
                 const rowLetter = String.fromCharCode(65 + r);
                 for (let c = 1; c <= cols; c++) {
                     const cellId = rowLetter + c;
                     const button = document.createElement('button');
-                    button.className = "bg-opacity-50 game-button h-20 rounded-lg text-black font-bold text-xl hover:scale-105";
+                    button.className = `!bg-black/50 poppins-semibold cursor-pointer game-button h-20 rounded-lg !text-white font-bold text-xl hover:scale-105 ${selected[r][c] && "selected"}`;
                     button.dataset.cell = cellId;
                     button.innerText = cellId;
-                    button.onclick = async () => {
-                        selectCell(button);                 // toggle visual Set terpilih 
-                        const res = await qPopUp(button);   // buka popup
 
-                        if (res.cancelled) {                // batal? balikin state
+                    button.onclick = async () => {
+                        selectCell(button);
+                        selected[r][c] = true;
+                        const res = await qPopUp(button);
+
+                        if (res.cancelled) {
+                            selected[r][c] = true;
                             selectCell(button);
                             return;
                         }
@@ -436,6 +452,7 @@
                             if (el) el.textContent = t.score;
                             localStorage.setItem("teams", JSON.stringify(teams));
                         }
+                        localStorage.setItem("selected", JSON.stringify(selected));
                     };
                     grid.appendChild(button);
                 }
@@ -541,7 +558,9 @@
             selectedCells.clear();
             document.querySelectorAll('.game-button').forEach(button => button.classList.remove('selected'));
             teams.forEach(t => t.score = 0);
+            selected = Array.from({ length: rows }, () => Array.from({ length: cols }, () => false));
             localStorage.setItem("teams", JSON.stringify(teams));
+            localStorage.setItem("selected", JSON.stringify(selected));
             renderTeams();
         }
 
