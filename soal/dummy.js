@@ -1,10 +1,10 @@
-[
+const dataPenyisihan = [
     {
       "id": "A1",
       "tipe": "hapalan",
       "waktu": 10,
       "pertanyaan": "Apa kepanjangan dari CPU dalam ilmu komputer?",
-      "jawaban": ["Central Processing Unit"]
+      "jawaban":  ["Central Processing Unit"]
     },
     {
       "id": "A2",
