@@ -1,11 +1,3 @@
-<?php
-
-
-
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -402,7 +394,7 @@
 
         async function loadQuestions() {
             try {
-                const res = dataSoal;
+                const res = dataPenyisihan;
                 questions = Object.fromEntries(res.map(q => [q.id, q]));
             } catch (err) {
                 alert("Gagal memuat soal: " + err.message + "\nCoba hidupkan server \nphp -S localhost:8000");
