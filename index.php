@@ -1,3 +1,11 @@
+<?php
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -5,7 +13,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS 2.0 Game Board</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/output.css">
+    <!-- FONT GOOGLE POPPINS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+
     <style>
         body {
             background:
@@ -16,11 +30,36 @@
             font-family: 'Arial', sans-serif;
         }
 
+        .poppins-light {
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .poppins-regular {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .poppins-regular-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .poppins-semibold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+
         .game-button {
             transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: rgba(156, 163, 175, 0.4); 
-            border: 2px solid rgba(255, 255, 255, 0.6); 
-            color: black; 
+            background-color: rgba(156, 163, 175, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: black;
         }
 
         .game-button:hover {
@@ -51,36 +90,58 @@
 
         /* qPopUp */
         .team-pill {
-            border: 1px solid #111; border-radius: .25rem; padding: 0 .35rem; font-size: .75rem;
+            border: 1px solid #111;
+            border-radius: .25rem;
+            padding: .5rem 1rem;
+            cursor: pointer;
             background: #eee;
         }
 
         .team-pill[data-team="A"].active {
-            background-color: #ff4444; /* merah */
+            background-color: #ff4444;
+            /* merah */
             color: white;
         }
 
         .team-pill[data-team="B"].active {
-            background-color: #3b82ff; /* biru */
+            background-color: #3b82ff;
+            /* biru */
             color: white;
         }
 
         .team-pill[data-team="C"].active {
-            background-color: #ffcf15; /* kuning */
+            background-color: #ffcf15;
+            /* kuning */
             color: black;
         }
 
         .team-pill[data-team="D"].active {
-            background-color: #22dd5e; /* hijau */
+            background-color: #22dd5e;
+            /* hijau */
             color: white;
         }
 
 
-        .team-pill.active { background: #bbb; }
-            @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-4px); }
-            40%, 80% { transform: translateX(4px); }
+        .team-pill.active {
+            background: #bbb;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
         }
 
         .team-pill.shake {
@@ -89,14 +150,16 @@
 
         /* ==== Orbit Background ==== */
         #bg-orbit {
-            position: fixed;         
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 500px;
             height: 500px;
-            pointer-events: none;     /* biar gak ganggu klik UI */
-            z-index: 0;               /* di bawah konten */
+            pointer-events: none;
+            /* biar gak ganggu klik UI */
+            z-index: 0;
+            /* di bawah konten */
         }
 
         .center-point {
@@ -128,23 +191,26 @@
 
         .planet {
             position: absolute;
-            width: 120px;  
+            width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: currentColor;          /* isi solid */
-            box-shadow: 
-                0 0 80px 40px currentColor,    /* glow dekat */
-                0 0 200px 100px currentColor;  /* glow jauh */
+            background: currentColor;
+            /* isi solid */
+            box-shadow:
+                0 0 80px 40px currentColor,
+                /* glow dekat */
+                0 0 200px 100px currentColor;
+            /* glow jauh */
             opacity: 0.9;
             pointer-events: none;
         }
 
         /* Merah */
         .planet-red {
-            background: radial-gradient(circle, rgba(245,68,68,0.5));
-            color: rgba(245,68,68,0.4);
+            background: radial-gradient(circle, rgba(245, 68, 68, 0.5));
+            color: rgba(245, 68, 68, 0.4);
         }
-        
+
         /* Biru */
         .planet-blue {
             background: radial-gradient(circle, rgba(59, 130, 246, 0.5));
@@ -153,85 +219,97 @@
 
         /* Denyut supaya lebih hidup */
         @keyframes glowPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.1);
             }
 
         }
 
-        .planet-red, .planet-blue {
+        .planet-red,
+        .planet-blue {
             animation: glowPulse 6s ease-in-out infinite;
         }
 
         /* Animasi orbit */
         @keyframes rotateCounterClockwise {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(-360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(-360deg);
+            }
         }
 
         /* Animasi pulse planet */
         @keyframes planetPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(0.9);
                 filter: drop-shadow(0 0 10px currentColor);
             }
+
             50% {
                 transform: scale(1.4);
                 filter: drop-shadow(0 0 20px currentColor);
             }
         }
-
-
     </style>
 </head>
 
 <!-- Template -->
 <!-- Animasi orbit -->
 <div class="orbit-container" id="bg-orbit">
-  <div class="center-point"></div>
+    <div class="center-point"></div>
 
-  <div class="orbit orbit-red">
-    <div class="planet planet-red"></div>
-  </div>
+    <div class="orbit orbit-red">
+        <div class="planet planet-red"></div>
+    </div>
 
-  <div class="orbit orbit-blue">
-    <div class="planet planet-blue"></div>
-  </div>
+    <div class="orbit orbit-blue">
+        <div class="planet planet-blue"></div>
+    </div>
 </div>
 
 <!-- POPUP -->
-<dialog id="q-dialog" class="rounded-2xl p-0 backdrop:bg-black/50 opacity-80">
-  <form method="dialog" class="bg-gray-300 min-w-[36rem] max-w-[90vw] rounded-2xl">
-    <header class="px-4 py-3 text-center">
-      <h3 class="font-bold text-lg">Pertanyaan</h3>
-    </header>
+<dialog id="q-dialog"
+    class="rounded-2xl p-0 backdrop:bg-black/50 -translate-y-20 bg-white/90 opacity-0 shadow fixed left-1/2 -translate-x-1/2 top-10 transition-all duration-800">
+    <form method="dialog" class="min-w-[36rem] max-w-[90vw] rounded-2xl">
+        <header class="px-4 py-3 text-center">
+            <h3 class="font-bold text-2xl poppins-semibold">Pertanyaan</h3>
+        </header>
 
-    <section class="px-4 pb-2 text-center">
-      <blockquote id="q-text" class="italic">"soal beneran"</blockquote>
-    </section>
+        <section class="px-4 pb-2 text-center mb-5 mx-auto flex justify-center w-4/5">
+            <blockquote id="q-text" class="italic text-lg text-center poppins-regular-italic">"soal beneran"</blockquote>
+        </section>
 
-    <div class="relative px-4 pb-4 flex items-center justify-center">
-      <!-- kiri: tombol cancel -->
-      <button class= "absolute left-4" id="q-cancel" value="cancel" class="w-6 h-6 border rounded text-xs grid place-items-center">–</button>
+        <div class="relative px-4 pb-4 flex items-center justify-center">
+            <!-- kiri: tombol cancel -->
+            <!-- <button class="absolute left-4 h-8 border w-10 rounded text-xs grid place-items-center bg-red-500" id="q-cancel" value="cancel">–</button> -->
 
-      <!-- tengah: pilihan tim -->
-      <div class="space-x-2">
-        <button type="button" data-team="A" class="team-pill">A</button>
-        <button type="button" data-team="B" class="team-pill">B</button>
-        <button type="button" data-team="C" class="team-pill">C</button>
-        <button type="button" data-team="D" class="team-pill">D</button>
-      </div>
+            <!-- tengah: pilihan tim -->
+            <div class="space-x-2 poppins-regular">
+                <button type="button" data-team="A" class="team-pill !text-xl hover:!bg-red-400 hover:text-white transition">A</button>
+                <button type="button" data-team="B" class="team-pill !text-xl hover:!bg-blue-400 hover:text-white transition">B</button>
+                <button type="button" data-team="C" class="team-pill !text-xl hover:!bg-yellow-400 hover:text-white transition">C</button>
+                <button type="button" data-team="D" class="team-pill !text-xl hover:!bg-green-400 hover:text-white transition">D</button>
+            </div>
 
-      <!-- kanan: wrong & ok -->
-      <div class="absolute right-4 space-x-2 flex justify-between">
-        <button id="q-wrong" value="wrong" class="w-6 h-6 border rounded text-xs grid place-items-center">✕</button>
-        <button id="q-ok" value="ok" class="w-6 h-6 border rounded text-xs grid place-items-center">✓</button>
-      </div>
-    </div>
-  </form>
+            <!-- kanan: wrong & ok -->
+            <div class="absolute right-4 bottom-4 space-x-2 flex justify-between poppins-semibold">
+                <button id="q-wrong" value="wrong"
+                    class="h-8 border w-10 rounded grid place-items-center cursor-pointer bg-red-500">x</button>
+                <button id="q-ok" value="ok" class="h-8 border w-10 rounded cursor-pointer grid place-items-center bg-green-500">✓</button>
+            </div>
+        </div>
+    </form>
 </dialog>
 
 <body class="min-h-screen flex flex-col">
@@ -241,8 +319,8 @@
         <!-- Logo -->
         <div class="fixed top-0 left-0 p-4 flex items-center gap-2">
             <svg class="logo-shield w-10 h-10" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 5 L85 20 L85 50 Q85 75 50 110 Q15 75 15 50 L15 20 Z"
-                    fill="url(#shieldGradient)" stroke="#fbbf24" stroke-width="2" />
+                <path d="M50 5 L85 20 L85 50 Q85 75 50 110 Q15 75 15 50 L15 20 Z" fill="url(#shieldGradient)"
+                    stroke="#fbbf24" stroke-width="2" />
                 <circle cx="50" cy="35" r="8" fill="#fbbf24" />
                 <path d="M35 50 L50 65 L65 50" stroke="#fbbf24" stroke-width="3" fill="none" />
                 <text x="50" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#fbbf24">CSS</text>
@@ -258,8 +336,8 @@
 
         <!-- Konten -->
         <div class="flex flex-col items-center justify-center flex-grow">
-            <div class="flex justify-center mb-6">
-                <div id="team-container" class="grid gap-4"></div>
+            <div class="flex mb-6">
+                <div id="team-container" class="grid grid-cols-4 justify-center gap-4 items-center"></div>
             </div>
             <div id="game-grid" class="grid gap-4 mb-8"></div>
         </div>
@@ -275,12 +353,17 @@
 
     <script>
         // Daftar tim
-        const teams = [
-            { name: "A", score: 0 },
-            { name: "B", score: 0 },
-            { name: "C", score: 0 },
-            { name: "D", score: 0 },
-        ];
+        let teams = [];
+        if (!localStorage.getItem("teams")) {
+            teams = [
+                { name: "A", score: 0 },
+                { name: "B", score: 0 },
+                { name: "C", score: 0 },
+                { name: "D", score: 0 },
+            ];
+        } else {
+            teams = JSON.parse(localStorage.getItem("teams"));
+        }
 
         const container = document.getElementById("team-container");
 
@@ -289,16 +372,16 @@
         function renderTeams() { // Lmao static
             container.innerHTML = ""; // bersihin
             teams.forEach(team => {
-            const div = document.createElement("div");
-            div.className = "category-button rounded-lg overflow-hidden shadow-md h-20 w-24 flex flex-col justify-between";
-            div.innerHTML = `
+                const div = document.createElement("div");
+                div.className = "category-button rounded-lg overflow-hidden shadow-md h-20 w-24 flex flex-col justify-between";
+                div.innerHTML = `
                 <div class="bg-gray-700 text-center py-1">
                 <span class="text-base font-bold text-white">${team.name}</span>
                 </div>
                 <div class="bg-gray-800 text-center py-2">
                 <span id="score-${team.name}" class="text-lg font-extrabold text-white">${team.score}</span>
                 </div>`;
-            container.appendChild(div);
+                container.appendChild(div);
             });
         }
         // 🔧 Atur grid: game board
@@ -336,22 +419,23 @@
                     button.dataset.cell = cellId;
                     button.innerText = cellId;
                     button.onclick = async () => {
-                    selectCell(button);                 // toggle visual Set terpilih 
-                    const res = await qPopUp(button);   // buka popup
+                        selectCell(button);                 // toggle visual Set terpilih 
+                        const res = await qPopUp(button);   // buka popup
 
-                    if (res.cancelled) {                // batal? balikin state
-                        selectCell(button);
-                        return;
-                    }
+                        if (res.cancelled) {                // batal? balikin state
+                            selectCell(button);
+                            return;
+                        }
 
-                    // Tambah skor tim terpilih
-                    const t = teams.find(x => x.name === res.team);
-                    if (t) {
-                        t.score += res.delta;
-                        // update tampilan skor
-                        const el = document.getElementById(`score-${t.name}`);
-                        if (el) el.textContent = t.score;
-                    }
+                        // Tambah skor tim terpilih
+                        const t = teams.find(x => x.name === res.team);
+                        if (t) {
+                            t.score += res.delta;
+                            // update tampilan skor
+                            const el = document.getElementById(`score-${t.name}`);
+                            if (el) el.textContent = t.score;
+                            localStorage.setItem("teams", JSON.stringify(teams));
+                        }
                     };
                     grid.appendChild(button);
                 }
@@ -359,10 +443,10 @@
         }
 
         async function qPopUp(button) {
-            const cellId = button.dataset.cell; 
+            const cellId = button.dataset.cell;
             if (!selectedCells.has(cellId)) return { cancelled: true };
 
-            const dlg   = document.getElementById('q-dialog');
+            const dlg = document.getElementById('q-dialog');
             const qText = document.getElementById('q-text');
             const okBtn = document.getElementById('q-ok');
             const wrongBtn = document.getElementById('q-wrong');
@@ -419,6 +503,8 @@
                     pills.forEach(p => p.removeEventListener('click', onPill));
                     okBtn.removeEventListener('click', onOk);
                     wrongBtn.removeEventListener('click', onWrong);
+                    dlg.classList.remove('translate-y-0');
+                    dlg.classList.remove('opacity-80');
 
                     if (dlg.returnValue === 'ok' && team) {
                         resolve({ cancelled: false, team, delta, cellId });
@@ -431,11 +517,13 @@
 
                 dlg.addEventListener('close', onClose, { once: true });
                 dlg.showModal();
+                dlg.classList.add('translate-y-0');
+                dlg.classList.add('opacity-100');
             });
 
             return result;
         }
-        
+
         function selectCell(button) {
             const cellId = button.dataset.cell;
             if (selectedCells.has(cellId)) {
@@ -453,6 +541,7 @@
             selectedCells.clear();
             document.querySelectorAll('.game-button').forEach(button => button.classList.remove('selected'));
             teams.forEach(t => t.score = 0);
+            localStorage.setItem("teams", JSON.stringify(teams));
             renderTeams();
         }
 
@@ -462,7 +551,6 @@
 
 
         window.addEventListener('load', async function () {
-            resetBoard();
             await loadQuestions();
             createGrid();
             const buttons = document.querySelectorAll('.game-button');
