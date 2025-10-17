@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS 2.0 Quiz Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at center, #000 0%, #000 50%, #000 100%);
+      background-size: 10px 10px, 10px 10px, auto;
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* Orbit Background */
+    #bg-orbit {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orbit {
+      position: absolute;
+      border-radius: 50%;
+      animation: rotateCounterClockwise 12s linear infinite;
+    }
+
+    .orbit-red {
+      width: 500px;
+      height: 500px;
+      top: 50px;
+    }
+
+    .orbit-blue {
+      width: 300px;
+      height: 300px;
+      top: 100px;
+      animation-duration: 6s;
+    }
+
+    .planet {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 80px 40px currentColor, 0 0 200px 100px currentColor;
+      opacity: 0.9;
+    }
+
+    .planet-red {
+      color: rgba(245, 68, 68, 0.4);
+      background: radial-gradient(circle, rgba(245, 68, 68, 0.5));
+    }
+
+    .planet-blue {
+      color: rgba(59, 130, 246, 0.4);
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.5));
+    }
+
+    @keyframes rotateCounterClockwise {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .planet-red,
+    .planet-blue {
+      animation: glowPulse 6s ease-in-out infinite;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      z-index: 100;
+    }
+
+    .logo-shield {
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(135deg, #8b6914 0%, #d4af37 100%);
+      border-radius: 6px;
+      border: 2px solid #d4af37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: bold;
+    }
+
+    .main-container {
+      max-width: 1000px;
+      margin: 60px auto 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* kategori */
+    .categories-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .category-card {
+      text-align: center;
+    }
+
+    .category-header {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      border: 2px solid rgba(156, 163, 175, 0.5);
+    }
+
+    .category-points {
+      background: linear-gradient(135deg, #3a2010, #1a1010);
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    /* grid soal */
+    .grids-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .grid-wrapper {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .game-button {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 70px;
+      height: 70px;
+    }
+
+    .game-button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(212, 175, 55, 0.8);
+      transform: scale(1.05);
+    }
+
+    .reset-button {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: rgba(139, 0, 0, 0.8);
+      color: white;
+      font-weight: 600;
+      border: 2px solid #8b0000;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .reset-button:hover {
+      background-color: rgba(139, 0, 0, 1);
+      transform: scale(1.05);
+    }
+
+    /* dialog */
+    dialog {
+      border: none;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      width: 90%;
+      max-width: 520px;
+      padding: 1.5rem;
+      color: #111;
+      text-align: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    dialog[open] {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .action-btn {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #q-save {
+      background: linear-gradient(135deg, #facc15, #eab308);
+    }
+
+    #q-close {
+      background: linear-gradient(135deg, #6b7280, #374151);
+      color: white;
+    }
+
+    .team-answer-btn {
+      margin: 4px;
+      padding: 6px 12px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      cursor: pointer;
+      background: white;
+      font-weight: bold;
+    }
+
+    .team-answer-btn:hover {
+      background: #f3f4f6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="bg-orbit">
+    <div class="orbit orbit-red">
+      <div class="planet planet-red"></div>
+    </div>
+    <div class="orbit orbit-blue">
+      <div class="planet planet-blue"></div>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="logo-shield">LOGO</div>
+    <div class="logo-shield">LOGO</div>
+    <h1 class="title">CS <span style="font-size:0.75rem">2.0</span></h1>
+  </div>
+
+  <div class="main-container">
+    <div class="categories-container" id="scoreboard"></div>
+    <div class="grids-container" id="grids"></div>
+  </div>
+
+  <button class="reset-button" onclick="resetBoard()">Reset</button>
+
+  <!-- Single Dialog -->
+  <dialog id="q-dialog">
+    <h3 class="font-bold text-2xl poppins-semibold">Pertanyaan</h3>
+    <blockquote id="q-text" class="italic text-lg poppins-regular-italic">"soal beneran"</blockquote>
+
+    <div class="grid grid-cols-2 gap-4 w-full max-w-md text-center">
+      <div class="team-zone">
+        <h4>Tim A</h4>
+        <button class="team-answer-btn" data-team="A" data-correct="true">Benar</button>
+        <button class="team-answer-btn" data-team="A" data-correct="false">Salah</button>
+      </div>
+      <div class="team-zone">
+        <h4>Tim B</h4>
+        <button class="team-answer-btn" data-team="B" data-correct="true">Benar</button>
+        <button class="team-answer-btn" data-team="B" data-correct="false">Salah</button>
+      </div>
+      <div class="team-zone">
+        <h4>Tim C</h4>
+        <button class="team-answer-btn" data-team="C" data-correct="true">Benar</button>
+        <button class="team-answer-btn" data-team="C" data-correct="false">Salah</button>
+      </div>
+      <div class="team-zone">
+        <h4>Tim D</h4>
+        <button class="team-answer-btn" data-team="D" data-correct="true">Benar</button>
+        <button class="team-answer-btn" data-team="D" data-correct="false">Salah</button>
+      </div>
+    </div>
+
+    <div class="flex gap-4 pt-4">
+      <button id="q-save" class="action-btn">Simpan</button>
+      <button id="q-close" class="action-btn">Tutup</button>
+    </div>
+  </dialog>
+
+  <script src="soal/soalSemifinal.js"></script>
+  <script>
+    let teams = [
+      { name: "A", score: 0 },
+      { name: "B", score: 0 },
+      { name: "C", score: 0 },
+      { name: "D", score: 0 }
+    ];
+    let selected = {};
+    let questions = {};
+    let answersTemp = {};
+
+    function loadQuestions() {
+      questions = Object.fromEntries(questionsData.map(q => [q.id, q]));
+    }
+
+    function renderScoreboard() {
+      const board = document.getElementById('scoreboard');
+      board.innerHTML = teams.map(t => `
+        <div class="category-card">
+          <div class="category-header">${t.name}</div>
+          <div class="category-points" id="score-${t.name}">${t.score}</div>
+        </div>`).join('');
+    }
+
+    function updateScore(team, delta) {
+      const t = teams.find(x => x.name === team);
+      if (t) {
+        t.score += delta;
+        document.getElementById(`score-${team.name}`).textContent = t.score;
+      }
+    }
+
+    function createGrids() {
+      const grids = document.getElementById('grids');
+      grids.innerHTML = '';
+      ['A', 'B', 'C', 'D'].forEach(cat => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'grid-wrapper';
+        const grid = document.createElement('div');
+        grid.className = 'question-grid';
+        for (let i = 1; i <= 5; i++) {
+          const cellId = `${cat}${i}`;
+          const btn = document.createElement('button');
+          btn.className = 'game-button';
+          btn.textContent = cellId;
+          btn.onclick = () => handleQuestion(cellId, btn);
+          grid.appendChild(btn);
+        }
+        wrapper.appendChild(grid);
+        grids.appendChild(wrapper);
+      });
+    }
+
+    async function handleQuestion(id, btn) {
+      if (selected[id]) return;
+      btn.classList.add('selected');
+      await qPopUp(id, btn);
+    }
+
+    async function qPopUp(cellId, btn) {
+      const dlg = document.getElementById("q-dialog");
+      const qText = dlg.querySelector("#q-text");
+      const soal = questions[cellId];
+      qText.textContent = soal ? soal.pertanyaan : "Soal belum tersedia untuk " + cellId;
+
+      const deltaBenar = 100, deltaSalah = -50;
+      answersTemp = { A: null, B: null, C: null, D: null };
+
+      dlg.querySelectorAll(".team-answer-btn").forEach(b => {
+        b.onclick = () => {
+          const team = b.dataset.team;
+          const correct = b.dataset.correct === "true";
+          answersTemp[team] = correct;
+          const zone = b.closest(".team-zone");
+          zone.querySelectorAll(".team-answer-btn").forEach(x => x.style.opacity = "0.4");
+          b.style.opacity = "1";
+        };
+      });
+
+      dlg.querySelector("#q-save").onclick = () => {
+        Object.entries(answersTemp).forEach(([team, val]) => {
+          if (val !== null) {
+            const delta = val ? deltaBenar : deltaSalah;
+            const t = teams.find(tt => tt.name === team);
+            t.score += delta;
+            document.getElementById(`score-${team}`).textContent = t.score;
+          }
+        });
+        selected[cellId] = true;
+        dlg.close();
+        btn.style.background = "linear-gradient(135deg,#22c55e,#15803d)";
+        btn.style.color = "white";
+        btn.textContent = "✔";
+      };
+
+      dlg.querySelector("#q-close").onclick = () => dlg.close();
+      dlg.showModal();
+    }
+
+    function resetBoard() {
+      selected = {};
+      teams.forEach(t => t.score = 0);
+      renderScoreboard();
+      document.querySelectorAll('.game-button').forEach(b => {
+        b.classList.remove('selected');
+        b.style = '';
+        b.textContent = b.dataset.cell || b.textContent;
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadQuestions();
+      renderScoreboard();
+      createGrids();
+    });
+  </script>
+</body>
+
+</html>
