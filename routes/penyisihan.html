@@ -222,7 +222,7 @@
         };
 
         function loadState() {
-            const saved = sessionStorage.getItem('gameBoardState');
+            const saved = localStorage.getItem('gameBoardState');
             if (saved) {
                 gameState = JSON.parse(saved);
             } else {
@@ -238,12 +238,12 @@
         }
 
         function saveState() {
-            sessionStorage.setItem('gameBoardState', JSON.stringify(gameState));
+            localStorage.setItem('gameBoardState', JSON.stringify(gameState));
         }
 
         function resetBoard() {
             if (confirm('Apakah Anda yakin ingin mereset seluruh papan permainan dan skor?')) {
-                sessionStorage.removeItem('gameBoardState');
+                localStorage.removeItem('gameBoardState');
                 loadState();
                 renderTeams();
                 createGrid();
@@ -613,9 +613,9 @@
         // ================================================================
         // INITIALIZATION
         // ================================================================
-        document.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'r' && e.ctrlKey) resetBoard();
-        });
+        // document.addEventListener('keydown', (e) => {
+        //     if (e.key.toLowerCase() === 'r' && e.ctrlKey) resetBoard();
+        // });
 
         window.addEventListener('beforeunload', () => {
             stopTimeUpSound();
