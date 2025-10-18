@@ -151,7 +151,7 @@
         </div>
     </div>
 
-    <script src="../soal/dummy.js"></script>
+    <script src="../soal/penyisihan.js"></script>
 
     <script>
         // ================================================================
@@ -292,16 +292,16 @@
         }
 
         function loadQuestions() {
-            // Check if dataPenyisihan exists
-            if (typeof dataPenyisihan === 'undefined') {
-                console.error('dataPenyisihan tidak ditemukan! Pastikan file dummy.js sudah di-load.');
+            // Check if dataPenyisihan1 exists
+            if (typeof dataPenyisihan1 === 'undefined') {
+                console.error('dataPenyisihan1 tidak ditemukan! Pastikan file dummy.js sudah di-load.');
                 alert('Error: Data soal tidak ditemukan!');
                 return;
             }
 
             // Convert array to object with id as key
             questions = {};
-            dataPenyisihan.forEach(q => {
+            dataPenyisihan1.forEach(q => {
                 questions[q.id] = q;
             });
 
@@ -366,7 +366,7 @@
 
                     const button = document.createElement('button');
                     button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${gameState.selected[r][c]
-                            ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 border-2 border-yellow-600 text-gray-900 shadow-lg'
+                            ? 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg'
                             : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'
                         }`;
 
@@ -501,7 +501,7 @@
                 document.getElementById(`score-${team.name}`).textContent = team.score;
             } else {
                 // fallback: warna default kuning kalau tidak ada tim
-                button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-yellow-400 to-yellow-500 border-2 border-yellow-600 text-gray-900 shadow-lg';
+                button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
                 gameState.selected[r][c] = true;
             }
 
