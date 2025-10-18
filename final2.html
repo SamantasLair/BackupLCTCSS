@@ -92,36 +92,25 @@
         }
 
         @keyframes glowPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .planet-red,
-        .planet-blue {
+        .planet-red, .planet-blue {
             animation: glowPulse 6s ease-in-out infinite;
         }
 
         @keyframes rotateCounterClockwise {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(-360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            /* Added padding-top to account for the new fixed header */
+            padding-top: 100px;
             position: relative;
             z-index: 1;
             min-height: calc(100vh - 40px);
@@ -129,44 +118,47 @@
 
         /* HEADER */
         .header-section {
+            /* Updated to be a fixed header bar */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem; /* approx p-4 */
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            
+            /* Kept from original styles */
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 40px;
             animation: slideDown 0.6s ease;
         }
-
+        
         .logo-container {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
-        .logo-container img {
-            width: 40px;
-            height: 40px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        
+        .logo-img {
+            width: 40px; /* approx w-10 */
+            height: 40px; /* approx h-10 */
         }
 
         .header-title {
-            font-size: 2rem;
+            /* Adjusted size for header bar */
+            font-size: 1.5rem; /* approx text-2xl */
             font-weight: 700;
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: transparent; /* Fallback */
         }
 
         .header-title span {
-            font-size: 0.8rem;
-            margin-left: 3px;
-        }
-
-        .header-subtitle {
-            font-size: 1rem;
-            color: #cbd5e1;
-            font-weight: 300;
-            margin-left: auto;
+            font-size: 0.875rem; /* approx text-sm */
+            margin-left: 4px; /* approx ml-1 */
         }
 
         /* SCORES */
@@ -205,33 +197,6 @@
             font-weight: 600;
             color: white;
             font-size: 1rem;
-        }
-
-        
-        /*=====================================//
-        /      WARNA SCORE TEAM DI LUAR         /
-        //=====================================*/
-
-
-        .score-card.team-a .score-card-header {
-            background-color: #ff4444;
-        }
-
-        .score-card.team-b .score-card-header {
-            background-color: #3b82ff;
-        }
-
-        .score-card.team-c .score-card-header {
-            background-color: #ffcf15;
-            color: black;
-        }
-
-        .score-card.team-d .score-card-header {
-            background-color: #22dd5e;
-        }
-
-        .score-card.team-e .score-card-header {
-            background-color: #db08ea;
         }
 
         .score-card-body {
@@ -369,8 +334,7 @@
             background-clip: text;
         }
 
-        /* REBUTAN MODE */
-        .rebutan-question {
+        .rebutan-question, .auction-question {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(251, 191, 36, 0.3);
             padding: 20px;
@@ -385,14 +349,14 @@
             line-height: 1.5;
         }
 
-        .teams-grid {
+        .teams-grid, .auction-teams {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 15px;
         }
 
-        .team-btn {
+        .team-btn, .auction-team {
             padding: 12px;
             border: 2px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
@@ -404,83 +368,15 @@
             font-size: 0.95rem;
         }
 
-        .team-btn:hover {
+        .team-btn:hover, .auction-team:hover {
             transform: translateY(-2px);
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /*=====================================//
-        /    WARNA BUTTON TEAM DI POP UP        /
-        //=====================================*/
-
-        .team-btn.team-a {
-            border-color: #ff4444;
-            color: #ff4444;
-        }
-
-        .team-btn.team-a:hover {
-            background: rgba(255, 68, 68, 0.1);
-        }
-
-        .team-btn.team-b {
-            border-color: #3b82ff;
-            color: #3b82ff;
-        }
-
-        .team-btn.team-b:hover {
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .team-btn.team-c {
-            border-color: #ffcf15;
-            color: #ffcf15;
-        }
-
-        .team-btn.team-c:hover {
-            background: rgba(255, 207, 21, 0.1);
-        }
-
-        .team-btn.team-d {
-            border-color: #22dd5e;
-            color: #22dd5e;
-        }
-
-        .team-btn.team-d:hover {
-            background: rgba(34, 221, 94, 0.1);
-        }
-
-        .team-btn.team-e {
-            border-color: #db08ea;
-            color: #db08ea;
-        }
-
-        .team-btn.team-e:hover {
-            background: rgba(200, 23, 216, 0.1);
-        }
-
-        .team-btn.selected {
+        .team-btn.selected, .auction-team.selected {
             transform: scale(1.05);
             font-weight: 700;
             box-shadow: 0 0 15px currentColor;
-        }
-
-        /*=====================================//
-        /               AUCTION MODE           //
-        //=====================================*/
-
-        /* AUCTION MODE */
-        .auction-question {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(251, 191, 36, 0.3);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
         }
 
         .auction-points {
@@ -506,61 +402,6 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
-        .bid-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .bid-btn {
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(251, 191, 36, 0.3);
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .bid-btn:hover {
-            background: rgba(251, 191, 36, 0.2);
-            border-color: rgba(251, 191, 36, 0.6);
-        }
-
-        .auction-teams {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .auction-team {
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .auction-team:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .auction-team.selected {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #1f2937;
-            border-color: #d97706;
-            transform: scale(1.05);
-        }
-
-        /* BUTTONS */
         .btn-group {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -640,45 +481,93 @@
             box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+        .reset-btn {
+            left: auto;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .reset-btn:hover {
+             box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        }
+
+
+        .setup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            z-index: 2000;
+            text-align: center;
+        }
+
+        .setup-container h2 {
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .setup-container input {
+            padding: 10px;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            width: 200px;
+        }
+
+        .setup-container button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .setup-container button:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
+    <style id="dynamicStyles"></style>
 </head>
 
 <body>
+    <!-- SETUP MODAL -->
+    <div id="setupContainer" class="setup-container">
+        <h2>Atur Jumlah Tim</h2>
+        <input type="number" id="teamInput" value="5" min="2" max="26">
+        <br>
+        <button onclick="startGame()">Mulai Game</button>
+    </div>
+
     <!-- ORBIT BACKGROUND -->
-    <div class="orbit-container" id="bg-orbit">
+    <div class="orbit-container" id="bg-orbit" style="display:none;">
         <div class="orbit orbit-red">
             <div class="planet planet-red"></div>
         </div>
@@ -686,18 +575,20 @@
             <div class="planet planet-blue"></div>
         </div>
     </div>
+    
+    <a href="homepage.html" class="back-btn" id="backBtn" style="display:none;">← Back</a>
+    <a href="#" onclick="resetGame(event)" id="resetBtn" class="back-btn reset-btn" style="display:none;">RESET</a>
 
-    <a href="homepage.html" class="back-btn">← Back</a>
 
-    <div class="container">
+    <div class="container" style="display:none;" id="mainContainer">
         <!-- HEADER -->
         <div class="header-section">
             <div class="logo-container">
-                <img src="resources/himacom.png" alt="HIMACOM">
-                <img src="resources/logocss.png" alt="CSS">
-                <div class="header-title">CSS<span>2.0</span></div>
+                 <!-- Replace placeholder URLs with your actual logo paths -->
+                <img src="resources/himacom.png" alt="Himacom Logo" class="logo-img">
+                <img src="resources/logocss.png" alt="CSS Logo" class="logo-img">
+                <h1 class="header-title">CSS<span>2.0</span></h1>
             </div>
-            <div class="header-subtitle">FINAL ROUND</div>
         </div>
 
         <!-- SCORES -->
@@ -730,13 +621,8 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('rebutanModal')">✕</button>
             <div class="modal-header">🔥 REBUTAN</div>
-
-            <div class="rebutan-question" id="rebutanQuestion">
-                Berapa hasil dari 2 + 2?
-            </div>
-
+            <div class="rebutan-question" id="rebutanQuestion">Berapa hasil dari 2 + 2?</div>
             <div class="teams-grid" id="rebutanTeams"></div>
-
             <div class="btn-group">
                 <button class="btn-success" onclick="submitRebutan(true)">✓ BENAR</button>
                 <button class="btn-danger" onclick="submitRebutan(false)">✕ SALAH</button>
@@ -748,21 +634,14 @@
     <div class="modal" id="auctionModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('auctionModal')">✕</button>
-
-            <div class="auction-question" id="auctionQuestion">
-                Siapa presiden pertama Indonesia?
-            </div>
-
+            <div class="modal-header">🏆 LELANG</div>
+            <div class="auction-question" id="auctionQuestion">Siapa presiden pertama Indonesia?</div>
             <div class="auction-controls">
                 <p class="auction-points">Masukkan nominal poin yang ditawarkan</p>
                 <input type="number" class="bid-input" id="bidAmount" placeholder="Contoh: 100" min="1">
-                <div class="bid-buttons">
-                </div>
             </div>
-
             <p style="text-align: center; color: #cbd5e1; margin-bottom: 12px;">Pilih tim yang menjawab:</p>
             <div class="auction-teams" id="auctionTeams"></div>
-
             <div class="btn-group">
                 <button class="btn-success" onclick="submitAuction(true)">✓ BENAR</button>
                 <button class="btn-danger" onclick="submitAuction(false)">✕ SALAH</button>
@@ -771,60 +650,132 @@
     </div>
 
     <script>
-        // State management dengan sessionStorage
-        let gameState = {
-            teams: []
-        };
-
-        const teamColors = {
-            'A': 'team-a',
-            'B': 'team-b',
-            'C': 'team-c',
-            'D': 'team-d',
-            'E': 'team-e'
-        };
-
-        const sampleQuestions = [
-            'Berapa hasil dari 15 × 8?',
-            'Siapa penulis novel "Laskar Pelangi"?',
-            'Ibu kota Prancis adalah?',
-            'Organ apa yang memompa darah dalam tubuh?',
-            'Berapa jumlah benua di dunia?',
-            'Siapa penemu lampu pijar?'
+        // Array warna yang bervariasi
+        const colorPalette = [
+            { bg: '#ff4444', light: 'rgba(255, 68, 68, 0.1)', name: 'team-a' },
+            { bg: '#3b82ff', light: 'rgba(59, 130, 246, 0.1)', name: 'team-b' },
+            { bg: '#ffcf15', light: 'rgba(255, 207, 21, 0.1)', name: 'team-c' },
+            { bg: '#22dd5e', light: 'rgba(34, 221, 94, 0.1)', name: 'team-d' },
+            { bg: '#db08ea', light: 'rgba(200, 23, 216, 0.1)', name: 'team-e' },
+            { bg: '#ff6b6b', light: 'rgba(255, 107, 107, 0.1)', name: 'team-f' },
+            { bg: '#4ecdc4', light: 'rgba(78, 205, 196, 0.1)', name: 'team-g' },
+            { bg: '#ffe66d', light: 'rgba(255, 230, 109, 0.1)', name: 'team-h' },
+            { bg: '#95e1d3', light: 'rgba(149, 225, 211, 0.1)', name: 'team-i' },
+            { bg: '#f38181', light: 'rgba(243, 129, 129, 0.1)', name: 'team-j' },
+            { bg: '#8d6e63', light: 'rgba(141, 110, 99, 0.1)', name: 'team-k' },
+            { bg: '#ff8a65', light: 'rgba(255, 138, 101, 0.1)', name: 'team-l' },
+            { bg: '#90a4ae', light: 'rgba(144, 164, 174, 0.1)', name: 'team-m' },
+            { bg: '#a1887f', light: 'rgba(161, 136, 127, 0.1)', name: 'team-n' },
+            { bg: '#ffab91', light: 'rgba(255, 171, 145, 0.1)', name: 'team-o' },
+            { bg: '#ce93d8', light: 'rgba(206, 147, 216, 0.1)', name: 'team-p' },
+            { bg: '#b39ddb', light: 'rgba(179, 157, 219, 0.1)', name: 'team-q' },
+            { bg: '#ef9a9a', light: 'rgba(239, 154, 154, 0.1)', name: 'team-r' },
+            { bg: '#80cbc4', light: 'rgba(128, 203, 196, 0.1)', name: 'team-s' },
+            { bg: '#f48fb1', light: 'rgba(244, 143, 177, 0.1)', name: 'team-t' },
+            { bg: '#c5e1a5', light: 'rgba(197, 225, 165, 0.1)', name: 'team-u' },
+            { bg: '#e6ee9c', light: 'rgba(230, 238, 156, 0.1)', name: 'team-v' },
+            { bg: '#fff59d', light: 'rgba(255, 245, 157, 0.1)', name: 'team-w' },
+            { bg: '#ffcc80', light: 'rgba(255, 204, 128, 0.1)', name: 'team-x' },
+            { bg: '#bcaaa4', light: 'rgba(188, 170, 164, 0.1)', name: 'team-y' },
+            { bg: '#eeeeee', light: 'rgba(238, 238, 238, 0.1)', name: 'team-z' },
         ];
 
-        // Load state dari sessionStorage
-        function loadState() {
-            const savedState = sessionStorage.getItem('gameFinalState');
+
+        let gameState = { teams: [] };
+        let totalTeams = 5;
+
+        // Cek apakah game sudah dimulai saat halaman dimuat
+        window.addEventListener('load', () => {
+            const savedState = localStorage.getItem('cssFinalGameState');
             if (savedState) {
-                gameState = JSON.parse(savedState);
-            } else {
-                gameState.teams = [
-                    { name: 'A', score: 0 },
-                    { name: 'B', score: 0 },
-                    { name: 'C', score: 0 },
-                    { name: 'D', score: 0 },
-                    { name: 'E', score: 0 }
-                ];
-                saveState();
+                const state = JSON.parse(savedState);
+                totalTeams = state.totalTeams;
+                gameState = state;
+                
+                generateDynamicStyles(totalTeams);
+                document.getElementById('setupContainer').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                document.getElementById('bg-orbit').style.display = 'block';
+                document.getElementById('backBtn').style.display = 'block';
+                document.getElementById('resetBtn').style.display = 'block';
+                
+                renderScores();
+            }
+        });
+
+        function saveState() {
+            gameState.totalTeams = totalTeams;
+            localStorage.setItem('cssFinalGameState', JSON.stringify(gameState));
+        }
+
+        function generateDynamicStyles(numTeams) {
+            let css = '';
+            for (let i = 0; i < numTeams; i++) {
+                const color = colorPalette[i % colorPalette.length]; // Use modulo to avoid running out of colors
+                css += `
+                    .score-card.${color.name} .score-card-header {
+                        background-color: ${color.bg};
+                    }
+                    .team-btn.${color.name}, .auction-team.${color.name} {
+                        border-color: ${color.bg};
+                        color: ${color.bg};
+                    }
+                    .team-btn.${color.name}.selected, .auction-team.${color.name}.selected {
+                        background-color: ${color.light};
+                        color: ${color.bg};
+                    }
+                    .team-btn.${color.name}:hover, .auction-team.${color.name}:hover {
+                        background: ${color.light};
+                    }
+                `;
+            }
+            document.getElementById('dynamicStyles').textContent = css;
+        }
+
+        function startGame() {
+            totalTeams = parseInt(document.getElementById('teamInput').value) || 5;
+            if (totalTeams < 2 || totalTeams > 26) {
+                alert('Jumlah tim harus antara 2-26');
+                return;
+            }
+
+            generateDynamicStyles(totalTeams);
+            
+            // Initialize a new game state
+            gameState.teams = [];
+            for (let i = 0; i < totalTeams; i++) {
+                gameState.teams.push({
+                    name: String.fromCharCode(65 + i),
+                    score: 0,
+                    colorClass: colorPalette[i % colorPalette.length].name
+                });
+            }
+            
+            document.getElementById('setupContainer').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            document.getElementById('bg-orbit').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('resetBtn').style.display = 'block';
+
+            renderScores();
+            saveState(); // Save the initial state
+        }
+
+        function resetGame(event) {
+            event.preventDefault();
+            // Using a simple confirmation dialog
+            if (confirm('Apakah Anda yakin ingin mereset semua skor dan memulai ulang game?')) {
+                localStorage.removeItem('cssFinalGameState');
+                window.location.reload();
             }
         }
 
-        // Save state ke sessionStorage
-        function saveState() {
-            sessionStorage.setItem('gameFinalState', JSON.stringify(gameState));
-        }
-
-        // Initialize
-        window.addEventListener('load', () => {
-            loadState();
-            renderScores();
-        });
 
         function renderScores() {
             const container = document.getElementById('scoresContainer');
+            if (!gameState.teams) return;
             container.innerHTML = gameState.teams.map(team => `
-                <div class="score-card ${teamColors[team.name]}">
+                <div class="score-card ${team.colorClass}">
                     <div class="score-card-header">TEAM ${team.name}</div>
                     <div class="score-card-body">
                         <div class="team-score">${team.score}</div>
@@ -834,10 +785,16 @@
         }
 
         let selectedTeam = null;
-        let currentMode = null;
+        const sampleQuestions = [
+            'Berapa hasil dari 15 × 8?',
+            'Siapa penulis novel "Laskar Pelangi"?',
+            'Ibu kota Prancis adalah?',
+            'Organ apa yang memompa darah dalam tubuh?',
+            'Berapa jumlah benua di dunia?',
+            'Siapa penemu lampu pijar?'
+        ];
 
         function startRebutan() {
-            currentMode = 'rebutan';
             selectedTeam = null;
             document.getElementById('rebutanQuestion').textContent = getRandomQuestion();
             renderRebutanTeams();
@@ -847,15 +804,14 @@
         function renderRebutanTeams() {
             const container = document.getElementById('rebutanTeams');
             container.innerHTML = gameState.teams.map(team => `
-                <button class="team-btn team-${team.name.toLowerCase()}" 
-                    onclick="selectTeam('${team.name}')">
+                <button class="team-btn ${team.colorClass}" 
+                        onclick="selectTeam(event, '${team.name}')">
                     TEAM ${team.name}
                 </button>
             `).join('');
         }
 
         function startAuction() {
-            currentMode = 'auction';
             selectedTeam = null;
             document.getElementById('auctionQuestion').textContent = getRandomQuestion();
             document.getElementById('bidAmount').value = '';
@@ -866,26 +822,23 @@
         function renderAuctionTeams() {
             const container = document.getElementById('auctionTeams');
             container.innerHTML = gameState.teams.map(team => `
-                <button class="auction-team" onclick="selectAuctionTeam('${team.name}')">
+                <button class="auction-team ${team.colorClass}" 
+                        onclick="selectAuctionTeam(event, '${team.name}')">
                     TEAM ${team.name}
                 </button>
             `).join('');
         }
 
-        function selectTeam(teamName) {
+        function selectTeam(event, teamName) {
             selectedTeam = teamName;
             document.querySelectorAll('.team-btn').forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
         }
 
-        function selectAuctionTeam(teamName) {
+        function selectAuctionTeam(event, teamName) {
             selectedTeam = teamName;
             document.querySelectorAll('.auction-team').forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
-        }
-
-        function setBid(amount) {
-            document.getElementById('bidAmount').value = amount;
         }
 
         function submitRebutan(correct) {
@@ -893,18 +846,12 @@
                 alert('Pilih tim terlebih dahulu!');
                 return;
             }
-
             const team = gameState.teams.find(t => t.name === selectedTeam);
             if (team) {
-                if (correct) {
-                    team.score += 100;
-                } else {
-                    team.score -= 50;
-                }
+                team.score += correct ? 100 : -50;
             }
-
-            saveState();
             renderScores();
+            saveState();
             closeModal('rebutanModal');
         }
 
@@ -913,24 +860,17 @@
                 alert('Pilih tim terlebih dahulu!');
                 return;
             }
-
             const bidAmount = parseInt(document.getElementById('bidAmount').value) || 0;
             if (bidAmount <= 0) {
                 alert('Masukkan nominal poin yang valid!');
                 return;
             }
-
             const team = gameState.teams.find(t => t.name === selectedTeam);
             if (team) {
-                if (correct) {
-                    team.score += bidAmount;
-                } else {
-                    team.score -= bidAmount;
-                }
+                team.score += correct ? bidAmount : -bidAmount;
             }
-
-            saveState();
             renderScores();
+            saveState();
             closeModal('auctionModal');
         }
 
@@ -946,7 +886,6 @@
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Close modal when clicking outside
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
