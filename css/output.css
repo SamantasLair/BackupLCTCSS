@@ -241,9 +241,6 @@
   .left-1\/2 {
     left: calc(1/2 * 100%);
   }
-  .left-4 {
-    left: calc(var(--spacing) * 4);
-  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -345,6 +342,9 @@
   }
   .min-w-\[36rem\] {
     min-width: 36rem;
+  }
+  .flex-1 {
+    flex: 1;
   }
   .flex-grow {
     flex-grow: 1;
@@ -453,9 +453,6 @@
       background-color: color-mix(in oklab, var(--color-black) 50%, transparent) !important;
     }
   }
-  .bg-amber-700 {
-    background-color: var(--color-amber-700);
-  }
   .bg-gray-700 {
     background-color: var(--color-gray-700);
   }
@@ -549,10 +546,6 @@
   .text-xl {
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
-  }
-  .text-xs {
-    font-size: var(--text-xs);
-    line-height: var(--tw-leading, var(--text-xs--line-height));
   }
   .font-black {
     --tw-font-weight: var(--font-weight-black);
