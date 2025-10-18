@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS 2.0 Game Board</title>
     <link rel="stylesheet" href="css/output.css">
-    <!-- FONT GOOGLE POPPINS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap"
@@ -308,7 +307,6 @@
     </div>
 </div>
 
-<!-- POPUP -->
 <dialog id="q-dialog"
     class="rounded-2xl p-0 backdrop:bg-black/50 -translate-y-20 bg-white/90 opacity-0 shadow fixed left-1/2 -translate-x-1/2 top-10 transition-all duration-800">
     <form method="dialog" class="min-w-[36rem] max-w-[90vw] rounded-2xl">
@@ -351,14 +349,12 @@
 
     <div class="rounded-2xl py-4 max-w-4xl w-full mx-auto flex flex-col flex-grow">
 
-        <!-- Logo -->
         <div class="fixed top-0 left-0 p-4 flex items-center gap-2">
             <img src="resources/himacom.png" class="w-10 h-10">
             <img src="resources/logocss.png" class="w-10 h-10">
             <h1 class="text-white text-2xl font-bold poppins-semibold">CSS<span class="text-sm ml-1">2.0</span></h1>
         </div>
 
-        <!-- Konten -->
         <div class="flex flex-col items-center justify-center flex-grow">
             <div class="flex mb-15">
                 <div id="team-container" class="grid grid-cols-4 justify-center gap-4 items-center"></div>
@@ -366,78 +362,50 @@
             <div id="game-grid" class="grid gap-4 mb-8"></div>
         </div>
 
-        <!-- Reset Button -->
         <div class="fixed bottom-0 right-0 p-4">
             <button onclick="resetBoard()"
                 class="px-6 py-2 bg-red-600 poppins-regular cursor-pointer text-sm hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105">
-                Reset
+                Reset Babak Ini
             </button>
         </div>
 
-        <!-- Back Button -->
         <div class="fixed bottom-0 left-0 p-4">
-            <!-- <button onclick="history.back()" -->
             <a href="homepage.html"
                 class="px-6 py-2 bg-red-600 poppins-regular cursor-pointer text-sm hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105">
                 Back
             </a>
         </div>
     </div>
+    
     <script src="soal/dummy.js"></script>
-    <script>
+    <script src="js/gameState.js"></script> <script>
         // ================================================================
-        // BAGIAN 1: MANAJEMEN STATE TERPUSAT
+        // BAGIAN 1: PENGATURAN GLOBAL
         // ================================================================
 
-        let gameState = {
-            teams: [],
-            selected: []
-        };
-
+        const NAMA_BABAK = 'penyisihan'; // MODIFIED: Tentukan nama babak ini
         const rows = 4;
         const cols = 6;
-
-        function loadState() {
-            const savedState = sessionStorage.getItem('gameBoardState');
-            if (savedState) {
-                gameState = JSON.parse(savedState);
-            } else {
-                gameState.teams = [
-                    { name: "A", score: 0 },
-                    { name: "B", score: 0 },
-                    { name: "C", score: 0 },
-                    { name: "D", score: 0 },
-                ];
-                gameState.selected = Array(rows).fill(null).map(() => Array(cols).fill(false));
-            }
-        }
-
-        function saveState() {
-            sessionStorage.setItem('gameBoardState', JSON.stringify(gameState));
-        }
+        const teamContainer = document.getElementById("team-container");
+        const gridContainer = document.getElementById('game-grid');
+        let questions = {};
 
         function resetBoard() {
-            if (confirm('Apakah Anda yakin ingin mereset seluruh papan permainan dan skor?')) {
-                sessionStorage.removeItem('gameBoardState');
-                loadState();
-                renderTeams();
-                createGrid();
-            }
+            // MODIFIED: Panggil reset spesifik untuk babak ini
+            GameManager.resetBabak(NAMA_BABAK);
         }
 
         // ================================================================
         // BAGIAN 2: RENDER UI (TAMPILAN)
         // ================================================================
 
-        const teamContainer = document.getElementById("team-container");
-        const gridContainer = document.getElementById('game-grid');
-        let questions = {};
-
         function renderTeams() {
             teamContainer.innerHTML = "";
-            teamContainer.className = `grid grid-cols-${Math.min(gameState.teams.length, 4)} gap-4 w-full mb-10`;
+            // MODIFIED: Ambil tim untuk babak ini
+            const currentTeams = GameManager.getTeams(NAMA_BABAK); 
+            teamContainer.className = `grid grid-cols-${Math.min(currentTeams.length, 4)} gap-4 w-full mb-10`;
 
-            gameState.teams.forEach((team, i) => {
+            currentTeams.forEach((team, i) => {
                 const teamColors = ["red", "blue", "yellow", "green"];
                 const color = teamColors[i] || "gray";
                 const div = document.createElement("div");
@@ -473,11 +441,11 @@
                     const button = document.createElement('button');
 
                     button.className = `!bg-black/50 poppins-semibold cursor-pointer game-button h-20 rounded-lg !text-white font-bold text-xl hover:scale-105`;
-                    button.dataset.row = r;
-                    button.dataset.col = c;
+                    button.dataset.cell = cellId;
                     button.innerText = cellId;
 
-                    if (gameState.selected[r][c]) {
+                    // MODIFIED: Cek ke GameManager untuk babak ini
+                    if (GameManager.isSelected(NAMA_BABAK, cellId)) { 
                         button.classList.add('selected');
                     }
 
@@ -539,16 +507,14 @@
                         }
                     }, 1000);
 
-                    // Fungsi untuk menghentikan suara
                     const stopSound = () => {
                         clearInterval(loopInterval);
                         if (typeof stopTimeUpSound === 'function') {
-                            stopTimeUpSound(); // Pastikan kamu punya fungsi ini untuk menghentikan audio
+                            stopTimeUpSound(); 
                         }
                         document.removeEventListener('keydown', escHandler);
                     };
 
-                    // Jika pengguna menekan ESC
                     const escHandler = (event) => {
                         if (event.key === 'Escape') {
                             stopSound();
@@ -556,7 +522,6 @@
                     };
                     document.addEventListener('keydown', escHandler);
 
-                    // Jika popup ditutup atau halaman akan keluar
                     window.addEventListener('beforeunload', stopSound);
                 }
 
@@ -581,33 +546,34 @@
 
         async function handleCellClick(event) {
             const button = event.currentTarget;
-            const r = parseInt(button.dataset.row);
-            const c = parseInt(button.dataset.col);
+            const cellId = button.dataset.cell; 
 
-            if (gameState.selected[r][c]) {
+            // MODIFIED: Cek ke GameManager untuk babak ini
+            if (GameManager.isSelected(NAMA_BABAK, cellId)) { 
                 return;
             }
 
             button.classList.add('selected');
-            gameState.selected[r][c] = true;
+            // MODIFIED: Simpan ke GameManager untuk babak ini
+            GameManager.selectSoal(NAMA_BABAK, cellId, true); 
 
-            const cellId = String.fromCharCode(65 + r) + (c + 1);
             const res = await qPopUp(cellId);
 
             if (res.cancelled) {
                 button.classList.remove('selected');
-                gameState.selected[r][c] = false;
+                // MODIFIED: Hapus dari GameManager untuk babak ini
+                GameManager.selectSoal(NAMA_BABAK, cellId, false); 
                 return;
             }
 
-            const team = gameState.teams.find(x => x.name === res.team);
+            // MODIFIED: Update skor via GameManager untuk babak ini
+            GameManager.updateScore(NAMA_BABAK, res.team, res.delta);
+            const team = GameManager.getTeams(NAMA_BABAK).find(x => x.name === res.team);
+            
             if (team) {
-                team.score += res.delta;
                 const scoreEl = document.getElementById(`score-${team.name}`);
                 if (scoreEl) scoreEl.textContent = team.score;
             }
-
-            saveState();
         }
 
         async function qPopUp(cellId) {
@@ -622,15 +588,14 @@
             const soal = questions[cellId];
             qText.textContent = soal ? soal.pertanyaan : `Soal untuk ${cellId} belum tersedia.`;
 
-            // Reset timer
             stopTimer();
             startBtn.disabled = false;
             timerDisplay.classList.remove('warning', 'danger');
             timerDisplay.textContent = '00:00';
 
             let selectedTeam = null;
-            const correctDelta = 100;
-            const wrongDelta = -50;
+            const correctDelta = (soal && soal.poin_benar) ? soal.poin_benar : 100;
+            const wrongDelta = (soal && soal.poin_salah) ? soal.poin_salah : -50;
 
             pills.forEach(p => p.classList.remove('active'));
 
@@ -708,7 +673,6 @@
         });
 
         window.addEventListener('load', async function () {
-            loadState();
             await loadQuestions();
             renderTeams();
             createGrid();

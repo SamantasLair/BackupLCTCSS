@@ -315,9 +315,8 @@
     <div class="grids-container" id="grids"></div>
   </div>
 
-  <button class="reset-button" onclick="resetBoard()">Reset</button>
+  <button class="reset-button" onclick="resetBoard()">Reset Babak Ini</button>
 
-  <!-- Single Dialog -->
   <dialog id="q-dialog">
     <h3 class="font-bold text-2xl poppins-semibold">Pertanyaan</h3>
     <blockquote id="q-text" class="italic text-lg poppins-regular-italic">"soal beneran"</blockquote>
@@ -352,14 +351,8 @@
   </dialog>
 
   <script src="soal/soalSemifinal.js"></script>
-  <script>
-    let teams = [
-      { name: "A", score: 0 },
-      { name: "B", score: 0 },
-      { name: "C", score: 0 },
-      { name: "D", score: 0 }
-    ];
-    let selected = {};
+  <script src="js/gameState.js"></script> <script>
+    const NAMA_BABAK = 'semifinal'; // MODIFIED: Tentukan nama babak ini
     let questions = {};
     let answersTemp = {};
 
@@ -369,19 +362,12 @@
 
     function renderScoreboard() {
       const board = document.getElementById('scoreboard');
-      board.innerHTML = teams.map(t => `
+      // MODIFIED: Ambil tim untuk babak ini
+      board.innerHTML = GameManager.getTeams(NAMA_BABAK).map(t => `
         <div class="category-card">
           <div class="category-header">${t.name}</div>
           <div class="category-points" id="score-${t.name}">${t.score}</div>
         </div>`).join('');
-    }
-
-    function updateScore(team, delta) {
-      const t = teams.find(x => x.name === team);
-      if (t) {
-        t.score += delta;
-        document.getElementById(`score-${team.name}`).textContent = t.score;
-      }
     }
 
     function createGrids() {
@@ -397,7 +383,16 @@
           const btn = document.createElement('button');
           btn.className = 'game-button';
           btn.textContent = cellId;
+          btn.dataset.cell = cellId; // Simpan cellId untuk reset
           btn.onclick = () => handleQuestion(cellId, btn);
+
+          // MODIFIED: Cek ke GameManager untuk babak ini
+          if (GameManager.isSelected(NAMA_BABAK, cellId)) {
+              btn.style.background = "linear-gradient(135deg,#22c55e,#15803d)";
+              btn.style.color = "white";
+              btn.textContent = "✔";
+          }
+          
           grid.appendChild(btn);
         }
         wrapper.appendChild(grid);
@@ -406,8 +401,8 @@
     }
 
     async function handleQuestion(id, btn) {
-      if (selected[id]) return;
-      btn.classList.add('selected');
+      // MODIFIED: Cek ke GameManager untuk babak ini
+      if (GameManager.isSelected(NAMA_BABAK, id)) return;
       await qPopUp(id, btn);
     }
 
@@ -421,6 +416,7 @@
       answersTemp = { A: null, B: null, C: null, D: null };
 
       dlg.querySelectorAll(".team-answer-btn").forEach(b => {
+        b.style.opacity = "1"; // Reset opacity
         b.onclick = () => {
           const team = b.dataset.team;
           const correct = b.dataset.correct === "true";
@@ -435,12 +431,19 @@
         Object.entries(answersTemp).forEach(([team, val]) => {
           if (val !== null) {
             const delta = val ? deltaBenar : deltaSalah;
-            const t = teams.find(tt => tt.name === team);
-            t.score += delta;
-            document.getElementById(`score-${team}`).textContent = t.score;
+            // MODIFIED: Update skor via GameManager untuk babak ini
+            GameManager.updateScore(NAMA_BABAK, team, delta);
           }
         });
-        selected[cellId] = true;
+        
+        // MODIFIED: Perbarui tampilan skor di papan
+        GameManager.getTeams(NAMA_BABAK).forEach(t => {
+            document.getElementById(`score-${t.name}`).textContent = t.score;
+        });
+        
+        // MODIFIED: Simpan status "terpilih" ke GameManager
+        GameManager.selectSoal(NAMA_BABAK, cellId);
+        
         dlg.close();
         btn.style.background = "linear-gradient(135deg,#22c55e,#15803d)";
         btn.style.color = "white";
@@ -452,14 +455,8 @@
     }
 
     function resetBoard() {
-      selected = {};
-      teams.forEach(t => t.score = 0);
-      renderScoreboard();
-      document.querySelectorAll('.game-button').forEach(b => {
-        b.classList.remove('selected');
-        b.style = '';
-        b.textContent = b.dataset.cell || b.textContent;
-      });
+      // MODIFIED: Panggil reset spesifik untuk babak ini
+      GameManager.resetBabak(NAMA_BABAK);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
