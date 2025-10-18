@@ -48,23 +48,31 @@
             }
         }
     </script>
+
+    <style>
+        /* Sembunyikan panah atas/bawah di input number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield; /* Untuk Firefox */
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-black font-poppins overflow-hidden">
-    <!-- Grid Background Pattern -->
     <div class="fixed inset-0 opacity-5 pointer-events-none"
         style="background: linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px); background-size: 10px 10px;">
     </div>
 
-    <!-- Orbit Background -->
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0">
-        <!-- Red Orbit -->
         <div class="absolute w-[500px] h-[500px] rounded-full animate-rotate-counter">
             <div
                 class="absolute w-[120px] h-[120px] rounded-full bg-red-500/50 shadow-[0_0_80px_40px_rgba(239,68,68,0.4),0_0_200px_100px_rgba(239,68,68,0.4)] animate-glow-pulse">
             </div>
         </div>
-        <!-- Blue Orbit -->
         <div class="absolute w-[300px] h-[300px] top-[100px] left-[100px] rounded-full animate-rotate-counter-fast">
             <div
                 class="absolute w-[120px] h-[120px] rounded-full bg-blue-500/50 shadow-[0_0_80px_40px_rgba(59,130,246,0.4),0_0_200px_100px_rgba(59,130,246,0.4)] animate-glow-pulse">
@@ -72,7 +80,6 @@
         </div>
     </div>
 
-    <!-- Question Dialog -->
     <dialog id="q-dialog"
         class="rounded-2xl p-0 backdrop:bg-black/50 bg-white/90 opacity-0 shadow-2xl fixed transition-all duration-300 border-0">
         <form method="dialog" class="min-w-[60rem] max-w-[90vw] rounded-2xl">
@@ -98,8 +105,7 @@
 
             <div class="relative px-6 pb-6 flex items-center justify-center">
                 <div id="team-pills-container" class="flex flex-wrap gap-2 justify-center max-w-xl">
-                    <!-- Team pills will be dynamically generated here -->
-                </div>
+                    </div>
 
                 <div class="absolute right-6 bottom-6 flex gap-2">
                     <button id="q-wrong" value="wrong"
@@ -115,26 +121,20 @@
         </form>
     </dialog>
 
-    <!-- Main Container -->
     <div class="relative z-10 py-4 max-w-6xl w-full mx-auto flex flex-col min-h-screen">
-        <!-- Logo -->
         <div class="fixed top-0 left-0 p-4 flex items-center gap-2 z-20">
             <img src="../resources/himacom.png" class="w-10 h-10" alt="">
             <img src="../resources/logocss.png" class="w-10 h-10" alt="">
             <h1 class="text-white text-2xl font-bold font-poppins">CSS<span class="text-sm ml-1">2.0</span></h1>
         </div>
 
-        <!-- Content -->
         <div class="flex flex-col items-center justify-center flex-grow">
-            <!-- Team Scores -->
             <div id="team-container"
                 class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"></div>
 
-            <!-- Game Grid -->
             <div id="game-grid" class="grid gap-4 mb-8"></div>
         </div>
 
-        <!-- Reset Button -->
         <div class="fixed bottom-0 right-0 p-4 z-20">
             <button onclick="resetBoard()"
                 class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
@@ -142,7 +142,6 @@
             </button>
         </div>
 
-        <!-- Back Button -->
         <div class="fixed bottom-0 left-0 p-4 z-20">
             <a href="homepage.html"
                 class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
@@ -279,16 +278,49 @@
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
                 const div = document.createElement("div");
                 div.className = `rounded-lg overflow-hidden shadow-lg h-20 w-24 flex flex-col justify-between bg-gradient-to-br ${colors.bgDark} border-2 ${colors.border} transform transition-all hover:scale-105`;
+                
                 div.innerHTML = `
                     <div class="text-center py-1 bg-gradient-to-br ${colors.bg}">
                         <span class="text-xl font-semibold text-white">${team.name}</span>
                     </div>
                     <div class="text-center py-2 bg-black/20">
-                        <span id="score-${team.name}" class="text-xl font-bold text-white">${team.score}</span>
+                        <input type="number" 
+                               id="score-${team.name}" 
+                               class="text-xl font-bold text-white bg-transparent text-center w-full outline-none focus:outline-none focus:ring-0 border-none p-0" 
+                               value="${team.score}"
+                               data-team-name="${team.name}">
                     </div>
                 `;
+                
                 teamContainer.appendChild(div);
+
+                // ================================================================
+                // Tambahan untuk listener input skor
+                // ================================================================
+                const scoreInput = div.querySelector(`#score-${team.name}`);
+                scoreInput.addEventListener('change', handleScoreChange);
             });
+        }
+
+        // ================================================================
+        // Fungsi baru untuk menangani perubahan skor
+        // ================================================================
+        function handleScoreChange(event) {
+            const input = event.currentTarget;
+            const teamName = input.dataset.teamName;
+            let newScore = parseInt(input.value, 10);
+
+            if (isNaN(newScore)) {
+                // Jika input tidak valid (misal: "abc"), set ke 0
+                newScore = 0; 
+                input.value = newScore;
+            }
+
+            const team = gameState.teams.find(t => t.name === teamName);
+            if (team) {
+                team.score = newScore;
+                saveState(); // Simpan state setiap kali skor diubah
+            }
         }
 
         function loadQuestions() {
@@ -498,7 +530,8 @@
 
                 gameState.selected[r][c] = true;
                 team.score += res.delta;
-                document.getElementById(`score-${team.name}`).textContent = team.score;
+                // Perbarui nilai input secara manual jika berubah
+                document.getElementById(`score-${team.name}`).value = team.score;
             } else {
                 // fallback: warna default kuning kalau tidak ada tim
                 button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';

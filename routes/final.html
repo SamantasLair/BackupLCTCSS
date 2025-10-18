@@ -209,6 +209,12 @@
             font-size: 2rem;
             font-weight: 700;
             color: white;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            outline: none;
+            border: none;
+            padding: 0;
         }
 
         /* GAME MODES */
@@ -551,12 +557,20 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        /* Sembunyikan panah atas/bawah di input number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield; /* Untuk Firefox */
+        }
     </style>
     <style id="dynamicStyles"></style>
 </head>
 
 <body>
-    <!-- SETUP MODAL -->
     <div id="setupContainer" class="setup-container" style="display:none;">
         <h2>Atur Jumlah Tim</h2>
         <input type="number" id="teamInput" value="3" min="2" max="26">
@@ -564,7 +578,6 @@
         <button onclick="startGame()">Mulai Game</button>
     </div>
 
-    <!-- ORBIT BACKGROUND -->
     <div class="orbit-container" id="bg-orbit" style="display:none;">
         <div class="orbit orbit-red">
             <div class="planet planet-red"></div>
@@ -579,20 +592,16 @@
 
 
     <div class="container" style="display:none;" id="mainContainer">
-        <!-- HEADER -->
         <div class="header-section">
             <div class="logo-container">
-                 <!-- Replace placeholder URLs with your actual logo paths -->
-                <img src="../resources/himacom.png" alt="Himacom Logo" class="logo-img">
+                 <img src="../resources/himacom.png" alt="Himacom Logo" class="logo-img">
                 <img src="../resources/logocss.png" alt="CSS Logo" class="logo-img">
                 <h1 class="header-title">CSS<span>2.0</span></h1>
             </div>
         </div>
 
-        <!-- SCORES -->
         <div class="scores-container" id="scoresContainer"></div>
 
-        <!-- GAME MODES -->
         <div class="game-modes">
             <div class="mode-card">
                 <div class="mode-icon">🔥</div>
@@ -614,7 +623,6 @@
         </div>
     </div>
 
-    <!-- MODAL REBUTAN -->
     <div class="modal" id="rebutanModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('rebutanModal')">✕</button>
@@ -628,7 +636,6 @@
         </div>
     </div>
 
-    <!-- MODAL AUCTION -->
     <div class="modal" id="auctionModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('auctionModal')">✕</button>
@@ -648,7 +655,9 @@
     </div>
 
     <script>
-        // Array warna yang bervariasi
+        // ================================================================
+        // Variabel dan State Management
+        // ================================================================
         const colorPalette = [
             { bg: '#ff4444', light: 'rgba(255, 68, 68, 0.1)', name: 'team-a' },
             { bg: '#3b82ff', light: 'rgba(59, 130, 246, 0.1)', name: 'team-b' },
@@ -770,6 +779,25 @@
             }
         }
 
+        // ================================================================
+        // Fungsi baru untuk menangani perubahan skor
+        // ================================================================
+        function handleScoreChange(event) {
+            const input = event.currentTarget;
+            const teamName = input.dataset.teamName;
+            let newScore = parseInt(input.value, 10);
+
+            if (isNaN(newScore)) {
+                newScore = 0;
+                input.value = newScore;
+            }
+
+            const team = gameState.teams.find(t => t.name === teamName);
+            if (team) {
+                team.score = newScore;
+                saveState();
+            }
+        }
 
         function renderScores() {
             const container = document.getElementById('scoresContainer');
@@ -778,10 +806,22 @@
                 <div class="score-card ${team.colorClass}">
                     <div class="score-card-header">TEAM ${team.name}</div>
                     <div class="score-card-body">
-                        <div class="team-score">${team.score}</div>
+                        <input type="number" 
+                               class="team-score" 
+                               value="${team.score}" 
+                               data-team-name="${team.name}"
+                               id="score-input-${team.name}">
                     </div>
                 </div>
             `).join('');
+
+            // ================================================================
+            // Tambahkan listener setelah elemen dibuat
+            // ================================================================
+            gameState.teams.forEach(team => {
+                const scoreInput = document.getElementById(`score-input-${team.name}`);
+                scoreInput.addEventListener('change', handleScoreChange);
+            });
         }
 
         let selectedTeam = null;
@@ -849,8 +889,11 @@
             const team = gameState.teams.find(t => t.name === selectedTeam);
             if (team) {
                 team.score += correct ? 100 : -50;
+                // ================================================================
+                // Update nilai input setelah perubahan skor
+                // ================================================================
+                document.getElementById(`score-input-${team.name}`).value = team.score;
             }
-            renderScores();
             saveState();
             closeModal('rebutanModal');
         }
@@ -868,8 +911,11 @@
             const team = gameState.teams.find(t => t.name === selectedTeam);
             if (team) {
                 team.score += correct ? bidAmount : -bidAmount;
+                 // ================================================================
+                // Update nilai input setelah perubahan skor
+                // ================================================================
+                document.getElementById(`score-input-${team.name}`).value = team.score;
             }
-            renderScores();
             saveState();
             closeModal('auctionModal');
         }
@@ -897,4 +943,3 @@
 </body>
 
 </html>
-
