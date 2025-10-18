@@ -24,21 +24,6 @@ const dataPenyisihan = [
       "pertanyaan": "Konversi bilangan biner 110101 ke dalam desimal.",
       "jawaban": ["53"]
     },
-    {
-      "id": "A5",
-      "waktu": 30,
-      "pertanyaan": "Jika sebuah file berukuran 4 MB disimpan di media dengan bandwidth 2 Mbps, berapa lama waktu minimum untuk mentransfer file tersebut?",
-      "jawaban": ["16 detik"]
-    },
-    {
-      "id": "A6",
-      "waktu": 10,
-      "pertanyaan": "Apa perbedaan utama antara kompilasi dan interpretasi?",
-      "jawaban": [
-        "Kompilasi menerjemahkan seluruh kode ke bahasa mesin sebelum dijalankan",
-        "Interpretasi menjalankan kode baris demi baris tanpa menghasilkan file biner"
-      ]
-    },
   
     {
       "id": "B1",
@@ -65,21 +50,6 @@ const dataPenyisihan = [
       "jawaban": [
         "HTTPS menggunakan TLS/SSL untuk enkripsi komunikasi",
         "HTTP tidak terenkripsi"
-      ]
-    },
-    {
-      "id": "B5",
-      "waktu": 30,
-      "pertanyaan": "Jika sebuah array berisi 1024 elemen, berapa banyak perbandingan maksimum yang diperlukan untuk mencari sebuah nilai menggunakan binary search?",
-      "jawaban": ["10"]
-    },
-    {
-      "id": "B6",
-      "waktu": 10,
-      "pertanyaan": "Apa itu deadlock dalam sistem operasi?",
-      "jawaban": [
-        "Situasi di mana dua atau lebih proses saling menunggu sumber daya",
-        "Kondisi proses tidak dapat melanjutkan karena menunggu sumber daya yang tidak pernah dilepaskan"
       ]
     },
   
@@ -113,18 +83,6 @@ const dataPenyisihan = [
         "Ukuran pertumbuhan waktu/ruang berdasarkan input"
       ]
     },
-    {
-      "id": "C5",
-      "waktu": 30,
-      "pertanyaan": "Berapa hasil 2^10 dalam desimal?",
-      "jawaban": ["1024"]
-    },
-    {
-      "id": "C6",
-      "waktu": 10,
-      "pertanyaan": "Sebutkan 3 jenis topologi jaringan komputer.",
-      "jawaban": ["Bus", "Star", "Ring", "Mesh", "Tree"]
-    },
   
     {
       "id": "D1",
@@ -151,30 +109,6 @@ const dataPenyisihan = [
       "waktu": 10,
       "pertanyaan": "Sebutkan 3 macam bahasa pemrograman tingkat tinggi.",
       "jawaban": ["Python", "Java", "C++", "C#", "JavaScript"]
-    },
-    {
-      "id": "D5",
-      "waktu": 30,
-      "pertanyaan": "Jika rata-rata waktu akses sebuah harddisk adalah 10 ms, berapa total waktu untuk 1000 akses acak?",
-      "jawaban": ["10000 ms", "10 detik"]
-    },
-    {
-      "id": "D6",
-      "waktu": 10,
-      "pertanyaan": "Apa perbedaan komputasi paralel dan komputasi terdistribusi?",
-      "jawaban": [
-        "Komputasi paralel menjalankan banyak proses di dalam satu mesin dengan banyak core",
-        "Komputasi terdistribusi menjalankan proses di banyak mesin berbeda yang terhubung jaringan"
-      ]
-    },
-    {
-      "id": "E6",
-      "waktu": 10,
-      "pertanyaan": "Apa perbedaan komputasi paralel dan komputasi terdistribusi?",
-      "jawaban": [
-        "Komputasi paralel menjalankan banyak proses di dalam satu mesin dengan banyak core",
-        "Komputasi terdistribusi menjalankan proses di banyak mesin berbeda yang terhubung jaringan"
-      ]
     }
   ]
   
