@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS 2.0 Game Board</title>
+    <title>CSS 2.0 Game Board - Penyisihan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,10 +59,14 @@
         input[type=number] {
             -moz-appearance: textfield; /* Untuk Firefox */
         }
+        /* Pastikan body mengisi tinggi layar */
+        html, body {
+            height: 100%;
+        }
     </style>
 </head>
 
-<body class="min-h-screen bg-black font-poppins overflow-hidden">
+<body class="min-h-screen bg-black font-poppins overflow-hidden flex flex-col">
     <div class="fixed inset-0 opacity-5 pointer-events-none"
         style="background: linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px); background-size: 10px 10px;">
     </div>
@@ -121,33 +125,38 @@
         </form>
     </dialog>
 
-    <div class="relative z-10 py-4 max-w-6xl w-full mx-auto flex flex-col min-h-screen">
-        <div class="fixed top-0 left-0 p-4 flex items-center gap-2 z-20">
+    <div class="fixed top-0 left-0 w-full h-24 z-20 relative">
+        <div class="absolute top-4 left-4 flex items-center gap-2">
             <img src="../resources/himacom.png" class="w-10 h-10" alt="">
             <img src="../resources/logocss.png" class="w-10 h-10" alt="">
             <h1 class="text-white text-2xl font-bold font-poppins">CSS<span class="text-sm ml-1">2.0</span></h1>
         </div>
 
-        <div class="flex flex-col items-center justify-center flex-grow">
-            <div id="team-container"
-                class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"></div>
+        <div id="team-container" class="absolute top-4 left-1/2 -translate-x-1/2 flex flex-wrap gap-4 items-center justify-center px-4">
+            </div>
+    </div>
 
-            <div id="game-grid" class="grid gap-4 mb-8"></div>
-        </div>
+    <div class="relative z-10 flex-grow flex flex-col items-center justify-center">
+        <h2 id="game-title" class="text-white text-3xl font-bold mb-4 uppercase tracking-wider">
+            Sesi Wajib Jawab
+        </h2>
 
-        <div class="fixed bottom-0 right-0 p-4 z-20">
-            <button onclick="resetBoard()"
-                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
-                Reset
-            </button>
-        </div>
+        <div id="game-grid" class="grid gap-4 mb-8"></div>
+    </div>
 
-        <div class="fixed bottom-0 left-0 p-4 z-20">
-            <a href="homepage.html"
-                class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
-                Back
-            </a>
-        </div>
+
+    <div class="fixed bottom-0 right-0 p-4 z-20">
+        <button onclick="resetBoard()"
+            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
+            Reset
+        </button>
+    </div>
+
+    <div class="fixed bottom-0 left-0 p-4 z-20">
+        <a href="homepage.html"
+            class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
+            Back
+        </a>
     </div>
 
     <script src="../soal/penyisihan.js"></script>
@@ -158,11 +167,18 @@
         // ================================================================
         let gameState = {
             teams: [],
-            selected: []
+            selected: {
+                wajib: [],
+                rebutan: []
+            },
+            phase: 'wajib', // 'wajib' or 'rebutan'
+            wajibAnswered: 0
         };
 
-        let rows = 4;
-        let cols = 6;
+        const TOTAL_WAJIB_QUESTIONS = 8;
+        const TOTAL_REBUTAN_QUESTIONS = 7;
+        const WAJIB_ROWS = 2;
+        const WAJIB_COLS = 4;
 
         // Audio untuk timer habis
         let timeUpAudio = null;
@@ -236,18 +252,34 @@
             }
         };
 
+        function initializeDefaultState() {
+            gameState.teams = [
+                { name: "A", score: 0 },
+                { name: "B", score: 0 },
+                { name: "C", score: 0 },
+                { name: "D", score: 0 },
+            ];
+            gameState.selected = {
+                wajib: Array(WAJIB_ROWS).fill(null).map(() => Array(WAJIB_COLS).fill(false)),
+                rebutan: Array(TOTAL_REBUTAN_QUESTIONS).fill(false)
+            };
+            gameState.phase = 'wajib';
+            gameState.wajibAnswered = 0;
+        }
+
         function loadState() {
             const saved = localStorage.getItem('gameBoardState');
             if (saved) {
                 gameState = JSON.parse(saved);
+
+                // Migrasi state lama jika diperlukan
+                if (!gameState.phase || !gameState.selected.wajib) {
+                    const oldTeams = gameState.teams; // Pertahankan skor tim lama
+                    initializeDefaultState();
+                    gameState.teams = oldTeams;
+                }
             } else {
-                gameState.teams = [
-                    { name: "A", score: 0 },
-                    { name: "B", score: 0 },
-                    { name: "C", score: 0 },
-                    { name: "D", score: 0 },
-                ];
-                gameState.selected = Array(rows).fill(null).map(() => Array(cols).fill(false));
+                initializeDefaultState();
             }
         }
 
@@ -269,7 +301,11 @@
         // ================================================================
         const teamContainer = document.getElementById("team-container");
         const gridContainer = document.getElementById('game-grid');
-        let questions = {};
+        const titleContainer = document.getElementById('game-title');
+        let questions = {
+            wajib: {},
+            rebutan: {}
+        };
 
         function renderTeams() {
             teamContainer.innerHTML = "";
@@ -278,118 +314,111 @@
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
                 const div = document.createElement("div");
                 div.className = `rounded-lg overflow-hidden shadow-lg h-20 w-24 flex flex-col justify-between bg-gradient-to-br ${colors.bgDark} border-2 ${colors.border} transform transition-all hover:scale-105`;
-                
+
                 div.innerHTML = `
                     <div class="text-center py-1 bg-gradient-to-br ${colors.bg}">
                         <span class="text-xl font-semibold text-white">${team.name}</span>
                     </div>
                     <div class="text-center py-2 bg-black/20">
-                        <input type="number" 
-                               id="score-${team.name}" 
-                               class="text-xl font-bold text-white bg-transparent text-center w-full outline-none focus:outline-none focus:ring-0 border-none p-0" 
+                        <input type="number"
+                               id="score-${team.name}"
+                               class="text-xl font-bold text-white bg-transparent text-center w-full outline-none focus:outline-none focus:ring-0 border-none p-0"
                                value="${team.score}"
                                data-team-name="${team.name}">
                     </div>
                 `;
-                
+
                 teamContainer.appendChild(div);
 
-                // ================================================================
-                // Tambahan untuk listener input skor
-                // ================================================================
                 const scoreInput = div.querySelector(`#score-${team.name}`);
                 scoreInput.addEventListener('change', handleScoreChange);
             });
         }
 
-        // ================================================================
-        // Fungsi baru untuk menangani perubahan skor
-        // ================================================================
         function handleScoreChange(event) {
             const input = event.currentTarget;
             const teamName = input.dataset.teamName;
             let newScore = parseInt(input.value, 10);
 
             if (isNaN(newScore)) {
-                // Jika input tidak valid (misal: "abc"), set ke 0
-                newScore = 0; 
+                newScore = 0;
                 input.value = newScore;
             }
 
             const team = gameState.teams.find(t => t.name === teamName);
             if (team) {
                 team.score = newScore;
-                saveState(); // Simpan state setiap kali skor diubah
+                saveState();
             }
         }
 
         function loadQuestions() {
-            // Check if dataPenyisihan1 exists
-            if (typeof dataPenyisihan1 === 'undefined') {
-                console.error('dataPenyisihan1 tidak ditemukan! Pastikan file dummy.js sudah di-load.');
+            if (typeof dataPenyisihanWajib === 'undefined' || typeof dataPenyisihanRebutan === 'undefined') {
+                console.error('Data soal tidak ditemukan! Pastikan file penyisihan.js sudah di-load.');
                 alert('Error: Data soal tidak ditemukan!');
                 return;
             }
 
-            // Convert array to object with id as key
-            questions = {};
-            dataPenyisihan1.forEach(q => {
-                questions[q.id] = q;
+            questions.wajib = {};
+            dataPenyisihanWajib.forEach(q => {
+                questions.wajib[q.id] = q;
             });
 
-            console.log('Soal berhasil dimuat:', Object.keys(questions).length, 'soal');
-
-            // Calculate dynamic grid size based on available questions
-            calculateGridSize();
-        }
-
-        function calculateGridSize() {
-            const totalQuestions = Object.keys(questions).length;
-
-            if (totalQuestions === 0) {
-                console.warn('Tidak ada soal yang tersedia!');
-                return;
-            }
-
-            // Get unique row letters (A, B, C, D, etc.)
-            const rowLetters = new Set();
-            Object.keys(questions).forEach(id => {
-                rowLetters.add(id.charAt(0));
+            questions.rebutan = {};
+            dataPenyisihanRebutan.forEach(q => {
+                questions.rebutan[q.id] = q;
             });
 
-            rows = rowLetters.size;
-
-            // Get max column number
-            let maxCol = 0;
-            Object.keys(questions).forEach(id => {
-                const colNum = parseInt(id.substring(1));
-                if (colNum > maxCol) maxCol = colNum;
-            });
-
-            cols = maxCol;
-
-            console.log(`Grid dinamis: ${rows} baris x ${cols} kolom`);
-
-            // Reinitialize selected array if needed
-            if (!gameState.selected || gameState.selected.length !== rows) {
-                gameState.selected = Array(rows).fill(null).map(() => Array(cols).fill(false));
-            }
+            console.log('Soal berhasil dimuat:',
+                Object.keys(questions.wajib).length, 'soal wajib,',
+                Object.keys(questions.rebutan).length, 'soal rebutan'
+            );
         }
 
         function createGrid() {
             gridContainer.innerHTML = "";
-            gridContainer.style.gridTemplateColumns = `repeat(${cols}, 6rem)`;
 
-            for (let r = 0; r < rows; r++) {
-                const rowLetter = String.fromCharCode(65 + r);
-                for (let c = 0; c < cols; c++) {
-                    const cellId = rowLetter + (c + 1);
+            if (gameState.phase === 'wajib') {
+                titleContainer.textContent = "Sesi Wajib Jawab";
+                gridContainer.style.gridTemplateColumns = `repeat(${WAJIB_COLS}, 6rem)`;
 
-                    // Check if question exists for this cell
-                    const hasQuestion = questions[cellId] !== undefined;
+                for (let r = 0; r < WAJIB_ROWS; r++) {
+                    for (let c = 0; c < WAJIB_COLS; c++) {
+                        const rowLetter = String.fromCharCode(65 + c); // A, B, C, D
+                        const cellId = rowLetter + (r + 1); // A1, B1, C1, D1, ... A2, B2, ...
+                        const hasQuestion = questions.wajib[cellId] !== undefined;
+
+                        if (!hasQuestion) {
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'h-20 rounded-lg bg-transparent';
+                            gridContainer.appendChild(placeholder);
+                            continue;
+                        }
+
+                        const button = document.createElement('button');
+                        const isSelected = gameState.selected.wajib[r][c];
+
+                        button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${isSelected
+                                ? 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg'
+                                : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'
+                            }`;
+
+                        button.dataset.row = r;
+                        button.dataset.col = c;
+                        button.innerText = cellId;
+                        button.onclick = handleCellClick;
+                        gridContainer.appendChild(button);
+                    }
+                }
+            } else {
+                titleContainer.textContent = "Sesi Rebutan";
+                gridContainer.style.gridTemplateColumns = `repeat(${TOTAL_REBUTAN_QUESTIONS}, 6rem)`;
+
+                for (let c = 0; c < TOTAL_REBUTAN_QUESTIONS; c++) {
+                    const cellId = 'R' + (c + 1);
+                    const hasQuestion = questions.rebutan[cellId] !== undefined;
 
                     if (!hasQuestion) {
-                        // Create empty placeholder
                         const placeholder = document.createElement('div');
                         placeholder.className = 'h-20 rounded-lg bg-transparent';
                         gridContainer.appendChild(placeholder);
@@ -397,16 +426,17 @@
                     }
 
                     const button = document.createElement('button');
-                    button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${gameState.selected[r][c]
+                    const isSelected = gameState.selected.rebutan[c];
+
+                    button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${isSelected
                             ? 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg'
                             : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'
                         }`;
 
-                    button.dataset.row = r;
+                    button.dataset.row = 0; // Hanya 1 baris
                     button.dataset.col = c;
-                    button.innerText = cellId;
+                    button.innerText = (c + 1); // Tampilkan 1, 2, 3 ... 7
                     button.onclick = handleCellClick;
-
                     gridContainer.appendChild(button);
                 }
             }
@@ -510,39 +540,62 @@
             const r = parseInt(button.dataset.row);
             const c = parseInt(button.dataset.col);
 
-            if (gameState.selected[r][c]) return;
+            let cellId = '';
+            let res;
 
-            const cellId = String.fromCharCode(65 + r) + (c + 1);
-            const res = await qPopUp(cellId);
+            if (gameState.phase === 'wajib') {
+                if (gameState.selected.wajib[r][c]) return; // Sudah dipilih
+
+                const rowLetter = String.fromCharCode(65 + c);
+                cellId = rowLetter + (r + 1);
+                res = await qPopUp(cellId, 'wajib');
+            } else {
+                if (gameState.selected.rebutan[c]) return; // Sudah dipilih
+
+                cellId = 'R' + (c + 1);
+                res = await qPopUp(cellId, 'rebutan');
+            }
+
 
             if (res.cancelled) return;
 
-            // Jika tim ada, ubah warna sesuai tim
             const team = gameState.teams.find(x => x.name === res.team);
             if (team) {
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
-
-                // Ganti warna kotak sesuai tim yang menjawab
                 button.className = `
-            h-20 rounded-lg font-semibold text-xl bg-gradient-to-br ${colors.bg} 
-            border-2 ${colors.border} text-white shadow-lg transition-all duration-300
-        `;
+                    h-20 rounded-lg font-semibold text-xl bg-gradient-to-br ${colors.bg}
+                    border-2 ${colors.border} text-white shadow-lg transition-all duration-300
+                `;
 
-                gameState.selected[r][c] = true;
                 team.score += res.delta;
-                // Perbarui nilai input secara manual jika berubah
                 document.getElementById(`score-${team.name}`).value = team.score;
             } else {
-                // fallback: warna default kuning kalau tidak ada tim
                 button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
-                gameState.selected[r][c] = true;
+            }
+
+            // Tandai sebagai sudah dipilih
+            if (gameState.phase === 'wajib') {
+                gameState.selected.wajib[r][c] = true;
+                gameState.wajibAnswered++;
+            } else {
+                gameState.selected.rebutan[c] = true;
             }
 
             saveState();
+
+            // Cek transisi ke Sesi Rebutan
+            if (gameState.phase === 'wajib' && gameState.wajibAnswered === TOTAL_WAJIB_QUESTIONS) {
+                setTimeout(() => {
+                    alert('Sesi Wajib Jawab Selesai! Berpindah ke Sesi Rebutan.');
+                    gameState.phase = 'rebutan';
+                    createGrid();
+                    saveState();
+                }, 500); // Tunda sedikit agar warna tombol sempat update
+            }
         }
 
 
-        async function qPopUp(cellId) {
+        async function qPopUp(cellId, phase) {
             const dlg = document.getElementById('q-dialog');
             const qText = document.getElementById('q-text');
             const okBtn = document.getElementById('q-ok');
@@ -551,7 +604,6 @@
             const timerDisplay = document.getElementById('timer-display');
             const pillsContainer = document.getElementById('team-pills-container');
 
-            // Generate team pills dynamically
             pillsContainer.innerHTML = '';
             gameState.teams.forEach(team => {
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
@@ -565,17 +617,12 @@
 
             const pills = Array.from(pillsContainer.querySelectorAll('button[data-team]'));
 
-            // Get question data
-            const soal = questions[cellId];
+            const soal = (phase === 'wajib') ? questions.wajib[cellId] : questions.rebutan[cellId];
 
             if (soal) {
                 qText.textContent = soal.pertanyaan;
-                console.log('Soal dimuat:', cellId, '-', soal.pertanyaan);
-                console.log('Waktu:', soal.waktu, 'detik');
-                console.log('Tipe:', soal.tipe);
             } else {
-                qText.textContent = `Soal untuk ${cellId} tidak ditemukan dalam database.`;
-                console.warn('Soal tidak ditemukan:', cellId);
+                qText.textContent = `Soal untuk ${cellId} tidak ditemukan.`;
             }
 
             stopTimer();
@@ -623,10 +670,7 @@
 
                 const onStartTimer = () => {
                     if (soal?.waktu) {
-                        console.log('Timer dimulai:', soal.waktu, 'detik');
                         startTimer(soal.waktu);
-                    } else {
-                        console.warn('Waktu tidak ditemukan untuk soal ini');
                     }
                 };
 
@@ -649,9 +693,15 @@
 
                     dlg.classList.remove('translate-y-0', 'opacity-100');
 
+                    // Sesuai booklet: Rebutan -100, Wajib -100 (jika dilempar)
+                    // Kita gunakan -100 untuk salah di kedua sesi agar konsisten dengan Rebutan
                     if (dlg.returnValue === 'ok' && selectedTeam) {
                         resolve({ cancelled: false, team: selectedTeam, delta: 100 });
                     } else if (dlg.returnValue === 'wrong' && selectedTeam) {
+                        // Logika poin untuk salah (kita samakan -100 untuk rebutan dan wajib)
+                        // Sesuai booklet, Sesi Wajib Jawab jika salah poin 0, lalu dilempar.
+                        // Sesi Rebutan jika salah -100.
+                        // Karena implementasi 'lempar' tidak ada, kita gunakan -100 untuk 'wrong' di kedua sesi.
                         resolve({ cancelled: false, team: selectedTeam, delta: -100 });
                     } else {
                         resolve({ cancelled: true });
@@ -673,10 +723,6 @@
         // ================================================================
         // INITIALIZATION
         // ================================================================
-        // document.addEventListener('keydown', (e) => {
-        //     if (e.key.toLowerCase() === 'r' && e.ctrlKey) resetBoard();
-        // });
-
         window.addEventListener('beforeunload', () => {
             stopTimeUpSound();
         });
@@ -689,19 +735,8 @@
             renderTeams();
             createGrid();
 
-            console.log('Grid size:', rows, 'x', cols);
-            console.log('Total soal tersedia:', Object.keys(questions).length);
+            console.log('Phase:', gameState.phase);
             console.log('Teams:', gameState.teams.map(t => t.name).join(', '));
-
-            document.querySelectorAll('#game-grid button').forEach((button, i) => {
-                button.style.opacity = '0';
-                button.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    button.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    button.style.opacity = '1';
-                    button.style.transform = 'translateY(0)';
-                }, i * 30);
-            });
         });
     </script>
 </body>
