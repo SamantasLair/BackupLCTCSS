@@ -3,7 +3,7 @@ const dataPenyisihan = [
     {
       "id": "A1",
       "tipe": "hapalan",
-      "waktu": 10,
+      "waktu": 3,
       "pertanyaan": "Apa kepanjangan dari CPU dalam ilmu komputer?",
       "jawaban":  ["Central Processing Unit"]
     },
