@@ -8,8 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
@@ -51,36 +52,46 @@
 
 <body class="min-h-screen bg-black font-poppins overflow-hidden">
     <!-- Grid Background Pattern -->
-    <div class="fixed inset-0 opacity-5 pointer-events-none" style="background: linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px); background-size: 10px 10px;"></div>
+    <div class="fixed inset-0 opacity-5 pointer-events-none"
+        style="background: linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px); background-size: 10px 10px;">
+    </div>
 
     <!-- Orbit Background -->
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0">
         <!-- Red Orbit -->
         <div class="absolute w-[500px] h-[500px] rounded-full animate-rotate-counter">
-            <div class="absolute w-[120px] h-[120px] rounded-full bg-red-500/50 shadow-[0_0_80px_40px_rgba(239,68,68,0.4),0_0_200px_100px_rgba(239,68,68,0.4)] animate-glow-pulse"></div>
+            <div
+                class="absolute w-[120px] h-[120px] rounded-full bg-red-500/50 shadow-[0_0_80px_40px_rgba(239,68,68,0.4),0_0_200px_100px_rgba(239,68,68,0.4)] animate-glow-pulse">
+            </div>
         </div>
         <!-- Blue Orbit -->
         <div class="absolute w-[300px] h-[300px] top-[100px] left-[100px] rounded-full animate-rotate-counter-fast">
-            <div class="absolute w-[120px] h-[120px] rounded-full bg-blue-500/50 shadow-[0_0_80px_40px_rgba(59,130,246,0.4),0_0_200px_100px_rgba(59,130,246,0.4)] animate-glow-pulse"></div>
+            <div
+                class="absolute w-[120px] h-[120px] rounded-full bg-blue-500/50 shadow-[0_0_80px_40px_rgba(59,130,246,0.4),0_0_200px_100px_rgba(59,130,246,0.4)] animate-glow-pulse">
+            </div>
         </div>
     </div>
 
     <!-- Question Dialog -->
-    <dialog id="q-dialog" class="rounded-2xl p-0 backdrop:bg-black/50 bg-white/90 opacity-0 shadow-2xl fixed transition-all duration-300 border-0">
+    <dialog id="q-dialog"
+        class="rounded-2xl p-0 backdrop:bg-black/50 bg-white/90 opacity-0 shadow-2xl fixed transition-all duration-300 border-0">
         <form method="dialog" class="min-w-[60rem] max-w-[90vw] rounded-2xl">
             <header class="px-6 py-4 text-center border-b border-gray-200">
                 <h3 class="font-bold text-2xl font-poppins text-gray-800">Pertanyaan</h3>
             </header>
 
             <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center">
-                <blockquote id="q-text" class="italic text-lg text-gray-700 font-poppins leading-relaxed">"Soal tidak terdeteksi"</blockquote>
+                <blockquote id="q-text" class="italic text-lg text-gray-700 font-poppins leading-relaxed">"Soal tidak
+                    terdeteksi"</blockquote>
             </section>
 
             <div class="flex items-center justify-center mb-6 gap-3 px-6">
-                <button type="button" id="start-timer-btn" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                <button type="button" id="start-timer-btn"
+                    class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                     Start ▶
                 </button>
-                <div id="timer-display" class="text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner">
+                <div id="timer-display"
+                    class="text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner">
                     00:00
                 </div>
             </div>
@@ -91,10 +102,12 @@
                 </div>
 
                 <div class="absolute right-6 bottom-6 flex gap-2">
-                    <button id="q-wrong" value="wrong" class="h-10 w-10 rounded-lg grid place-items-center cursor-pointer bg-red-500 hover:bg-red-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
+                    <button id="q-wrong" value="wrong"
+                        class="h-10 w-10 rounded-lg grid place-items-center cursor-pointer bg-red-500 hover:bg-red-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
                         ✗
                     </button>
-                    <button id="q-ok" value="ok" class="h-10 w-10 rounded-lg cursor-pointer grid place-items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
+                    <button id="q-ok" value="ok"
+                        class="h-10 w-10 rounded-lg cursor-pointer grid place-items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
                         ✓
                     </button>
                 </div>
@@ -114,27 +127,30 @@
         <!-- Content -->
         <div class="flex flex-col items-center justify-center flex-grow">
             <!-- Team Scores -->
-            <div id="team-container" class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"></div>
-            
+            <div id="team-container"
+                class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"></div>
+
             <!-- Game Grid -->
             <div id="game-grid" class="grid gap-4 mb-8"></div>
         </div>
 
         <!-- Reset Button -->
         <div class="fixed bottom-0 right-0 p-4 z-20">
-            <button onclick="resetBoard()" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
+            <button onclick="resetBoard()"
+                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
                 Reset
             </button>
         </div>
 
         <!-- Back Button -->
         <div class="fixed bottom-0 left-0 p-4 z-20">
-            <a href="homepage.html" class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
+            <a href="homepage.html"
+                class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
                 Back
             </a>
         </div>
     </div>
-    
+
     <script src="../soal/dummy.js"></script>
 
     <script>
@@ -155,7 +171,7 @@
 
         // Team color configurations
         const teamColorConfigs = {
-            A: { 
+            A: {
                 bg: 'from-red-400 to-red-500',
                 bgDark: 'from-red-500 to-red-600',
                 border: 'border-red-600',
@@ -163,7 +179,7 @@
                 hover: 'hover:bg-red-400',
                 selected: 'bg-red-400'
             },
-            B: { 
+            B: {
                 bg: 'from-blue-400 to-blue-500',
                 bgDark: 'from-blue-500 to-blue-600',
                 border: 'border-blue-600',
@@ -171,7 +187,7 @@
                 hover: 'hover:bg-blue-400',
                 selected: 'bg-blue-400'
             },
-            C: { 
+            C: {
                 bg: 'from-yellow-400 to-yellow-500',
                 bgDark: 'from-yellow-500 to-yellow-600',
                 border: 'border-yellow-600',
@@ -179,7 +195,7 @@
                 hover: 'hover:bg-yellow-400',
                 selected: 'bg-yellow-400'
             },
-            D: { 
+            D: {
                 bg: 'from-green-400 to-green-500',
                 bgDark: 'from-green-500 to-green-600',
                 border: 'border-green-600',
@@ -187,7 +203,7 @@
                 hover: 'hover:bg-green-400',
                 selected: 'bg-green-400'
             },
-            E: { 
+            E: {
                 bg: 'from-purple-400 to-purple-500',
                 bgDark: 'from-purple-500 to-purple-600',
                 border: 'border-purple-600',
@@ -195,7 +211,7 @@
                 hover: 'hover:bg-purple-400',
                 selected: 'bg-purple-400'
             },
-            F: { 
+            F: {
                 bg: 'from-pink-400 to-pink-500',
                 bgDark: 'from-pink-500 to-pink-600',
                 border: 'border-pink-600',
@@ -203,7 +219,7 @@
                 hover: 'hover:bg-pink-400',
                 selected: 'bg-pink-400'
             },
-            G: { 
+            G: {
                 bg: 'from-indigo-400 to-indigo-500',
                 bgDark: 'from-indigo-500 to-indigo-600',
                 border: 'border-indigo-600',
@@ -211,7 +227,7 @@
                 hover: 'hover:bg-indigo-400',
                 selected: 'bg-indigo-400'
             },
-            H: { 
+            H: {
                 bg: 'from-orange-400 to-orange-500',
                 bgDark: 'from-orange-500 to-orange-600',
                 border: 'border-orange-600',
@@ -231,7 +247,6 @@
                     { name: "B", score: 0 },
                     { name: "C", score: 0 },
                     { name: "D", score: 0 },
-                    { name: "E", score: 0 },
                 ];
                 gameState.selected = Array(rows).fill(null).map(() => Array(cols).fill(false));
             }
@@ -259,7 +274,7 @@
 
         function renderTeams() {
             teamContainer.innerHTML = "";
-            
+
             gameState.teams.forEach((team) => {
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
                 const div = document.createElement("div");
@@ -291,14 +306,14 @@
             });
 
             console.log('Soal berhasil dimuat:', Object.keys(questions).length, 'soal');
-            
+
             // Calculate dynamic grid size based on available questions
             calculateGridSize();
         }
 
         function calculateGridSize() {
             const totalQuestions = Object.keys(questions).length;
-            
+
             if (totalQuestions === 0) {
                 console.warn('Tidak ada soal yang tersedia!');
                 return;
@@ -309,20 +324,20 @@
             Object.keys(questions).forEach(id => {
                 rowLetters.add(id.charAt(0));
             });
-            
+
             rows = rowLetters.size;
-            
+
             // Get max column number
             let maxCol = 0;
             Object.keys(questions).forEach(id => {
                 const colNum = parseInt(id.substring(1));
                 if (colNum > maxCol) maxCol = colNum;
             });
-            
+
             cols = maxCol;
 
             console.log(`Grid dinamis: ${rows} baris x ${cols} kolom`);
-            
+
             // Reinitialize selected array if needed
             if (!gameState.selected || gameState.selected.length !== rows) {
                 gameState.selected = Array(rows).fill(null).map(() => Array(cols).fill(false));
@@ -337,10 +352,10 @@
                 const rowLetter = String.fromCharCode(65 + r);
                 for (let c = 0; c < cols; c++) {
                     const cellId = rowLetter + (c + 1);
-                    
+
                     // Check if question exists for this cell
                     const hasQuestion = questions[cellId] !== undefined;
-                    
+
                     if (!hasQuestion) {
                         // Create empty placeholder
                         const placeholder = document.createElement('div');
@@ -350,17 +365,16 @@
                     }
 
                     const button = document.createElement('button');
-                    button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${
-                        gameState.selected[r][c] 
-                            ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 border-2 border-yellow-600 text-gray-900 shadow-lg' 
+                    button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${gameState.selected[r][c]
+                            ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 border-2 border-yellow-600 text-gray-900 shadow-lg'
                             : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'
-                    }`;
-                    
+                        }`;
+
                     button.dataset.row = r;
                     button.dataset.col = c;
                     button.innerText = cellId;
                     button.onclick = handleCellClick;
-                    
+
                     gridContainer.appendChild(button);
                 }
             }
@@ -383,7 +397,7 @@
             display.textContent = formatTime(timeRemaining);
 
             display.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 shadow-inner";
-            
+
             if (timeRemaining <= 5 && timeRemaining > 3) {
                 display.className += " text-yellow-500";
                 display.style.textShadow = "0 0 10px rgba(245, 158, 11, 0.5)";
@@ -398,7 +412,7 @@
 
         function playTimeUpSound() {
             stopTimeUpSound();
-            
+
             timeUpAudio = new Audio('../resources/timeup.mp3');
             timeUpAudio.play().catch(err => {
                 console.log('Sound tidak dapat diputar:', err);
@@ -425,7 +439,7 @@
                 timeUpAudio.currentTime = 0;
                 timeUpAudio = null;
             }
-            
+
             if (audioLoopInterval) {
                 clearInterval(audioLoopInterval);
                 audioLoopInterval = null;
@@ -471,17 +485,29 @@
 
             if (res.cancelled) return;
 
-            button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-yellow-400 to-yellow-500 border-2 border-yellow-600 text-gray-900 shadow-lg';
-            gameState.selected[r][c] = true;
-
+            // Jika tim ada, ubah warna sesuai tim
             const team = gameState.teams.find(x => x.name === res.team);
             if (team) {
+                const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
+
+                // Ganti warna kotak sesuai tim yang menjawab
+                button.className = `
+            h-20 rounded-lg font-semibold text-xl bg-gradient-to-br ${colors.bg} 
+            border-2 ${colors.border} text-white shadow-lg transition-all duration-300
+        `;
+
+                gameState.selected[r][c] = true;
                 team.score += res.delta;
                 document.getElementById(`score-${team.name}`).textContent = team.score;
+            } else {
+                // fallback: warna default kuning kalau tidak ada tim
+                button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-yellow-400 to-yellow-500 border-2 border-yellow-600 text-gray-900 shadow-lg';
+                gameState.selected[r][c] = true;
             }
 
             saveState();
         }
+
 
         async function qPopUp(cellId) {
             const dlg = document.getElementById('q-dialog');
@@ -508,7 +534,7 @@
 
             // Get question data
             const soal = questions[cellId];
-            
+
             if (soal) {
                 qText.textContent = soal.pertanyaan;
                 console.log('Soal dimuat:', cellId, '-', soal.pertanyaan);
@@ -574,6 +600,7 @@
                 const escHandler = (event) => {
                     if (event.key === 'Escape') {
                         stopTimeUpSound();
+                        resolve({ cancelled: false, team: selectedTeam, delta: 0 });
                     }
                 };
 
@@ -592,7 +619,7 @@
                     if (dlg.returnValue === 'ok' && selectedTeam) {
                         resolve({ cancelled: false, team: selectedTeam, delta: 100 });
                     } else if (dlg.returnValue === 'wrong' && selectedTeam) {
-                        resolve({ cancelled: false, team: selectedTeam, delta: -50 });
+                        resolve({ cancelled: false, team: selectedTeam, delta: -100 });
                     } else {
                         resolve({ cancelled: true });
                     }
@@ -623,7 +650,7 @@
 
         window.addEventListener('load', () => {
             console.log('=== CSS 2.0 Game Board Initialization ===');
-            
+
             loadState();
             loadQuestions();
             renderTeams();
@@ -645,4 +672,5 @@
         });
     </script>
 </body>
+
 </html>
