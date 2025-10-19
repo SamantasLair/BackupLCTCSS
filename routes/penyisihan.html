@@ -684,7 +684,7 @@
                         resolve({ cancelled: false, team: selectedTeam, delta: -100 });
                     } else {
                         // Jika ditutup (ESC atau tombol close)
-                        resolve({ cancelled: true });
+                        resolve({ cancelled: false, team: selectedTeam, delta: 0 });
                     }
                 };
 
