@@ -85,7 +85,7 @@
             pointer-events: none;
             font-size: 2rem; /* Ukuran teks +100 */
             font-weight: bold;
-            color: #E5E7EB; 
+            color: #E5E7EB;
             opacity: 0;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
             animation: points-rise-fade 4s ease-out; /* Durasi 4 detik */
@@ -112,7 +112,6 @@
     <div class="fixed inset-0 opacity-5 pointer-events-none"
         style="background: linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px); background-size: 10px 10px;">
     </div>
-
     <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0">
         <div class="absolute w-[500px] h-[500px] rounded-full animate-rotate-counter">
             <div
@@ -132,12 +131,9 @@
             <header class="px-6 py-4 text-center border-b border-gray-200">
                 <h3 class="font-bold text-2xl font-poppins text-gray-800">Pertanyaan</h3>
             </header>
-
             <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center">
-                <blockquote id="q-text" class="italic text-lg text-gray-700 font-poppins leading-relaxed">"Soal tidak
-                    terdeteksi"</blockquote>
+                <blockquote id="q-text" class="italic text-lg text-gray-700 font-poppins leading-relaxed">"Soal tidak terdeteksi"</blockquote>
             </section>
-
             <div class="flex items-center justify-center mb-6 gap-3 px-6">
                 <button type="button" id="start-timer-btn"
                     class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0">
@@ -148,11 +144,8 @@
                     00:00
                 </div>
             </div>
-
             <div class="relative px-6 pb-6 flex items-center justify-center">
-                <div id="team-pills-container" class="flex flex-wrap gap-2 justify-center max-w-xl">
-                    </div>
-
+                <div id="team-pills-container" class="flex flex-wrap gap-2 justify-center max-w-xl"></div>
                 <div class="absolute right-6 bottom-6 flex gap-2">
                     <button id="q-wrong" value="wrong"
                         class="h-10 w-10 rounded-lg grid place-items-center cursor-pointer bg-red-500 hover:bg-red-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
@@ -173,9 +166,7 @@
             <img src="../resources/logocss.png" class="w-10 h-10" alt="">
             <h1 class="text-white text-2xl font-bold font-poppins">CSS<span class="text-sm ml-1">2.0</span></h1>
         </div>
-
-        <div id="team-container" class="absolute top-4 left-1/2 -translate-x-1/2 flex flex-wrap gap-4 items-center justify-center px-4">
-            </div>
+        <div id="team-container" class="absolute top-4 left-1/2 -translate-x-1/2 flex flex-wrap gap-4 items-center justify-center px-4"></div>
     </div>
 
     <div class="relative z-10 flex-grow flex flex-col items-center justify-center mt-32">
@@ -188,7 +179,6 @@
             Reset
         </button>
     </div>
-
     <div class="fixed bottom-0 left-0 p-4 z-20">
         <a href="homepage.html"
             class="inline-block px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
@@ -204,18 +194,16 @@
         // ================================================================
         let gameState = {
             teams: [],
-            selected: {}, // Menyimpan status: "A", "B", "failed", "gray", undefined
-            bonusApplied: {} 
+            selected: {},
+            bonusApplied: {} // Objek untuk melacak bonus yg sudah dimulai dari cell mana
         };
 
-        const GRID_ROWS = Math.sqrt(questionsData.length);
-        const GRID_COLS = Math.sqrt(questionsData.length);
+        const GRID_ROWS = 6;
+        const GRID_COLS = 6;
 
-        // Audio
         let timeUpAudio = null;
         let audioLoopInterval = null;
 
-        // Colors
         const teamColorConfigs = {
             A: { bg: 'from-red-400 to-red-500', bgDark: 'from-red-500 to-red-600', border: 'border-red-600', text: 'text-red-500', hover: 'hover:bg-red-400', selected: 'bg-red-400', hex: '#ef4444' },
             B: { bg: 'from-blue-400 to-blue-500', bgDark: 'from-blue-500 to-blue-600', border: 'border-blue-600', text: 'text-blue-500', hover: 'hover:bg-blue-400', selected: 'bg-blue-400', hex: '#3b82f6' },
@@ -224,23 +212,26 @@
         };
 
         function initializeDefaultState() {
-            gameState.teams = [ 
-                { name: "A", score: 500 }, { name: "B", score: 500 }, { name: "C", score: 500 }, { name: "D", score: 500 }, 
+            gameState.teams = [
+                { name: "A", score: 500 }, { name: "B", score: 500 }, { name: "C", score: 500 }, { name: "D", score: 500 },
             ];
-            gameState.selected = {}; 
-            gameState.bonusApplied = {}; 
+            gameState.selected = {};
+            gameState.bonusApplied = {};
         }
 
         function loadState() {
-            const saved = localStorage.getItem('semifinalGameState'); 
+            const saved = localStorage.getItem('semifinalGameState');
             if (saved) {
                 gameState = JSON.parse(saved);
                 if (!gameState.selected || Array.isArray(gameState.selected)) { gameState.selected = {}; }
-                if (!gameState.bonusApplied) { gameState.bonusApplied = {}; } 
+                if (!gameState.bonusApplied) { gameState.bonusApplied = {}; }
             } else { initializeDefaultState(); }
         }
 
-        function saveState() { localStorage.setItem('semifinalGameState', JSON.stringify(gameState)); } 
+        function saveState() {
+            console.log("Saving state:", gameState.bonusApplied); // Debugging
+            localStorage.setItem('semifinalGameState', JSON.stringify(gameState));
+        }
 
         function resetBoard() {
             if (confirm('Apakah Anda yakin ingin mereset papan Semifinal dan skor?')) {
@@ -253,8 +244,7 @@
         // ================================================================
         const teamContainer = document.getElementById("team-container");
         const gridContainer = document.getElementById('game-grid');
-        const titleContainer = document.getElementById('game-title');
-        let questions = {}; 
+        let questions = {};
 
         function renderTeams() {
              teamContainer.innerHTML = "";
@@ -282,70 +272,59 @@
             console.log('Soal Semifinal berhasil dimuat:', Object.keys(questions).length, 'soal');
         }
 
-        /**
-         * FUNGSI createGrid (DIMODIFIKASI)
-         * Cek soal.goldenZone
-         * - true: innerText = '⭐'
-         * - false: innerText = cellId
-         */
         function createGrid() {
             gridContainer.innerHTML = "";
-            gridContainer.style.gridTemplateColumns = `repeat(${GRID_COLS}, 4rem)`; 
-            
+            gridContainer.style.gridTemplateColumns = `repeat(${GRID_COLS}, 4rem)`;
+
             for (let r = 0; r < GRID_ROWS; r++) {
                  for (let c = 0; c < GRID_COLS; c++) {
-                    const rowLetter = String.fromCharCode(65 + r); 
-                    const cellId = rowLetter + (c + 1); 
-                    
-                    // --- MODIFIKASI ---
-                    const soal = questions[cellId]; // Ambil data soal
-                    
-                    if (!soal) { // Ganti hasQuestion dengan cek soal
-                        const placeholder = document.createElement('div'); 
-                        placeholder.className = 'h-16 w-16 rounded-full bg-transparent';
-                        gridContainer.appendChild(placeholder); 
-                        continue; 
-                    }
-                    // --- END MODIFIKASI ---
+                    const rowLetter = String.fromCharCode(65 + r);
+                    const cellId = rowLetter + (c + 1);
 
-                    const button = document.createElement('button'); 
-                    const selectedState = gameState.selected[cellId]; 
-                    
+                    const soal = questions[cellId];
+
+                    if (!soal) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'h-16 w-16 rounded-full bg-transparent';
+                        gridContainer.appendChild(placeholder);
+                        continue;
+                    }
+
+                    const button = document.createElement('button');
+                    const selectedState = gameState.selected[cellId];
+
                     let buttonClass = '';
 
                     if (selectedState) {
-                        if (selectedState === 'failed') { // NEW: Cek state 'failed'
-                            buttonClass = 'bg-black border-2 border-gray-700 text-gray-900 shadow-inner cursor-not-allowed'; // Warna hitam, non-interaktif
+                        if (selectedState === 'failed') {
+                            buttonClass = 'bg-black border-2 border-gray-700 text-gray-900 shadow-inner cursor-not-allowed';
                         } else {
                             const team = gameState.teams.find(t => t.name === selectedState);
                             if (team) {
                                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
                                 buttonClass = `bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg`;
-                            } else { // Fallback (misal state 'gray')
+                            } else {
                                 buttonClass = 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
                             }
                         }
-                    } else { // Belum dipilih
+                    } else {
                         buttonClass = 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80';
                     }
 
-                    button.className = `h-16 w-16 rounded-full font-semibold text-xl transition-all duration-300 flex items-center justify-center ${selectedState ? '' : 'hover:scale-105 cursor-pointer'} ${buttonClass}`; // Hilangkan hover jika sudah dipilih
-                    button.dataset.cellId = cellId; 
-                    
-                    // --- MODIFIKASI (CHANGE 1: LABEL) ---
+                    button.className = `h-16 w-16 rounded-full font-semibold text-xl transition-all duration-300 flex items-center justify-center ${selectedState ? '' : 'hover:scale-105 cursor-pointer'} ${buttonClass}`;
+                    button.dataset.cellId = cellId;
+
                     if (soal.goldenZone === true) {
                         button.innerText = '⭐';
-                        // Tambahkan style jika belum dipilih
                         if (!selectedState) {
                             button.classList.add('text-yellow-400');
                             button.style.textShadow = '0 0 12px rgba(234, 179, 8, 0.8)';
                         }
                     } else {
-                        button.innerText = cellId; 
+                        button.innerText = cellId;
                     }
-                    // --- END MODIFIKASI ---
-                    
-                    button.onclick = handleCellClick; 
+
+                    button.onclick = handleCellClick;
                     gridContainer.appendChild(button);
                 }
             }
@@ -372,217 +351,255 @@
 
 
         // ================================================================
-        // INTERACTION LOGIC (Termasuk Bonus & Failed State)
+        // INTERACTION LOGIC
         // ================================================================
+        function getCellId(r, c) {
+            if (r < 0 || r >= GRID_ROWS || c < 0 || c >= GRID_COLS) {
+                return null;
+            }
+            return String.fromCharCode(65 + r) + (c + 1);
+        }
+
+        // Helper untuk konversi Cell ID ("A1") ke [row, col] ([0, 0])
+        function cellIdToCoords(cellId) {
+            if (!cellId || cellId.length < 2) return [null, null];
+            const rowChar = cellId.charAt(0).toUpperCase();
+            const colNum = parseInt(cellId.substring(1));
+            if (rowChar < 'A' || rowChar > String.fromCharCode(65 + GRID_ROWS - 1) || isNaN(colNum) || colNum < 1 || colNum > GRID_COLS) {
+                return [null, null];
+            }
+            const r = rowChar.charCodeAt(0) - 65; // 'A' is 65
+            const c = colNum - 1;
+            return [r, c];
+        }
+
+
         async function handleCellClick(event) {
-            const button = event.currentTarget; 
+            const button = event.currentTarget;
             const cellId = button.dataset.cellId;
-            
-            // Jangan lakukan apa-apa jika sudah ada state (termasuk 'failed')
+
             if (gameState.selected[cellId]) return;
 
             const res = await qPopUp(cellId);
             if (res.cancelled) return;
 
             const team = gameState.teams.find(x => x.name === res.team);
+            let bonusAwardedInThisClick = false; // Flag untuk menunda saveState jika bonus ada
 
-            if (res.delta > 0 && team) { // Jawaban BENAR
-                const colors = teamColorConfigs[team.name] || teamColorConfigs['A']; 
-                button.className = `h-16 w-16 rounded-full font-semibold text-xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg transition-all duration-300 flex items-center justify-center`; 
-                team.score += res.delta; 
-                document.getElementById(`score-${team.name}`).value = team.score; 
-                gameState.selected[cellId] = team.name; 
-                
-                checkForBonus(team.name);
-            } else if (res.delta < 0 && team) { // Jawaban SALAH
-                 button.className = 'h-16 w-16 rounded-full font-semibold text-xl bg-black border-2 border-gray-700 text-gray-900 shadow-inner cursor-not-allowed flex items-center justify-center'; // Warna Hitam
-                 team.score += res.delta; // Kurangi skor
-                 document.getElementById(`score-${team.name}`).value = team.score; 
-                 gameState.selected[cellId] = 'failed'; // Tandai sebagai gagal
-            } else { // Kasus lain (misal tidak pilih tim, atau delta = 0)
-                 button.className = 'h-16 w-16 rounded-full font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg flex items-center justify-center'; 
-                 gameState.selected[cellId] = 'gray'; // Atau 'failed' jika dianggap gagal
+            if (res.delta > 0 && team) { // Jawaban Benar
+                const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
+                button.className = `h-16 w-16 rounded-full font-semibold text-xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg transition-all duration-300 flex items-center justify-center`;
+                team.score += res.delta;
+                document.getElementById(`score-${team.name}`).value = team.score;
+                gameState.selected[cellId] = team.name;
+
+                // Cek bonus, fungsi ini akan handle saveState jika bonus ditemukan
+                bonusAwardedInThisClick = checkForBonus(cellId, team.name); // Perbarui flag
+
+            } else if (res.delta < 0 && team) { // Jawaban Salah
+                 button.className = 'h-16 w-16 rounded-full font-semibold text-xl bg-black border-2 border-gray-700 text-gray-900 shadow-inner cursor-not-allowed flex items-center justify-center';
+                 team.score += res.delta;
+                 document.getElementById(`score-${team.name}`).value = team.score;
+                 gameState.selected[cellId] = 'failed';
+
+            } else { // Tidak pilih tim atau kasus lain
+                 button.className = 'h-16 w-16 rounded-full font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg flex items-center justify-center';
+                 gameState.selected[cellId] = 'gray';
             }
-            
-            // Hapus hover dan cursor pointer setelah dijawab (apapun hasilnya)
+
             button.classList.remove('hover:scale-105', 'cursor-pointer');
-            
-            saveState(); 
+
+            // Simpan state HANYA jika TIDAK ada bonus yang sedang diproses (karena saveState akan dipanggil di setTimeout bonus)
+            if (!bonusAwardedInThisClick) {
+                 saveState();
+            }
         }
 
-        // --- FUNGSI CEK BONUS ---
-        function checkForBonus(teamName) {
-            for (let r = 0; r < (GRID_ROWS - 1); r++) {
-                for (let c = 0; c < (GRID_COLS - 1); c++) {
-                    
-                    const tl_id = String.fromCharCode(65 + r) + (c + 1);
-                    const tr_id = String.fromCharCode(65 + r) + (c + 2);
-                    const bl_id = String.fromCharCode(65 + r + 1) + (c + 1);
-                    const br_id = String.fromCharCode(65 + r + 1) + (c + 2);
+        // Mengembalikan true jika bonus ditemukan dan sedang diproses, false jika tidak
+        function checkForBonus(answeredCellId, teamName) {
+            const [startR, startC] = cellIdToCoords(answeredCellId);
+            if (startR === null) return false; // ID sel tidak valid
 
-                    if (gameState.bonusApplied[tl_id]) {
-                        continue;
-                    }
+            const directions = [
+                [0, 1],  // Kanan
+                [1, 0],  // Bawah
+                [1, 1],  // Bawah-Kanan
+                [1, -1] // Bawah-Kiri
+            ];
+            const BONUS_LENGTH = 4;
+            let bonusFound = false; // Flag apakah bonus ditemukan dalam iterasi ini
 
-                    // Pastikan keempat sel state-nya SAMA PERSIS dengan teamName (tidak 'failed', 'gray', atau undefined)
-                    if (
-                        gameState.selected[tl_id] === teamName &&
-                        gameState.selected[tr_id] === teamName &&
-                        gameState.selected[bl_id] === teamName &&
-                        gameState.selected[br_id] === teamName
-                    ) {
-                        console.log(`Bonus 2x2 untuk ${teamName} di ${tl_id}`);
-                        
-                        gameState.bonusApplied[tl_id] = true; 
+            for (const [dr, dc] of directions) {
+                let lineCells = [answeredCellId]; // Sel-sel dalam satu garis lurus potensial
 
-                        const team = gameState.teams.find(t => t.name === teamName);
-                        if (team) {
-                             showBonusAnimation(r, c, teamName);
-
-                             setTimeout(() => {
-                                team.score += 100;
-                                const scoreInput = document.getElementById(`score-${team.name}`);
-                                scoreInput.value = team.score;
-                                
-                                scoreInput.style.transition = 'none';
-                                scoreInput.style.transform = 'scale(1.2)';
-                                scoreInput.style.color = '#22c55e'; // Green flash
-                                setTimeout(() => {
-                                    scoreInput.style.transition = 'transform 0.2s ease, color 0.2s ease';
-                                    scoreInput.style.transform = 'scale(1)';
-                                    scoreInput.style.color = 'white';
-                                }, 200);
-
-                                saveState(); 
-                            }, 4000); 
-                        }
+                // Cek ke depan
+                for (let k = 1; k < BONUS_LENGTH; k++) {
+                    const nextR = startR + k * dr;
+                    const nextC = startC + k * dc;
+                    const nextCellId = getCellId(nextR, nextC);
+                    if (nextCellId && gameState.selected[nextCellId] === teamName) {
+                        lineCells.push(nextCellId);
+                    } else {
+                        break;
                     }
                 }
-            }
+
+                // Cek ke belakang
+                for (let k = 1; k < BONUS_LENGTH; k++) {
+                    const prevR = startR - k * dr;
+                    const prevC = startC - k * dc;
+                    const prevCellId = getCellId(prevR, prevC);
+                    if (prevCellId && gameState.selected[prevCellId] === teamName) {
+                        lineCells.unshift(prevCellId); // Tambah di awal array
+                    } else {
+                        break;
+                    }
+                }
+
+                // Cek semua segmen 4 sel dalam garis yang ditemukan
+                if (lineCells.length >= BONUS_LENGTH) {
+                    for (let i = 0; i <= lineCells.length - BONUS_LENGTH; i++) {
+                        const potentialBonusLine = lineCells.slice(i, i + BONUS_LENGTH);
+                        const firstCellId = potentialBonusLine[0];
+
+                        // Periksa apakah bonus BELUM diterapkan MULAI DARI sel ini
+                        if (!gameState.bonusApplied[firstCellId]) {
+                            console.log(`Bonus terdeteksi untuk ${teamName} dimulai dari ${firstCellId} ke arah [${dr}, ${dc}]: ${potentialBonusLine.join(', ')}`);
+
+                            // Tandai SEGERA HANYA sel pertama ini sebagai sudah digunakan untuk memulai bonus
+                            gameState.bonusApplied[firstCellId] = true;
+                            bonusFound = true; // Set flag bahwa bonus ditemukan
+
+                            // Dapatkan koordinat sel pertama untuk animasi
+                            const [firstR, firstC] = cellIdToCoords(firstCellId);
+                            if (firstR !== null) {
+                                showBonusAnimation(firstR, firstC, teamName, [dr, dc]); // Tampilkan animasi
+                            }
+
+                            // Berikan skor bonus SETELAH animasi selesai
+                            const team = gameState.teams.find(t => t.name === teamName);
+                            if (team) {
+                                 setTimeout(() => {
+                                    team.score += 100;
+                                    const scoreInput = document.getElementById(`score-${team.name}`);
+                                    if (scoreInput) {
+                                        scoreInput.value = team.score; // Update tampilan skor
+                                        // Efek visual pada skor
+                                        scoreInput.style.transition = 'none';
+                                        scoreInput.style.transform = 'scale(1.2)';
+                                        scoreInput.style.color = '#22c55e'; // Green flash
+                                        setTimeout(() => {
+                                            scoreInput.style.transition = 'transform 0.2s ease, color 0.2s ease';
+                                            scoreInput.style.transform = 'scale(1)';
+                                            scoreInput.style.color = 'white';
+                                        }, 200);
+                                    }
+                                    saveState(); // Simpan state SETELAH skor bonus ditambahkan
+                                }, 4000); // Tunggu animasi
+                            }
+                        } // Akhir cek bonusApplied
+                    } // Akhir loop segmen (i)
+                } // Akhir cek panjang lineCells
+            } // Akhir loop directions
+
+            return bonusFound; // Kembalikan status apakah bonus ditemukan
         }
 
-        // --- FUNGSI ANIMASI ZONASI DAN TEKS POIN ---
-        function showBonusAnimation(row, col, teamName) {
+
+        function showBonusAnimation(startRow, startCol, teamName, direction) {
             const grid = document.getElementById('game-grid');
             if (!grid) return;
 
-            const buttonSize = 4 * 16; 
-            const gapSize = 0.5 * 16;   
-            const cellSize = buttonSize + gapSize; 
+            const buttonSize = 4 * 16;
+            const gapSize = 0.5 * 16;
+            const cellSize = buttonSize + gapSize;
 
-            // --- Buat Elemen Zona ---
-            const zone = document.createElement('div');
-            zone.className = 'bonus-zone';
-            
-            const offset = (gapSize / 2); 
-            const boxSize = (2 * buttonSize) + gapSize + (2 * offset); 
+            const offset = (gapSize / 2);
+            const singleBoxSize = buttonSize + (2 * offset);
+            const lineLength = 4;
+            const [dr, dc] = direction;
 
-            zone.style.top = `${(row * cellSize) - offset}px`;
-            zone.style.left = `${(col * cellSize) - offset}px`;
-            zone.style.width = `${boxSize}px`;
-            zone.style.height = `${boxSize}px`;
+            const teamConfig = teamColorConfigs[teamName];
+            const borderColor = (teamConfig && teamConfig.hex) ? teamConfig.hex : 'white';
+            const boxShadowColor = (teamConfig && teamConfig.hex) ? teamConfig.hex : 'rgba(255, 255, 255, 0.7)';
 
-            // --- Buat Elemen Teks Poin ---
+            for (let k = 0; k < lineLength; k++) {
+                const currentRow = startRow + (k * dr);
+                const currentCol = startCol + (k * dc);
+
+                if (currentRow < 0 || currentRow >= GRID_ROWS || currentCol < 0 || currentCol >= GRID_COLS) {
+                    continue;
+                }
+
+                const zone = document.createElement('div');
+                zone.className = 'bonus-zone';
+                zone.style.top = `${(currentRow * cellSize) - offset}px`;
+                zone.style.left = `${(currentCol * cellSize) - offset}px`;
+                zone.style.width = `${singleBoxSize}px`;
+                zone.style.height = `${singleBoxSize}px`;
+                zone.style.borderColor = borderColor;
+                zone.style.boxShadow = `0 0 15px ${boxShadowColor}`;
+
+                grid.appendChild(zone);
+
+                setTimeout(() => {
+                    if (grid.contains(zone)) {
+                        grid.removeChild(zone);
+                    }
+                }, 4000);
+            }
+
             const pointsText = document.createElement('span');
             pointsText.className = 'bonus-points-text';
             pointsText.textContent = '+100';
-            
-            const zoneCenterX = (col * cellSize) - offset + (boxSize / 2);
-            const zoneCenterY = (row * cellSize) - offset + (boxSize / 2);
-            pointsText.style.left = `${zoneCenterX}px`;
-            pointsText.style.top = `${zoneCenterY}px`;
-            
-            // --- Atur Warna ---
-            const teamConfig = teamColorConfigs[teamName];
-            if (teamConfig && teamConfig.hex) {
-                zone.style.borderColor = teamConfig.hex;
-                zone.style.boxShadow = `0 0 20px ${teamConfig.hex}`;
-            }
+            const firstCellCenterX = (startCol * cellSize) + (buttonSize / 2);
+            const firstCellCenterY = (startRow * cellSize) + (buttonSize / 2);
+            pointsText.style.left = `${firstCellCenterX}px`;
+            pointsText.style.top = `${firstCellCenterY}px`;
 
-            // --- Tambahkan ke Grid ---
-            grid.appendChild(zone);
+             if (teamConfig && teamConfig.hex) { /* Optional styling */ }
+
             grid.appendChild(pointsText);
 
-            // --- Hapus elemen setelah animasi (4 detik) ---
             setTimeout(() => {
-                if (grid.contains(zone)) {
-                    grid.removeChild(zone);
-                }
                 if (grid.contains(pointsText)) {
                     grid.removeChild(pointsText);
                 }
-            }, 4000); 
+            }, 4000);
         }
 
-        /**
-         * FUNGSI qPopUp (DIMODIFIKASI)
-         * Cek soal.goldenZone
-         * - true: pointsCorrect = 200, pointsWrong = -200
-         * - false: pointsCorrect = 100, pointsWrong = -100
-         */
         async function qPopUp(cellId) {
             const dlg = document.getElementById('q-dialog'); const qText = document.getElementById('q-text'); const okBtn = document.getElementById('q-ok'); const wrongBtn = document.getElementById('q-wrong'); const startBtn = document.getElementById('start-timer-btn'); const timerDisplay = document.getElementById('timer-display'); const pillsContainer = document.getElementById('team-pills-container');
             pillsContainer.innerHTML = ''; if (!gameState.teams) return { cancelled: true };
             gameState.teams.forEach(team => { const colors = teamColorConfigs[team.name] || teamColorConfigs['A']; const pill = document.createElement('button'); pill.type = 'button'; pill.dataset.team = team.name; pill.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`; pill.textContent = team.name; pillsContainer.appendChild(pill); });
             const pills = Array.from(pillsContainer.querySelectorAll('button[data-team]'));
-            
-            // --- MODIFIKASI (CHANGE 2: SCORING) ---
+
             const soal = questions[cellId];
-            
-            // Tentukan poin berdasarkan goldenZone
             let pointsCorrect = 100;
             let pointsWrong = -100;
+            if (soal && soal.goldenZone === true) { pointsCorrect = 200; pointsWrong = -200; }
 
-            if (soal && soal.goldenZone === true) {
-                pointsCorrect = 200;
-                pointsWrong = -200;
-            }
-            // --- END MODIFIKASI ---
-            
-            if (soal) { 
-                qText.textContent = soal.pertanyaan; 
-                timerDisplay.textContent = formatTime(soal.waktu || 0); 
-            } else { 
-                qText.textContent = `Soal untuk ${cellId} tidak ditemukan.`; 
-                timerDisplay.textContent = '00:00';
-            }
-            stopTimer(); stopTimeUpSound(); if (startBtn) startBtn.disabled = false; 
-            timerDisplay.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner"; 
+            if (soal) { qText.textContent = soal.pertanyaan; timerDisplay.textContent = formatTime(soal.waktu || 0); }
+            else { qText.textContent = `Soal untuk ${cellId} tidak ditemukan.`; timerDisplay.textContent = '00:00'; }
+            stopTimer(); stopTimeUpSound(); if (startBtn) startBtn.disabled = false;
+            timerDisplay.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner";
             timerDisplay.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
-            
+
             let selectedTeam = null;
             return new Promise((resolve) => {
                 const onPillClick = (e) => { selectedTeam = e.currentTarget.dataset.team; pills.forEach(p => { const colors = teamColorConfigs[p.dataset.team] || teamColorConfigs['A']; if (p.dataset.team === selectedTeam) { p.className = `border-2 border-transparent rounded-lg px-5 py-2.5 cursor-pointer text-xl font-semibold transition-all ${colors.selected} text-white shadow-md scale-105`; } else { p.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`; } }); };
                 const shakePills = () => { pills.forEach(p => { p.classList.add('animate-shake'); setTimeout(() => p.classList.remove('animate-shake'), 400); }); };
-                const onOkClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } }; 
+                const onOkClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } };
                 const onWrongClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } };
-                
-                const onStartTimer = () => {
-                    if (soal?.waktu) { 
-                        startTimer(soal.waktu); 
-                    } else {
-                        console.error("Waktu soal tidak ditemukan untuk:", cellId);
-                        startTimer(15); 
-                    }
-                };
-                
-                const escHandler = (event) => { if (event.key === 'Escape') { stopTimeUpSound(); dlg.close(); resolve({ cancelled: true }); } };
+                const onStartTimer = () => { if (soal?.waktu) { startTimer(soal.waktu); } else { console.error("Waktu soal tidak ditemukan:", cellId); startTimer(15); } };
+                const escHandler = (event) => { if (event.key === 'Escape') { stopTimeUpSound(); dlg.close(); } };
                 const onClose = () => {
                     stopTimer(); stopTimeUpSound(); document.removeEventListener('keydown', escHandler); dlg.removeEventListener('close', onClose); pills.forEach(p => p.removeEventListener('click', onPillClick)); if(okBtn) okBtn.removeEventListener('click', onOkClick); if(wrongBtn) wrongBtn.removeEventListener('click', onWrongClick); if(startBtn) startBtn.removeEventListener('click', onStartTimer);
                     dlg.classList.remove('translate-y-0', 'opacity-100');
-                    
-                    // --- MODIFIKASI (CHANGE 2: SCORING) ---
-                    // Pastikan tim terpilih sebelum resolve
-                    if (!selectedTeam) {
-                        resolve({ cancelled: true }); // Anggap batal jika tidak ada tim dipilih
-                    } else if (dlg.returnValue === 'ok') { 
-                        resolve({ cancelled: false, team: selectedTeam, delta: pointsCorrect }); // Gunakan variabel
-                    } else if (dlg.returnValue === 'wrong') { 
-                        resolve({ cancelled: false, team: selectedTeam, delta: pointsWrong }); // Gunakan variabel
-                    } else { // Kasus lain (misal menutup modal tanpa klik OK/Wrong)
-                        resolve({ cancelled: true }); 
-                    }
-                    // --- END MODIFIKASI ---
+                    if (!selectedTeam) { resolve({ cancelled: true }); }
+                    else if (dlg.returnValue === 'ok') { resolve({ cancelled: false, team: selectedTeam, delta: pointsCorrect }); }
+                    else if (dlg.returnValue === 'wrong') { resolve({ cancelled: false, team: selectedTeam, delta: pointsWrong }); }
+                    else { resolve({ cancelled: true }); }
                 };
                 pills.forEach(p => p.addEventListener('click', onPillClick)); if(okBtn) okBtn.addEventListener('click', onOkClick); if(wrongBtn) wrongBtn.addEventListener('click', onWrongClick); if(startBtn) startBtn.addEventListener('click', onStartTimer); document.addEventListener('keydown', escHandler); dlg.addEventListener('close', onClose, { once: true });
                 dlg.showModal(); setTimeout(() => dlg.classList.add('translate-y-0', 'opacity-100'), 10);
@@ -595,30 +612,17 @@
         window.addEventListener('beforeunload', () => { stopTimeUpSound(); });
         window.addEventListener('load', () => {
             console.log('=== CSS 2.0 Game Board Initialization - Semifinal ===');
-            loadState(); 
-            loadQuestions(); 
-            renderTeams(); 
-            createGrid(); 
-            
-            // Cek bonus saat load (hanya verifikasi, tidak ada animasi/skor tambahan)
-            gameState.teams.forEach(team => {
-                 for (let r = 0; r < (GRID_ROWS - 1); r++) {
-                    for (let c = 0; c < (GRID_COLS - 1); c++) {
-                        const tl_id = String.fromCharCode(65 + r) + (c + 1);
-                        if (gameState.bonusApplied[tl_id]) { 
-                           const tr_id = String.fromCharCode(65 + r) + (c + 2);
-                           const bl_id = String.fromCharCode(65 + r + 1) + (c + 1);
-                           const br_id = String.fromCharCode(65 + r + 1) + (c + 2);
-                           if (!(gameState.selected[tl_id] === team.name && gameState.selected[tr_id] === team.name && gameState.selected[bl_id] === team.name && gameState.selected[br_id] === team.name)) {
-                              // Jika state berubah dan bonus tidak valid lagi, hapus tanda bonusApplied
-                              // delete gameState.bonusApplied[tl_id]; // Opsional: bersihkan state lama
-                           }
-                        }
-                    }
+            loadState();
+            loadQuestions();
+            renderTeams();
+            createGrid();
+
+            Object.keys(gameState.bonusApplied).forEach(appliedCellId => {
+                if (gameState.bonusApplied[appliedCellId]) {
+                    console.log(`Bonus yang dimulai dari ${appliedCellId} terdeteksi dari state.`);
                 }
             });
-            saveState(); // Simpan jika ada pembersihan state bonusApplied
-            
+
             console.log('Teams:', gameState.teams?.map(t => t.name).join(', '));
         });
     </script>
