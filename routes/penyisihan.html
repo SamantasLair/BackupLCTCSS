@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS 2.0 Game Board</title>
+    <title>Babak Penyisihan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,9 +56,6 @@
             -webkit-appearance: none;
             margin: 0;
         }
-        input[type=number] {
-            -moz-appearance: textfield; /* Untuk Firefox */
-        }
     </style>
 </head>
 
@@ -88,8 +85,22 @@
             </header>
 
             <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center">
-                <blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">"Soal tidak
+                <blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">"Soal
+                    tidak
                     terdeteksi"</blockquote>
+            </section>
+
+            <section class="px-6 py-4 text-center">
+                <button type="button" onclick=onToggleAnswer() id="toggle-answer-btn"
+                    class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 mb-3">
+                    Tampilkan Jawaban
+                </button>
+                <div id="answer-section"
+                    class="hidden min-h-[80px] items-center justify-center bg-green-50 rounded-lg p-4 border-2 border-green-200">
+                    <blockquote id="answer-text"
+                        class="italic text-lg text-green-800 font-bold font-poppins leading-relaxed">"Jawaban"
+                    </blockquote>
+                </div>
             </section>
 
             <div class="flex items-center justify-center mb-6 gap-3 px-6">
@@ -105,7 +116,7 @@
 
             <div class="relative px-6 pb-6 flex items-center justify-center">
                 <div id="team-pills-container" class="flex flex-wrap gap-2 justify-center max-w-xl">
-                    </div>
+                </div>
 
                 <div class="absolute right-6 bottom-6 flex gap-2">
                     <button id="q-wrong" value="wrong"
@@ -161,8 +172,8 @@
             selected: []
         };
 
-        let rows = 4;
-        let cols = 6;
+        let rows = Math.sqrt(dataPenyisihan1.length);
+        let cols = Math.sqrt(dataPenyisihan1.length);
 
         // Audio untuk timer habis
         let timeUpAudio = null;
@@ -278,7 +289,7 @@
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
                 const div = document.createElement("div");
                 div.className = `rounded-lg overflow-hidden shadow-lg h-20 w-24 flex flex-col justify-between bg-gradient-to-br ${colors.bgDark} border-2 ${colors.border} transform transition-all hover:scale-105`;
-                
+
                 div.innerHTML = `
                     <div class="text-center py-1 bg-gradient-to-br ${colors.bg}">
                         <span class="text-xl font-semibold text-white">${team.name}</span>
@@ -291,7 +302,7 @@
                                data-team-name="${team.name}">
                     </div>
                 `;
-                
+
                 teamContainer.appendChild(div);
 
                 // ================================================================
@@ -312,7 +323,7 @@
 
             if (isNaN(newScore)) {
                 // Jika input tidak valid (misal: "abc"), set ke 0
-                newScore = 0; 
+                newScore = 0;
                 input.value = newScore;
             }
 
@@ -398,8 +409,8 @@
 
                     const button = document.createElement('button');
                     button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${gameState.selected[r][c]
-                            ? 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg'
-                            : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'
+                        ? 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg'
+                        : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'
                         }`;
 
                     button.dataset.row = r;
@@ -545,13 +556,16 @@
         async function qPopUp(cellId) {
             const dlg = document.getElementById('q-dialog');
             const qText = document.getElementById('q-text');
+            const ansText = document.getElementById('answer-text');
+            const answerSection = document.getElementById('answer-section');
+            const toggleAnswerBtn = document.getElementById('toggle-answer-btn');
             const okBtn = document.getElementById('q-ok');
             const wrongBtn = document.getElementById('q-wrong');
             const startBtn = document.getElementById('start-timer-btn');
             const timerDisplay = document.getElementById('timer-display');
             const pillsContainer = document.getElementById('team-pills-container');
 
-            // Generate team pills dynamically
+            // Generate tombol tim
             pillsContainer.innerHTML = '';
             gameState.teams.forEach(team => {
                 const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
@@ -564,19 +578,32 @@
             });
 
             const pills = Array.from(pillsContainer.querySelectorAll('button[data-team]'));
-
-            // Get question data
             const soal = questions[cellId];
 
+
+            // 🔹 SET PERTANYAAN & JAWABAN
             if (soal) {
-                qText.textContent = soal.pertanyaan;
-                console.log('Soal dimuat:', cellId, '-', soal.pertanyaan);
-                console.log('Waktu:', soal.waktu, 'detik');
-                console.log('Tipe:', soal.tipe);
+                qText.textContent = soal.pertanyaan || 'Pertanyaan tidak ditemukan.';
+                ansText.textContent = soal.jawaban?.join(', ') || 'Belum ada jawaban.';
             } else {
                 qText.textContent = `Soal untuk ${cellId} tidak ditemukan dalam database.`;
-                console.warn('Soal tidak ditemukan:', cellId);
+                ansText.textContent = 'Tidak tersedia.';
             }
+            answerSection.classList.add('hidden');
+            answerSection.classList.remove('flex');
+            toggleAnswerBtn.textContent = 'Tampilkan Jawaban';
+            toggleAnswerBtn.onclick = () => {
+                const visible = !answerSection.classList.contains('hidden');
+                if (visible) {
+                    answerSection.classList.add('hidden');
+                    answerSection.classList.remove('flex');
+                    toggleAnswerBtn.textContent = 'Tampilkan Jawaban';
+                } else {
+                    answerSection.classList.remove('hidden');
+                    answerSection.classList.add('flex');
+                    toggleAnswerBtn.textContent = 'Sembunyikan Jawaban';
+                }
+            };
 
             stopTimer();
             stopTimeUpSound();
