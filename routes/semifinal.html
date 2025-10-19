@@ -63,6 +63,48 @@
         html, body {
             height: 100%;
         }
+
+        /* Style untuk Bonus Zonasi & Teks Poin */
+        #game-grid {
+            position: relative; /* Diperlukan untuk bonus-zone & bonus-points-text */
+        }
+
+        .bonus-zone {
+            position: absolute;
+            pointer-events: none;
+            border: 3px solid white;
+            border-radius: 12px;
+            opacity: 0;
+            animation: zone-flash 4s ease-out; /* Durasi 4 detik */
+            box-shadow: 0 0 20px white;
+            z-index: 50;
+        }
+
+        .bonus-points-text {
+            position: absolute;
+            pointer-events: none;
+            font-size: 2rem; /* Ukuran teks +100 */
+            font-weight: bold;
+            color: #22c55e; /* Warna hijau */
+            opacity: 0;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+            animation: points-rise-fade 4s ease-out; /* Durasi 4 detik */
+            z-index: 51; /* Di atas zona */
+        }
+
+        @keyframes zone-flash {
+            0% { opacity: 0; transform: scale(0.95); }
+            15% { opacity: 1; transform: scale(1.02); } /* Muncul cepat */
+            85% { opacity: 1; transform: scale(1); }    /* Bertahan lama */
+            100% { opacity: 0; transform: scale(1); } /* Memudar di akhir */
+        }
+
+        @keyframes points-rise-fade {
+            0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); } /* Mulai dari tengah zona, sedikit kecil */
+            15% { opacity: 1; transform: translate(-50%, -20px) scale(1.1); } /* Naik sedikit, membesar */
+            85% { opacity: 1; transform: translate(-50%, -50px) scale(1); } /* Naik lebih tinggi, ukuran normal */
+            100% { opacity: 0; transform: translate(-50%, -60px) scale(0.9); } /* Memudar sambil naik sedikit lagi */
+        }
     </style>
 </head>
 
@@ -136,12 +178,8 @@
             </div>
     </div>
 
-    <div class="relative z-10 flex-grow flex flex-col items-center justify-center">
-        <h2 id="game-title" class="text-white text-3xl font-bold mb-4 uppercase tracking-wider">
-            Semifinal
-        </h2>
-
-        <div id="game-grid" class="grid gap-4 mb-8"></div>
+    <div class="relative z-10 flex-grow flex flex-col items-center justify-center mt-32">
+        <div id="game-grid" class="grid gap-2 mb-8"></div>
     </div>
 
     <div class="fixed bottom-0 right-0 p-4 z-20">
@@ -166,11 +204,12 @@
         // ================================================================
         let gameState = {
             teams: [],
-            selected: {}, // Gunakan objek untuk menyimpan status soal A1, A2, dst.
+            selected: {}, // Menyimpan status: "A", "B", "failed", "gray", undefined
+            bonusApplied: {} 
         };
 
-        const GRID_ROWS = 4; // A, B, C, D
-        const GRID_COLS = 5; // 1, 2, 3, 4, 5
+        const GRID_ROWS = 6; 
+        const GRID_COLS = 6; 
 
         // Audio
         let timeUpAudio = null;
@@ -178,27 +217,30 @@
 
         // Colors
         const teamColorConfigs = {
-            A: { bg: 'from-red-400 to-red-500', bgDark: 'from-red-500 to-red-600', border: 'border-red-600', text: 'text-red-500', hover: 'hover:bg-red-400', selected: 'bg-red-400' },
-            B: { bg: 'from-blue-400 to-blue-500', bgDark: 'from-blue-500 to-blue-600', border: 'border-blue-600', text: 'text-blue-500', hover: 'hover:bg-blue-400', selected: 'bg-blue-400' },
-            C: { bg: 'from-yellow-400 to-yellow-500', bgDark: 'from-yellow-500 to-yellow-600', border: 'border-yellow-600', text: 'text-yellow-500', hover: 'hover:bg-yellow-400', selected: 'bg-yellow-400' },
-            D: { bg: 'from-green-400 to-green-500', bgDark: 'from-green-500 to-green-600', border: 'border-green-600', text: 'text-green-500', hover: 'hover:bg-green-400', selected: 'bg-green-400' },
-            // Tambahkan lebih banyak jika tim lebih dari 4
+            A: { bg: 'from-red-400 to-red-500', bgDark: 'from-red-500 to-red-600', border: 'border-red-600', text: 'text-red-500', hover: 'hover:bg-red-400', selected: 'bg-red-400', hex: '#ef4444' },
+            B: { bg: 'from-blue-400 to-blue-500', bgDark: 'from-blue-500 to-blue-600', border: 'border-blue-600', text: 'text-blue-500', hover: 'hover:bg-blue-400', selected: 'bg-blue-400', hex: '#3b82f6' },
+            C: { bg: 'from-yellow-400 to-yellow-500', bgDark: 'from-yellow-500 to-yellow-600', border: 'border-yellow-600', text: 'text-yellow-500', hover: 'hover:bg-yellow-400', selected: 'bg-yellow-400', hex: '#eab308' },
+            D: { bg: 'from-green-400 to-green-500', bgDark: 'from-green-500 to-green-600', border: 'border-green-600', text: 'text-green-500', hover: 'hover:bg-green-400', selected: 'bg-green-400', hex: '#22c55e' },
         };
 
         function initializeDefaultState() {
-            gameState.teams = [ { name: "A", score: 0 }, { name: "B", score: 0 }, { name: "C", score: 0 }, { name: "D", score: 0 }, ];
-            gameState.selected = {}; // Reset status selected
+            gameState.teams = [ 
+                { name: "A", score: 500 }, { name: "B", score: 500 }, { name: "C", score: 500 }, { name: "D", score: 500 }, 
+            ];
+            gameState.selected = {}; 
+            gameState.bonusApplied = {}; 
         }
 
         function loadState() {
-            const saved = localStorage.getItem('semifinalGameState'); // Kunci berbeda
+            const saved = localStorage.getItem('semifinalGameState'); 
             if (saved) {
                 gameState = JSON.parse(saved);
                 if (!gameState.selected || Array.isArray(gameState.selected)) { gameState.selected = {}; }
+                if (!gameState.bonusApplied) { gameState.bonusApplied = {}; } 
             } else { initializeDefaultState(); }
         }
 
-        function saveState() { localStorage.setItem('semifinalGameState', JSON.stringify(gameState)); } // Kunci berbeda
+        function saveState() { localStorage.setItem('semifinalGameState', JSON.stringify(gameState)); } 
 
         function resetBoard() {
             if (confirm('Apakah Anda yakin ingin mereset papan Semifinal dan skor?')) {
@@ -212,7 +254,7 @@
         const teamContainer = document.getElementById("team-container");
         const gridContainer = document.getElementById('game-grid');
         const titleContainer = document.getElementById('game-title');
-        let questions = {}; // Hanya satu set soal
+        let questions = {}; 
 
         function renderTeams() {
              teamContainer.innerHTML = "";
@@ -241,14 +283,48 @@
         }
 
         function createGrid() {
-            gridContainer.innerHTML = ""; titleContainer.textContent = "Semifinal"; gridContainer.style.gridTemplateColumns = `repeat(${GRID_COLS}, 6rem)`;
+            gridContainer.innerHTML = "";
+            gridContainer.style.gridTemplateColumns = `repeat(${GRID_COLS}, 4rem)`; 
+            
             for (let r = 0; r < GRID_ROWS; r++) {
                  for (let c = 0; c < GRID_COLS; c++) {
-                    const rowLetter = String.fromCharCode(65 + r); const cellId = rowLetter + (c + 1); const hasQuestion = questions[cellId] !== undefined;
-                    if (!hasQuestion) { const placeholder = document.createElement('div'); placeholder.className = 'h-20 rounded-lg bg-transparent'; gridContainer.appendChild(placeholder); continue; }
-                    const button = document.createElement('button'); const isSelected = gameState.selected[cellId] === true;
-                    button.className = `h-20 rounded-lg font-semibold text-xl cursor-pointer transition-all duration-300 hover:scale-105 ${isSelected ? 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg' : 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80'}`;
-                    button.dataset.cellId = cellId; button.innerText = cellId; button.onclick = handleCellClick; gridContainer.appendChild(button);
+                    const rowLetter = String.fromCharCode(65 + r); 
+                    const cellId = rowLetter + (c + 1); 
+                    const hasQuestion = questions[cellId] !== undefined;
+
+                    if (!hasQuestion) { 
+                        const placeholder = document.createElement('div'); 
+                        placeholder.className = 'h-16 w-16 rounded-full bg-transparent';
+                        gridContainer.appendChild(placeholder); 
+                        continue; 
+                    }
+
+                    const button = document.createElement('button'); 
+                    const selectedState = gameState.selected[cellId]; 
+                    
+                    let buttonClass = '';
+
+                    if (selectedState) {
+                        if (selectedState === 'failed') { // NEW: Cek state 'failed'
+                            buttonClass = 'bg-black border-2 border-gray-700 text-gray-900 shadow-inner cursor-not-allowed'; // Warna hitam, non-interaktif
+                        } else {
+                            const team = gameState.teams.find(t => t.name === selectedState);
+                            if (team) {
+                                const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
+                                buttonClass = `bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg`;
+                            } else { // Fallback (misal state 'gray')
+                                buttonClass = 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
+                            }
+                        }
+                    } else { // Belum dipilih
+                        buttonClass = 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80';
+                    }
+
+                    button.className = `h-16 w-16 rounded-full font-semibold text-xl transition-all duration-300 flex items-center justify-center ${selectedState ? '' : 'hover:scale-105 cursor-pointer'} ${buttonClass}`; // Hilangkan hover jika sudah dipilih
+                    button.dataset.cellId = cellId; 
+                    button.innerText = cellId; 
+                    button.onclick = handleCellClick; 
+                    gridContainer.appendChild(button);
                 }
             }
         }
@@ -274,18 +350,148 @@
 
 
         // ================================================================
-        // INTERACTION LOGIC
+        // INTERACTION LOGIC (Termasuk Bonus & Failed State)
         // ================================================================
         async function handleCellClick(event) {
-            const button = event.currentTarget; const cellId = button.dataset.cellId;
+            const button = event.currentTarget; 
+            const cellId = button.dataset.cellId;
+            
+            // Jangan lakukan apa-apa jika sudah ada state (termasuk 'failed')
             if (gameState.selected[cellId]) return;
+
             const res = await qPopUp(cellId);
             if (res.cancelled) return;
+
             const team = gameState.teams.find(x => x.name === res.team);
-            if (team) { const colors = teamColorConfigs[team.name] || teamColorConfigs['A']; button.className = `h-20 rounded-lg font-semibold text-xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg transition-all duration-300`; team.score += res.delta; document.getElementById(`score-${team.name}`).value = team.score; }
-            else { button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg'; }
-            gameState.selected[cellId] = true; saveState();
+
+            if (res.delta > 0 && team) { // Jawaban BENAR
+                const colors = teamColorConfigs[team.name] || teamColorConfigs['A']; 
+                button.className = `h-16 w-16 rounded-full font-semibold text-xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg transition-all duration-300 flex items-center justify-center`; 
+                team.score += res.delta; 
+                document.getElementById(`score-${team.name}`).value = team.score; 
+                gameState.selected[cellId] = team.name; 
+                
+                checkForBonus(team.name);
+            } else if (res.delta < 0 && team) { // Jawaban SALAH
+                 button.className = 'h-16 w-16 rounded-full font-semibold text-xl bg-black border-2 border-gray-700 text-gray-900 shadow-inner cursor-not-allowed flex items-center justify-center'; // Warna Hitam
+                 team.score += res.delta; // Kurangi skor
+                 document.getElementById(`score-${team.name}`).value = team.score; 
+                 gameState.selected[cellId] = 'failed'; // Tandai sebagai gagal
+            } else { // Kasus lain (misal tidak pilih tim, atau delta = 0)
+                 button.className = 'h-16 w-16 rounded-full font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg flex items-center justify-center'; 
+                 gameState.selected[cellId] = 'gray'; // Atau 'failed' jika dianggap gagal
+            }
+            
+            // Hapus hover dan cursor pointer setelah dijawab (apapun hasilnya)
+            button.classList.remove('hover:scale-105', 'cursor-pointer');
+            
+            saveState(); 
         }
+
+        // --- FUNGSI CEK BONUS ---
+        function checkForBonus(teamName) {
+            for (let r = 0; r < (GRID_ROWS - 1); r++) {
+                for (let c = 0; c < (GRID_COLS - 1); c++) {
+                    
+                    const tl_id = String.fromCharCode(65 + r) + (c + 1);
+                    const tr_id = String.fromCharCode(65 + r) + (c + 2);
+                    const bl_id = String.fromCharCode(65 + r + 1) + (c + 1);
+                    const br_id = String.fromCharCode(65 + r + 1) + (c + 2);
+
+                    if (gameState.bonusApplied[tl_id]) {
+                        continue;
+                    }
+
+                    // Pastikan keempat sel state-nya SAMA PERSIS dengan teamName (tidak 'failed', 'gray', atau undefined)
+                    if (
+                        gameState.selected[tl_id] === teamName &&
+                        gameState.selected[tr_id] === teamName &&
+                        gameState.selected[bl_id] === teamName &&
+                        gameState.selected[br_id] === teamName
+                    ) {
+                        console.log(`Bonus 2x2 untuk ${teamName} di ${tl_id}`);
+                        
+                        gameState.bonusApplied[tl_id] = true; 
+
+                        const team = gameState.teams.find(t => t.name === teamName);
+                        if (team) {
+                             showBonusAnimation(r, c, teamName);
+
+                             setTimeout(() => {
+                                team.score += 100;
+                                const scoreInput = document.getElementById(`score-${team.name}`);
+                                scoreInput.value = team.score;
+                                
+                                scoreInput.style.transition = 'none';
+                                scoreInput.style.transform = 'scale(1.2)';
+                                scoreInput.style.color = '#22c55e'; // Green flash
+                                setTimeout(() => {
+                                    scoreInput.style.transition = 'transform 0.2s ease, color 0.2s ease';
+                                    scoreInput.style.transform = 'scale(1)';
+                                    scoreInput.style.color = 'white';
+                                }, 200);
+
+                                saveState(); 
+                            }, 4000); 
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- FUNGSI ANIMASI ZONASI DAN TEKS POIN ---
+        function showBonusAnimation(row, col, teamName) {
+            const grid = document.getElementById('game-grid');
+            if (!grid) return;
+
+            const buttonSize = 4 * 16; 
+            const gapSize = 0.5 * 16;   
+            const cellSize = buttonSize + gapSize; 
+
+            // --- Buat Elemen Zona ---
+            const zone = document.createElement('div');
+            zone.className = 'bonus-zone';
+            
+            const offset = (gapSize / 2); 
+            const boxSize = (2 * buttonSize) + gapSize + (2 * offset); 
+
+            zone.style.top = `${(row * cellSize) - offset}px`;
+            zone.style.left = `${(col * cellSize) - offset}px`;
+            zone.style.width = `${boxSize}px`;
+            zone.style.height = `${boxSize}px`;
+
+            // --- Buat Elemen Teks Poin ---
+            const pointsText = document.createElement('span');
+            pointsText.className = 'bonus-points-text';
+            pointsText.textContent = '+100';
+            
+            const zoneCenterX = (col * cellSize) - offset + (boxSize / 2);
+            const zoneCenterY = (row * cellSize) - offset + (boxSize / 2);
+            pointsText.style.left = `${zoneCenterX}px`;
+            pointsText.style.top = `${zoneCenterY}px`;
+            
+            // --- Atur Warna ---
+            const teamConfig = teamColorConfigs[teamName];
+            if (teamConfig && teamConfig.hex) {
+                zone.style.borderColor = teamConfig.hex;
+                zone.style.boxShadow = `0 0 20px ${teamConfig.hex}`;
+            }
+
+            // --- Tambahkan ke Grid ---
+            grid.appendChild(zone);
+            grid.appendChild(pointsText);
+
+            // --- Hapus elemen setelah animasi (4 detik) ---
+            setTimeout(() => {
+                if (grid.contains(zone)) {
+                    grid.removeChild(zone);
+                }
+                if (grid.contains(pointsText)) {
+                    grid.removeChild(pointsText);
+                }
+            }, 4000); 
+        }
+
 
         async function qPopUp(cellId) {
             const dlg = document.getElementById('q-dialog'); const qText = document.getElementById('q-text'); const okBtn = document.getElementById('q-ok'); const wrongBtn = document.getElementById('q-wrong'); const startBtn = document.getElementById('start-timer-btn'); const timerDisplay = document.getElementById('timer-display'); const pillsContainer = document.getElementById('team-pills-container');
@@ -293,21 +499,47 @@
             gameState.teams.forEach(team => { const colors = teamColorConfigs[team.name] || teamColorConfigs['A']; const pill = document.createElement('button'); pill.type = 'button'; pill.dataset.team = team.name; pill.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`; pill.textContent = team.name; pillsContainer.appendChild(pill); });
             const pills = Array.from(pillsContainer.querySelectorAll('button[data-team]'));
             const soal = questions[cellId];
-            if (soal) { qText.textContent = soal.pertanyaan; } else { qText.textContent = `Soal untuk ${cellId} tidak ditemukan.`; }
-            stopTimer(); stopTimeUpSound(); if (startBtn) startBtn.disabled = false; if (timerDisplay) { timerDisplay.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner"; timerDisplay.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)"; timerDisplay.textContent = '00:00'; }
+            if (soal) { 
+                qText.textContent = soal.pertanyaan; 
+                timerDisplay.textContent = formatTime(soal.waktu || 0); 
+            } else { 
+                qText.textContent = `Soal untuk ${cellId} tidak ditemukan.`; 
+                timerDisplay.textContent = '00:00';
+            }
+            stopTimer(); stopTimeUpSound(); if (startBtn) startBtn.disabled = false; 
+            timerDisplay.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner"; 
+            timerDisplay.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
+            
             let selectedTeam = null;
             return new Promise((resolve) => {
                 const onPillClick = (e) => { selectedTeam = e.currentTarget.dataset.team; pills.forEach(p => { const colors = teamColorConfigs[p.dataset.team] || teamColorConfigs['A']; if (p.dataset.team === selectedTeam) { p.className = `border-2 border-transparent rounded-lg px-5 py-2.5 cursor-pointer text-xl font-semibold transition-all ${colors.selected} text-white shadow-md scale-105`; } else { p.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`; } }); };
                 const shakePills = () => { pills.forEach(p => { p.classList.add('animate-shake'); setTimeout(() => p.classList.remove('animate-shake'), 400); }); };
-                const onOkClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } }; const onWrongClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } };
-                const onStartTimer = () => { console.warn("Timer belum diimplementasikan untuk soal semifinal"); };
+                const onOkClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } }; 
+                const onWrongClick = (e) => { if (!selectedTeam) { e.preventDefault(); shakePills(); } };
+                
+                const onStartTimer = () => {
+                    if (soal?.waktu) { 
+                        startTimer(soal.waktu); 
+                    } else {
+                        console.error("Waktu soal tidak ditemukan untuk:", cellId);
+                        startTimer(15); 
+                    }
+                };
+                
                 const escHandler = (event) => { if (event.key === 'Escape') { stopTimeUpSound(); dlg.close(); resolve({ cancelled: true }); } };
                 const onClose = () => {
                     stopTimer(); stopTimeUpSound(); document.removeEventListener('keydown', escHandler); dlg.removeEventListener('close', onClose); pills.forEach(p => p.removeEventListener('click', onPillClick)); if(okBtn) okBtn.removeEventListener('click', onOkClick); if(wrongBtn) wrongBtn.removeEventListener('click', onWrongClick); if(startBtn) startBtn.removeEventListener('click', onStartTimer);
                     dlg.classList.remove('translate-y-0', 'opacity-100');
-                    if (dlg.returnValue === 'ok' && selectedTeam) { resolve({ cancelled: false, team: selectedTeam, delta: 100 }); }
-                    else if (dlg.returnValue === 'wrong' && selectedTeam) { resolve({ cancelled: false, team: selectedTeam, delta: -100 }); }
-                    else { resolve({ cancelled: true }); }
+                    // Pastikan tim terpilih sebelum resolve
+                    if (!selectedTeam) {
+                        resolve({ cancelled: true }); // Anggap batal jika tidak ada tim dipilih
+                    } else if (dlg.returnValue === 'ok') { 
+                        resolve({ cancelled: false, team: selectedTeam, delta: 100 }); 
+                    } else if (dlg.returnValue === 'wrong') { 
+                        resolve({ cancelled: false, team: selectedTeam, delta: -100 }); 
+                    } else { // Kasus lain (misal menutup modal tanpa klik OK/Wrong)
+                        resolve({ cancelled: true }); 
+                    }
                 };
                 pills.forEach(p => p.addEventListener('click', onPillClick)); if(okBtn) okBtn.addEventListener('click', onOkClick); if(wrongBtn) wrongBtn.addEventListener('click', onWrongClick); if(startBtn) startBtn.addEventListener('click', onStartTimer); document.addEventListener('keydown', escHandler); dlg.addEventListener('close', onClose, { once: true });
                 dlg.showModal(); setTimeout(() => dlg.classList.add('translate-y-0', 'opacity-100'), 10);
@@ -320,7 +552,30 @@
         window.addEventListener('beforeunload', () => { stopTimeUpSound(); });
         window.addEventListener('load', () => {
             console.log('=== CSS 2.0 Game Board Initialization - Semifinal ===');
-            loadState(); loadQuestions(); renderTeams(); createGrid();
+            loadState(); 
+            loadQuestions(); 
+            renderTeams(); 
+            createGrid(); 
+            
+            // Cek bonus saat load (hanya verifikasi, tidak ada animasi/skor tambahan)
+            gameState.teams.forEach(team => {
+                 for (let r = 0; r < (GRID_ROWS - 1); r++) {
+                    for (let c = 0; c < (GRID_COLS - 1); c++) {
+                        const tl_id = String.fromCharCode(65 + r) + (c + 1);
+                        if (gameState.bonusApplied[tl_id]) { 
+                           const tr_id = String.fromCharCode(65 + r) + (c + 2);
+                           const bl_id = String.fromCharCode(65 + r + 1) + (c + 1);
+                           const br_id = String.fromCharCode(65 + r + 1) + (c + 2);
+                           if (!(gameState.selected[tl_id] === team.name && gameState.selected[tr_id] === team.name && gameState.selected[bl_id] === team.name && gameState.selected[br_id] === team.name)) {
+                              // Jika state berubah dan bonus tidak valid lagi, hapus tanda bonusApplied
+                              // delete gameState.bonusApplied[tl_id]; // Opsional: bersihkan state lama
+                           }
+                        }
+                    }
+                }
+            });
+            saveState(); // Simpan jika ada pembersihan state bonusApplied
+            
             console.log('Teams:', gameState.teams?.map(t => t.name).join(', '));
         });
     </script>
