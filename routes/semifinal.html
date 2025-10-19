@@ -282,6 +282,12 @@
             console.log('Soal Semifinal berhasil dimuat:', Object.keys(questions).length, 'soal');
         }
 
+        /**
+         * FUNGSI createGrid (DIMODIFIKASI)
+         * Cek soal.goldenZone
+         * - true: innerText = '⭐'
+         * - false: innerText = cellId
+         */
         function createGrid() {
             gridContainer.innerHTML = "";
             gridContainer.style.gridTemplateColumns = `repeat(${GRID_COLS}, 4rem)`; 
@@ -290,14 +296,17 @@
                  for (let c = 0; c < GRID_COLS; c++) {
                     const rowLetter = String.fromCharCode(65 + r); 
                     const cellId = rowLetter + (c + 1); 
-                    const hasQuestion = questions[cellId] !== undefined;
-
-                    if (!hasQuestion) { 
+                    
+                    // --- MODIFIKASI ---
+                    const soal = questions[cellId]; // Ambil data soal
+                    
+                    if (!soal) { // Ganti hasQuestion dengan cek soal
                         const placeholder = document.createElement('div'); 
                         placeholder.className = 'h-16 w-16 rounded-full bg-transparent';
                         gridContainer.appendChild(placeholder); 
                         continue; 
                     }
+                    // --- END MODIFIKASI ---
 
                     const button = document.createElement('button'); 
                     const selectedState = gameState.selected[cellId]; 
@@ -322,7 +331,20 @@
 
                     button.className = `h-16 w-16 rounded-full font-semibold text-xl transition-all duration-300 flex items-center justify-center ${selectedState ? '' : 'hover:scale-105 cursor-pointer'} ${buttonClass}`; // Hilangkan hover jika sudah dipilih
                     button.dataset.cellId = cellId; 
-                    button.innerText = cellId; 
+                    
+                    // --- MODIFIKASI (CHANGE 1: LABEL) ---
+                    if (soal.goldenZone === true) {
+                        button.innerText = '⭐';
+                        // Tambahkan style jika belum dipilih
+                        if (!selectedState) {
+                            button.classList.add('text-yellow-400');
+                            button.style.textShadow = '0 0 12px rgba(234, 179, 8, 0.8)';
+                        }
+                    } else {
+                        button.innerText = cellId; 
+                    }
+                    // --- END MODIFIKASI ---
+                    
                     button.onclick = handleCellClick; 
                     gridContainer.appendChild(button);
                 }
@@ -492,13 +514,31 @@
             }, 4000); 
         }
 
-
+        /**
+         * FUNGSI qPopUp (DIMODIFIKASI)
+         * Cek soal.goldenZone
+         * - true: pointsCorrect = 200, pointsWrong = -200
+         * - false: pointsCorrect = 100, pointsWrong = -100
+         */
         async function qPopUp(cellId) {
             const dlg = document.getElementById('q-dialog'); const qText = document.getElementById('q-text'); const okBtn = document.getElementById('q-ok'); const wrongBtn = document.getElementById('q-wrong'); const startBtn = document.getElementById('start-timer-btn'); const timerDisplay = document.getElementById('timer-display'); const pillsContainer = document.getElementById('team-pills-container');
             pillsContainer.innerHTML = ''; if (!gameState.teams) return { cancelled: true };
             gameState.teams.forEach(team => { const colors = teamColorConfigs[team.name] || teamColorConfigs['A']; const pill = document.createElement('button'); pill.type = 'button'; pill.dataset.team = team.name; pill.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`; pill.textContent = team.name; pillsContainer.appendChild(pill); });
             const pills = Array.from(pillsContainer.querySelectorAll('button[data-team]'));
+            
+            // --- MODIFIKASI (CHANGE 2: SCORING) ---
             const soal = questions[cellId];
+            
+            // Tentukan poin berdasarkan goldenZone
+            let pointsCorrect = 100;
+            let pointsWrong = -100;
+
+            if (soal && soal.goldenZone === true) {
+                pointsCorrect = 200;
+                pointsWrong = -200;
+            }
+            // --- END MODIFIKASI ---
+            
             if (soal) { 
                 qText.textContent = soal.pertanyaan; 
                 timerDisplay.textContent = formatTime(soal.waktu || 0); 
@@ -530,16 +570,19 @@
                 const onClose = () => {
                     stopTimer(); stopTimeUpSound(); document.removeEventListener('keydown', escHandler); dlg.removeEventListener('close', onClose); pills.forEach(p => p.removeEventListener('click', onPillClick)); if(okBtn) okBtn.removeEventListener('click', onOkClick); if(wrongBtn) wrongBtn.removeEventListener('click', onWrongClick); if(startBtn) startBtn.removeEventListener('click', onStartTimer);
                     dlg.classList.remove('translate-y-0', 'opacity-100');
+                    
+                    // --- MODIFIKASI (CHANGE 2: SCORING) ---
                     // Pastikan tim terpilih sebelum resolve
                     if (!selectedTeam) {
                         resolve({ cancelled: true }); // Anggap batal jika tidak ada tim dipilih
                     } else if (dlg.returnValue === 'ok') { 
-                        resolve({ cancelled: false, team: selectedTeam, delta: 100 }); 
+                        resolve({ cancelled: false, team: selectedTeam, delta: pointsCorrect }); // Gunakan variabel
                     } else if (dlg.returnValue === 'wrong') { 
-                        resolve({ cancelled: false, team: selectedTeam, delta: -100 }); 
+                        resolve({ cancelled: false, team: selectedTeam, delta: pointsWrong }); // Gunakan variabel
                     } else { // Kasus lain (misal menutup modal tanpa klik OK/Wrong)
                         resolve({ cancelled: true }); 
                     }
+                    // --- END MODIFIKASI ---
                 };
                 pills.forEach(p => p.addEventListener('click', onPillClick)); if(okBtn) okBtn.addEventListener('click', onOkClick); if(wrongBtn) wrongBtn.addEventListener('click', onWrongClick); if(startBtn) startBtn.addEventListener('click', onStartTimer); document.addEventListener('keydown', escHandler); dlg.addEventListener('close', onClose, { once: true });
                 dlg.showModal(); setTimeout(() => dlg.classList.add('translate-y-0', 'opacity-100'), 10);
