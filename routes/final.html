@@ -115,7 +115,7 @@
 
 <body class="bg-black min-h-screen text-white overflow-x-hidden relative">
     <!-- SETUP MODAL -->
-    <div id="setupContainer" class="fixed inset-0 z-[2000] items-center justify-center bg-black/70 hidden">
+    <div id="setupContainer" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/70 hidden">
         <div class="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-10 text-center">
             <h2
                 class="mb-5 text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
@@ -306,17 +306,31 @@
     <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn"
         id="rebutanModal">
         <div
-            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
+            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-4xl w-11/12 animate-slideUp relative flex flex-col items-center">
+
+            <!-- Tombol Close -->
             <button
                 class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125"
                 onclick="closeModal('rebutanModal')">✕</button>
+
+            <!-- Header -->
             <div
                 class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
-                🔥 REBUTAN</div>
-            <div class="rebutan-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-5 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed"
-                id="rebutanQuestion">Berapa hasil dari 2 + 2?</div>
-            <div class="teams-grid grid grid-cols-2 gap-2.5 mb-4" id="rebutanTeams"></div>
+                🔥 REBUTAN
+            </div>
 
+            <!-- Pertanyaan -->
+            <div class="rebutan-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-6 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed w-full"
+                id="rebutanQuestion">
+                Berapa hasil dari 2 + 2?
+            </div>
+
+            <!-- FLEX TIM -->
+            <div id="rebutanTeams" class="w-full flex flex-wrap justify-center items-center gap-5 mb-6">
+
+            </div>
+
+            <!-- TIMER -->
             <div id="rebutanTimerContainer" class="flex flex-col items-center justify-center gap-4 my-4">
                 <div id="rebutanTimerDisplay" class="text-6xl font-bold text-white">10</div>
                 <button id="startRebutanTimerBtn"
@@ -324,12 +338,13 @@
                     onclick="startRebutanTimer()">Mulai Waktu</button>
             </div>
 
-            <div id="rebutanBtnGroup" class="btn-group grid grid-cols-2 gap-2.5 mt-4">
+            <!-- BUTTON GROUP -->
+            <div id="rebutanBtnGroup" class="btn-group flex flex-wrap justify-center gap-3 mt-6 w-full">
                 <button
-                    class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
+                    class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 border-none rounded-md font-semibold text-base cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
                     onclick="submitRebutan(true)">✓ BENAR</button>
                 <button
-                    class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
+                    class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-3 px-6 border-none rounded-md font-semibold text-base cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
                     onclick="submitRebutan(false)">✕ SALAH</button>
             </div>
         </div>
@@ -339,58 +354,70 @@
     <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn"
         id="auctionModal">
         <div
-            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
+            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-2xl p-8 w-11/12 max-w-4xl animate-slideUp relative shadow-2xl">
+            <!-- Tombol Close -->
             <button
-                class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125"
+                class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-3 right-3 transition-all duration-300 hover:text-red-600 hover:scale-125"
                 onclick="closeModal('auctionModal')">✕</button>
-            <div id="auctionModalTitle"
-                class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
-                🏆 LELANG</div>
 
-            <!-- Bidding Phase Content -->
+            <!-- Judul -->
+            <div id="auctionModalTitle"
+                class="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                🏆 LELANG
+            </div>
+
+            <!-- Bidding Phase -->
             <div id="auctionBiddingPhase">
-                <p id="auctionCategoryInfo" class="text-center text-slate-300 mb-4">Kategori: Sejarah</p>
-                <div class="auction-controls">
-                    <p class="text-xs text-slate-300 mb-2.5 text-center">Masukkan nominal poin lelang tertinggi</p>
+                <p id="auctionCategoryInfo" class="text-center text-slate-300 mb-4 text-lg">Kategori: Sejarah</p>
+                <div class="auction-controls mb-6">
+                    <p class="text-sm text-slate-300 mb-2 text-center">Masukkan nominal poin lelang tertinggi</p>
                     <input type="number"
-                        class="w-full p-2.5 bg-white/10 border-2 border-amber-500/30 rounded-md text-white text-base text-center mb-2.5 placeholder-white/50"
+                        class="w-full p-3 bg-white/10 border-2 border-amber-500/30 rounded-md text-white text-base text-center placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400"
                         id="bidAmount" placeholder="Contoh: 100" min="1">
                 </div>
-                <p class="text-center text-slate-300 mb-3">Pilih tim pemenang lelang:</p>
-                <div class="auction-teams grid grid-cols-2 gap-2.5 mb-4" id="auctionTeams"></div>
+
+                <p class="text-center text-slate-300 mb-3 text-base font-medium">Pilih tim pemenang lelang:</p>
+
+                <!-- Flex Layout untuk Tim -->
+                <div id="auctionTeams" class="auction-teams flex flex-wrap justify-center items-center gap-4 mb-6">
+                    <!-- Contoh elemen tim -->
+                    <!-- <div class="bg-amber-500/20 border border-amber-400/40 rounded-lg text-white text-center font-bold px-6 py-4 cursor-pointer hover:bg-amber-500/40 transition-all">Tim A</div> -->
+                </div>
+
                 <button
-                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-md font-semibold transition-transform duration-300 hover:scale-105"
+                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-md font-semibold transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30"
                     onclick="lockBid()">Kunci Tawaran & Tampilkan Soal</button>
             </div>
 
-            <!-- Answering Phase Content -->
+            <!-- Answering Phase -->
             <div id="auctionAnsweringPhase" class="hidden">
-                <div id="auctionWinnerInfo" class="text-center mb-4">
+                <div id="auctionWinnerInfo" class="text-center mb-5">
                     <p class="text-slate-300">Tim <span id="auctionWinningTeam" class="font-bold text-amber-300"></span>
                         menjawab dengan tawaran:</p>
-                    <p id="auctionWinningBid" class="text-2xl font-bold text-white"></p>
+                    <p id="auctionWinningBid" class="text-2xl font-bold text-white mt-1"></p>
                 </div>
 
-                <div id="auctionTimerContainer" class="flex flex-col items-center justify-center gap-4 my-4">
+                <div id="auctionTimerContainer" class="flex flex-col items-center justify-center gap-4 my-6">
                     <div id="auctionTimerDisplay" class="text-6xl font-bold text-white">10</div>
                     <button id="startAuctionTimerBtn"
-                        class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors"
+                        class="bg-blue-500 text-white py-2 px-8 rounded-md hover:bg-blue-600 transition-colors duration-200"
                         onclick="startAuctionTimer()">Mulai Waktu Jawab</button>
                 </div>
 
-                <div class="auction-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-5 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed"
-                    id="auctionQuestion">...</div>
+                <div id="auctionQuestion"
+                    class="auction-question bg-white/5 border-2 border-amber-500/30 p-6 rounded-lg mb-6 text-center min-h-[100px] flex items-center justify-center text-lg leading-relaxed text-white">
+                    ...
+                </div>
 
-                <div id="auctionBtnGroup" class="btn-group grid grid-cols-2 gap-2.5 mt-4">
+                <div id="auctionBtnGroup" class="btn-group flex justify-center gap-5 mt-4 hidden">
                     <button
-                        class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
+                        class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-6 border-none rounded-md font-semibold text-base cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
                         onclick="submitAuction(true)">✓ BENAR</button>
                     <button
-                        class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
+                        class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-6 border-none rounded-md font-semibold text-base cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
                         onclick="submitAuction(false)">✕ SALAH</button>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -437,20 +464,37 @@
         function initializePaketQuestions() {
             const questions = [];
             const prefixes = ['A', 'E'];
+            const dummyTexts = [
+                "Samudra yang memisahkan benua Amerika dan Eropa adalah...",
+                "Siapa penulis seri buku 'Harry Potter'?",
+                "Berapa jumlah provinsi di Indonesia per tahun 2025?",
+                "Planet apa yang posisinya paling dekat dengan Matahari?",
+                "Di negara manakah Tembok Besar yang terkenal itu berada?",
+                "Apa nama ibukota dari negara Thailand?",
+                "Siapa ilmuwan yang dihargai atas penemuan bola lampu pijar praktis?",
+                "Elemen kimia apa yang dilambangkan dengan 'Fe' pada tabel periodik?",
+                "Dalam film 'Star Wars', siapa nama asli dari Darth Vader?",
+                "Apa nama mata uang yang digunakan di Korea Selatan?",
+                "Gunung berapi aktif tertinggi di Pulau Jawa adalah...",
+                "Siapakah yang menjabat sebagai Presiden Indonesia ke-3?",
+            ];
+
+            // Shuffle dummy texts to randomize questions
+            for (let i = dummyTexts.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [dummyTexts[i], dummyTexts[j]] = [dummyTexts[j], dummyTexts[i]];
+            }
+
+            let textIndex = 0;
             prefixes.forEach(prefix => {
                 for (let i = 1; i <= 6; i++) {
                     questions.push({
                         label: `${prefix}${i}`,
-                        text: `Ini adalah contoh soal untuk kotak ${prefix}${i}.`,
+                        text: dummyTexts[textIndex++],
                         answered: false
                     });
                 }
             });
-            // Simple shuffle
-            for (let i = questions.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [questions[i].text, questions[j].text] = [questions[j].text, questions[i].text];
-            }
             return questions;
         }
 
@@ -593,7 +637,7 @@
             const team = gameState.teams[currentTeamIndex];
 
             document.getElementById('paketQuestionCounter').textContent = `Soal Terjawab: ${answeredCount} / 12`;
-            document.getElementById('paketTeamTurn').textContent = `Giliran Tim ${team.name}`;
+            document.getElementById('paketTeamTurn').textContent = `Giliran Tim ${team.name}, silakan pilih soal.`;
 
             if (answeredCount >= 12) {
                 gridContainer.innerHTML = `<p class="col-span-6 text-center text-lg text-green-400">Semua soal telah terjawab!</p>`;
