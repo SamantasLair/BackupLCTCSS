@@ -20,17 +20,27 @@
         }
 
         @keyframes glowPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         @keyframes rotateCounterClockwise {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(-360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(-360deg);
+            }
         }
 
-<<<<<<< HEAD
-=======
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -49,42 +59,49 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1rem; /* approx p-4 */
+            padding: 1rem;
+            /* approx p-4 */
             z-index: 10;
             backdrop-filter: blur(10px);
-            
+
             /* Kept from original styles */
             display: flex;
             align-items: center;
             gap: 15px;
             animation: slideDown 0.6s ease;
         }
-        
+
         .logo-container {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        
+
         .logo-img {
-            width: 40px; /* approx w-10 */
-            height: 40px; /* approx h-10 */
+            width: 40px;
+            /* approx w-10 */
+            height: 40px;
+            /* approx h-10 */
         }
 
         .header-title {
             /* Adjusted size for header bar */
-            font-size: 1.5rem; /* approx text-2xl */
+            font-size: 1.5rem;
+            /* approx text-2xl */
             font-weight: 700;
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent; /* Fallback */
+            color: transparent;
+            /* Fallback */
         }
 
         .header-title span {
-            font-size: 0.875rem; /* approx text-sm */
-            margin-left: 4px; /* approx ml-1 */
+            font-size: 0.875rem;
+            /* approx text-sm */
+            margin-left: 4px;
+            /* approx ml-1 */
         }
 
         /* SCORES */
@@ -266,7 +283,8 @@
             background-clip: text;
         }
 
-        .rebutan-question, .auction-question {
+        .rebutan-question,
+        .auction-question {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(251, 191, 36, 0.3);
             padding: 20px;
@@ -281,14 +299,16 @@
             line-height: 1.5;
         }
 
-        .teams-grid, .auction-teams {
+        .teams-grid,
+        .auction-teams {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 15px;
         }
 
-        .team-btn, .auction-team {
+        .team-btn,
+        .auction-team {
             padding: 12px;
             border: 2px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
@@ -300,12 +320,14 @@
             font-size: 0.95rem;
         }
 
-        .team-btn:hover, .auction-team:hover {
+        .team-btn:hover,
+        .auction-team:hover {
             transform: translateY(-2px);
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .team-btn.selected, .auction-team.selected {
+        .team-btn.selected,
+        .auction-team.selected {
             transform: scale(1.05);
             font-weight: 700;
             box-shadow: 0 0 15px currentColor;
@@ -420,7 +442,7 @@
         }
 
         .reset-btn:hover {
-             box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
         }
 
 
@@ -471,71 +493,55 @@
             transform: scale(1.05);
         }
 
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-<<<<<<< HEAD
-        
-        .animate-glowPulse { animation: glowPulse 6s ease-in-out infinite; }
-        .animate-rotateCounterClockwise { animation: rotateCounterClockwise 12s linear infinite; }
-        .animate-slideDown { animation: slideDown 0.6s ease; }
-        .animate-slideUp { animation: slideUp 0.4s ease; }
-        .animate-fadeIn { animation: fadeIn 0.3s ease; }
+            from {
+                opacity: 0;
+            }
 
-        .mode-card:hover::before { left: 100%; }
-        .mode-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s ease;
-=======
+            to {
+                opacity: 1;
+            }
+        }
+
         /* Sembunyikan panah atas/bawah di input number */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         input[type=number] {
-            -moz-appearance: textfield; /* Untuk Firefox */
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
+            -moz-appearance: textfield;
+            /* Untuk Firefox */
         }
     </style>
     <style id="dynamicStyles"></style>
 </head>
 
-<<<<<<< HEAD
-<body class="bg-black min-h-screen text-white overflow-x-hidden relative">
-    <!-- SETUP MODAL -->
-    <div id="setupContainer" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/70 hidden">
-        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-10 text-center">
-            <h2 class="mb-5 text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">Atur Jumlah Tim</h2>
-            <input type="number" id="teamInput" value="3" min="2" max="26" class="p-2.5 border-2 border-amber-500/30 rounded-md bg-white/10 text-white text-base mb-4 w-52 text-center">
-            <br>
-            <button onclick="startGame()" class="bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-8 border-none rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105">Mulai Game</button>
-        </div>
-    </div>
-
-    <!-- ORBIT BACKGROUND -->
-    <div class="orbit-container fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0" id="bg-orbit" style="display:none;">
-        <div class="orbit absolute rounded-full animate-rotateCounterClockwise w-[500px] h-[500px] top-[50px]">
-            <div class="planet absolute w-32 h-32 rounded-full opacity-90 pointer-events-none animate-glowPulse" style="background: radial-gradient(circle, rgba(245, 68, 68, 0.5)); color: rgba(245, 68, 68, 0.4); box-shadow: 0 0 80px 40px currentColor, 0 0 200px 100px currentColor;"></div>
-=======
 <body>
     <div id="setupContainer" class="setup-container" style="display:none;">
         <h2>Atur Jumlah Tim</h2>
@@ -547,151 +553,186 @@
     <div class="orbit-container" id="bg-orbit" style="display:none;">
         <div class="orbit orbit-red">
             <div class="planet planet-red"></div>
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         </div>
-        <div class="orbit absolute rounded-full animate-rotateCounterClockwise w-[300px] h-[300px] top-[100px]" style="animation-duration: 6s;">
-            <div class="planet absolute w-32 h-32 rounded-full opacity-90 pointer-events-none animate-glowPulse" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.5)); color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 80px 40px currentColor, 0 0 200px 100px currentColor;"></div>
+        <div class="orbit absolute rounded-full animate-rotateCounterClockwise w-[300px] h-[300px] top-[100px]"
+            style="animation-duration: 6s;">
+            <div class="planet absolute w-32 h-32 rounded-full opacity-90 pointer-events-none animate-glowPulse"
+                style="background: radial-gradient(circle, rgba(59, 130, 246, 0.5)); color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 80px 40px currentColor, 0 0 200px 100px currentColor;">
+            </div>
         </div>
     </div>
-    
-    <a href="homepage.html" class="fixed bottom-5 left-5 py-2.5 px-5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg no-underline font-semibold transition-all duration-300 z-[99] border-2 border-white/10 text-sm hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg hover:shadow-red-500/40" id="backBtn" style="display:none;">← Back</a>
-    <a href="#" onclick="resetGame(event)" id="resetBtn" class="fixed bottom-5 right-5 py-2.5 px-5 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg no-underline font-semibold transition-all duration-300 z-[99] border-2 border-white/10 text-sm hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40" style="display:none;">RESET</a>
+
+    <a href="homepage.html"
+        class="fixed bottom-5 left-5 py-2.5 px-5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg no-underline font-semibold transition-all duration-300 z-[99] border-2 border-white/10 text-sm hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg hover:shadow-red-500/40"
+        id="backBtn" style="display:none;">← Back</a>
+    <a href="#" onclick="resetGame(event)" id="resetBtn"
+        class="fixed bottom-5 right-5 py-2.5 px-5 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg no-underline font-semibold transition-all duration-300 z-[99] border-2 border-white/10 text-sm hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40"
+        style="display:none;">RESET</a>
 
 
-<<<<<<< HEAD
-    <div class="container max-w-7xl mx-auto p-5 pt-24 relative z-10 min-h-screen" style="display:none;" id="mainContainer">
+    <div class="container max-w-7xl mx-auto p-5 pt-24 relative z-10 min-h-screen" style="display:none;"
+        id="mainContainer">
         <!-- HEADER -->
-        <div class="header-section fixed top-0 left-0 w-full p-4 z-20 backdrop-blur-lg flex items-center gap-4 animate-slideDown">
+        <div
+            class="header-section fixed top-0 left-0 w-full p-4 z-20 backdrop-blur-lg flex items-center gap-4 animate-slideDown">
             <div class="logo-container flex items-center gap-2.5">
                 <img src="../resources/himacom.png" alt="Himacom Logo" class="w-10 h-10">
                 <img src="../resources/logocss.png" alt="CSS Logo" class="w-10 h-10">
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">CSS<span class="text-sm ml-1">2.0</span></h1>
+                <h1
+                    class="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                    CSS<span class="text-sm ml-1">2.0</span></h1>
             </div>
         </div>
 
         <!-- SCORES -->
-        <div class="scores-container grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-8 justify-items-center" id="scoresContainer"></div>
+        <div class="scores-container grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-8 justify-items-center"
+            id="scoresContainer"></div>
 
         <!-- GAME MODES -->
         <div class="game-modes grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5 mb-10">
-            <div class="mode-card bg-gradient-to-br from-slate-800/90 to-slate-900/70 border-2 border-white/10 rounded-xl p-5 transition-all duration-400 cursor-pointer relative overflow-hidden hover:-translate-y-1 hover:border-white/30 hover:shadow-lg hover:shadow-amber-500/10">
+            <div
+                class="mode-card bg-gradient-to-br from-slate-800/90 to-slate-900/70 border-2 border-white/10 rounded-xl p-5 transition-all duration-400 cursor-pointer relative overflow-hidden hover:-translate-y-1 hover:border-white/30 hover:shadow-lg hover:shadow-amber-500/10">
                 <div class="text-4xl mb-2.5">🔥</div>
-                <div class="text-xl font-bold mb-2.5 bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">REBUTAN</div>
+                <div
+                    class="text-xl font-bold mb-2.5 bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                    REBUTAN</div>
                 <div class="text-slate-300 text-sm leading-relaxed mb-3">
-=======
-    <div class="container" style="display:none;" id="mainContainer">
-        <div class="header-section">
-            <div class="logo-container">
-                 <img src="../resources/himacom.png" alt="Himacom Logo" class="logo-img">
-                <img src="../resources/logocss.png" alt="CSS Logo" class="logo-img">
-                <h1 class="header-title">CSS<span>2.0</span></h1>
-            </div>
-        </div>
-
-        <div class="scores-container" id="scoresContainer"></div>
-
-        <div class="game-modes">
-            <div class="mode-card">
-                <div class="mode-icon">🔥</div>
-                <div class="mode-title">REBUTAN</div>
-                <div class="mode-description">
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
                     Pertanyaan untuk semua tim. Tim pertama yang menjawab benar mendapatkan poin!
                 </div>
-                <button class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-800 border-none py-2.5 px-5 rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 w-full hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30" onclick="startRebutan()">Main Rebutan</button>
+                <button
+                    class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-800 border-none py-2.5 px-5 rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 w-full hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30"
+                    onclick="startRebutan()">Main Rebutan</button>
             </div>
 
-            <div class="mode-card bg-gradient-to-br from-slate-800/90 to-slate-900/70 border-2 border-white/10 rounded-xl p-5 transition-all duration-400 cursor-pointer relative overflow-hidden hover:-translate-y-1 hover:border-white/30 hover:shadow-lg hover:shadow-amber-500/10">
+            <div
+                class="mode-card bg-gradient-to-br from-slate-800/90 to-slate-900/70 border-2 border-white/10 rounded-xl p-5 transition-all duration-400 cursor-pointer relative overflow-hidden hover:-translate-y-1 hover:border-white/30 hover:shadow-lg hover:shadow-amber-500/10">
                 <div class="text-4xl mb-2.5">🏆</div>
-                <div class="text-xl font-bold mb-2.5 bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">LELANG</div>
+                <div
+                    class="text-xl font-bold mb-2.5 bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                    LELANG</div>
                 <div class="text-slate-300 text-sm leading-relaxed mb-3">
                     Pilih kategori → Tentukan poin → Jawab soal. Benar = +poin, Salah = -poin!
                 </div>
-                <button class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-800 border-none py-2.5 px-5 rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 w-full hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30" onclick="startAuctionStep1()">Main Lelang</button>
+                <button
+                    class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-800 border-none py-2.5 px-5 rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 w-full hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30"
+                    onclick="startAuctionStep1()">Main Lelang</button>
             </div>
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- MODAL REBUTAN -->
-    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn" id="rebutanModal">
-        <div class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
-            <button class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125" onclick="closeModal('rebutanModal')">✕</button>
-            <div class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">🔥 REBUTAN</div>
-            <div class="rebutan-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-5 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed" id="rebutanQuestion">Berapa hasil dari 2 + 2?</div>
+    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn"
+        id="rebutanModal">
+        <div
+            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
+            <button
+                class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125"
+                onclick="closeModal('rebutanModal')">✕</button>
+            <div
+                class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                🔥 REBUTAN</div>
+            <div class="rebutan-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-5 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed"
+                id="rebutanQuestion">Berapa hasil dari 2 + 2?</div>
             <div class="teams-grid grid grid-cols-2 gap-2.5 mb-4" id="rebutanTeams"></div>
             <div class="btn-group grid grid-cols-2 gap-2.5 mt-4">
-                <button class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30" onclick="submitRebutan(true)">✓ BENAR</button>
-                <button class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30" onclick="submitRebutan(false)">✕ SALAH</button>
-=======
-    <div class="modal" id="rebutanModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('rebutanModal')">✕</button>
-            <div class="modal-header">🔥 REBUTAN</div>
-            <div class="rebutan-question" id="rebutanQuestion">Berapa hasil dari 2 + 2?</div>
-            <div class="teams-grid" id="rebutanTeams"></div>
-            <div class="btn-group">
-                <button class="btn-success" onclick="submitRebutan(true)">✓ BENAR</button>
-                <button class="btn-danger" onclick="submitRebutan(false)">✕ SALAH</button>
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
+                <button
+                    class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
+                    onclick="submitRebutan(true)">✓ BENAR</button>
+                <button
+                    class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
+                    onclick="submitRebutan(false)">✕ SALAH</button>
             </div>
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- MODAL AUCTION STEP 1: PILIH KATEGORI -->
-    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn" id="auctionStep1Modal">
-        <div class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
-            <button class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125" onclick="closeModal('auctionStep1Modal')">✕</button>
-            <div class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">🏆 PILIH KATEGORI</div>
+    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn"
+        id="auctionStep1Modal">
+        <div
+            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
+            <button
+                class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125"
+                onclick="closeModal('auctionStep1Modal')">✕</button>
+            <div
+                class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                🏆 PILIH KATEGORI</div>
             <p class="text-center text-slate-300 mb-5">Pilih kategori soal yang ingin dijawab:</p>
             <div class="categories-grid grid grid-cols-2 gap-3 mb-4" id="categoriesGrid">
-                <button class="category-btn py-3 px-4 border-2 border-amber-500/50 bg-amber-500/10 text-amber-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-amber-500/20 hover:border-amber-500 focus:bg-amber-500/30" onclick="selectCategory(event, 'IPA')">🧪 IPA</button>
-                <button class="category-btn py-3 px-4 border-2 border-green-500/50 bg-green-500/10 text-green-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-green-500/20 hover:border-green-500 focus:bg-green-500/30" onclick="selectCategory(event, 'MTK')">🔢 MTK</button>
-                <button class="category-btn py-3 px-4 border-2 border-blue-500/50 bg-blue-500/10 text-blue-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500 focus:bg-blue-500/30" onclick="selectCategory(event, 'IPS')">📚 IPS</button>
-                <button class="category-btn py-3 px-4 border-2 border-purple-500/50 bg-purple-500/10 text-purple-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-purple-500/20 hover:border-purple-500 focus:bg-purple-500/30" onclick="selectCategory(event, 'BAHASA')">✍️ BAHASA</button>
-                <button class="category-btn py-3 px-4 border-2 border-amber-500/50 bg-amber-500/10 text-amber-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-amber-500/20 hover:border-amber-500 focus:bg-amber-500/30" onclick="selectCategory(event, 'IPA')">🧪 IPA</button>
-                <button class="category-btn py-3 px-4 border-2 border-green-500/50 bg-green-500/10 text-green-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-green-500/20 hover:border-green-500 focus:bg-green-500/30" onclick="selectCategory(event, 'MTK')">🔢 MTK</button>
-                <button class="category-btn py-3 px-4 border-2 border-blue-500/50 bg-blue-500/10 text-blue-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500 focus:bg-blue-500/30" onclick="selectCategory(event, 'IPS')">📚 IPS</button>
-                <button class="category-btn py-3 px-4 border-2 border-purple-500/50 bg-purple-500/10 text-purple-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-purple-500/20 hover:border-purple-500 focus:bg-purple-500/30" onclick="selectCategory(event, 'BAHASA')">✍️ BAHASA</button>
-=======
-    <div class="modal" id="auctionModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('auctionModal')">✕</button>
-            <div class="modal-header">🏆 LELANG</div>
-            <div class="auction-question" id="auctionQuestion">Siapa presiden pertama Indonesia?</div>
-            <div class="auction-controls">
-                <p class="auction-points">Masukkan nominal poin yang ditawarkan</p>
-                <input type="number" class="bid-input" id="bidAmount" placeholder="Contoh: 100" min="1">
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
+                <button
+                    class="category-btn py-3 px-4 border-2 border-amber-500/50 bg-amber-500/10 text-amber-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-amber-500/20 hover:border-amber-500 focus:bg-amber-500/30"
+                    onclick="selectCategory(event, 'IPA')">🧪 IPA</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-green-500/50 bg-green-500/10 text-green-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-green-500/20 hover:border-green-500 focus:bg-green-500/30"
+                    onclick="selectCategory(event, 'MTK')">🔢 MTK</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-blue-500/50 bg-blue-500/10 text-blue-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500 focus:bg-blue-500/30"
+                    onclick="selectCategory(event, 'IPS')">📚 IPS</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-purple-500/50 bg-purple-500/10 text-purple-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-purple-500/20 hover:border-purple-500 focus:bg-purple-500/30"
+                    onclick="selectCategory(event, 'BAHASA')">✍️ BAHASA</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-amber-500/50 bg-amber-500/10 text-amber-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-amber-500/20 hover:border-amber-500 focus:bg-amber-500/30"
+                    onclick="selectCategory(event, 'IPA')">🧪 IPA</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-green-500/50 bg-green-500/10 text-green-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-green-500/20 hover:border-green-500 focus:bg-green-500/30"
+                    onclick="selectCategory(event, 'MTK')">🔢 MTK</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-blue-500/50 bg-blue-500/10 text-blue-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500 focus:bg-blue-500/30"
+                    onclick="selectCategory(event, 'IPS')">📚 IPS</button>
+                <button
+                    class="category-btn py-3 px-4 border-2 border-purple-500/50 bg-purple-500/10 text-purple-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-purple-500/20 hover:border-purple-500 focus:bg-purple-500/30"
+                    onclick="selectCategory(event, 'BAHASA')">✍️ BAHASA</button>
             </div>
-            <button class="w-full bg-gradient-to-r from-amber-500 to-amber-400 text-white py-2.5 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40" onclick="proceedToAuctionStep2()">Lanjut ke Bid Points →</button>
+            <button
+                class="w-full bg-gradient-to-r from-amber-500 to-amber-400 text-white py-2.5 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40"
+                onclick="proceedToAuctionStep2()">Lanjut ke Bid Points →</button>
         </div>
     </div>
 
     <!-- MODAL AUCTION STEP 2: PILIH POINTS -->
-    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn" id="auctionStep2Modal">
-        <div class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
-            <button class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125" onclick="closeModal('auctionStep2Modal')">✕</button>
-            <div class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">🏆 TENTUKAN POIN</div>
+    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn"
+        id="auctionStep2Modal">
+        <div
+            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
+            <button
+                class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125"
+                onclick="closeModal('auctionStep2Modal')">✕</button>
+            <div
+                class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                🏆 TENTUKAN POIN</div>
             <p class="text-center text-slate-300 mb-3 text-sm">Masukkan Point Lelang:</p>
-            <input type="number" id="customBid" placeholder="Contoh: 300" min="1" class="w-full p-2.5 bg-white/10 border-2 border-amber-500/30 rounded-md text-white text-base text-center mb-4 placeholder-white/50">
-            <button class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/40" onclick="proceedToAuctionStep3()">Lanjut ke Soal →</button>
+            <input type="number" id="customBid" placeholder="Contoh: 300" min="1"
+                class="w-full p-2.5 bg-white/10 border-2 border-amber-500/30 rounded-md text-white text-base text-center mb-4 placeholder-white/50">
+            <button
+                class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/40"
+                onclick="proceedToAuctionStep3()">Lanjut ke Soal →</button>
         </div>
     </div>
 
     <!-- MODAL AUCTION STEP 3: SOAL & PILIH TEAM -->
-    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn" id="auctionStep3Modal">
-        <div class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
-            <button class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125" onclick="closeModal('auctionStep3Modal')">✕</button>
-            <div class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">🏆 SOAL LELANG</div>
-            <div class="auction-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-4 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed" id="auctionQuestion">Siapa presiden pertama Indonesia?</div>
-            <p class="text-center text-amber-400 mb-4 font-semibold text-sm">Poin yang ditawar: <span id="bidPointsDisplay">100</span></p>
+    <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn"
+        id="auctionStep3Modal">
+        <div
+            class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
+            <button
+                class="close-btn bg-transparent border-none text-red-500 text-xl cursor-pointer absolute top-2.5 right-2.5 transition-all duration-300 hover:text-red-600 hover:scale-125"
+                onclick="closeModal('auctionStep3Modal')">✕</button>
+            <div
+                class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
+                🏆 SOAL LELANG</div>
+            <div class="auction-question bg-white/5 border-2 border-amber-500/30 p-5 rounded-lg mb-4 text-center min-h-[80px] flex items-center justify-center text-lg leading-relaxed"
+                id="auctionQuestion">Siapa presiden pertama Indonesia?</div>
+            <p class="text-center text-amber-400 mb-4 font-semibold text-sm">Poin yang ditawar: <span
+                    id="bidPointsDisplay">100</span></p>
             <p class="text-center text-slate-300 mb-3 text-sm">Pilih tim yang menjawab:</p>
             <div class="auction-teams grid grid-cols-2 gap-2.5 mb-5" id="auctionTeams"></div>
             <div class="btn-group grid grid-cols-2 gap-2.5">
-                <button class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30" onclick="submitAuction(true)">✓ BENAR</button>
-                <button class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30" onclick="submitAuction(false)">✕ SALAH</button>
+                <button
+                    class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
+                    onclick="submitAuction(true)">✓ BENAR</button>
+                <button
+                    class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
+                    onclick="submitAuction(false)">✕ SALAH</button>
             </div>
         </div>
     </div>
@@ -784,14 +825,14 @@
                 const state = JSON.parse(savedState);
                 totalTeams = state.totalTeams;
                 gameState = state;
-                
+
                 generateDynamicStyles(totalTeams);
-                
+
                 document.getElementById('mainContainer').style.display = 'block';
                 document.getElementById('bg-orbit').style.display = 'block';
                 document.getElementById('backBtn').style.display = 'block';
                 document.getElementById('resetBtn').style.display = 'block';
-                
+
                 renderScores();
             } else {
                 document.getElementById('setupContainer').style.display = 'flex';
@@ -825,7 +866,7 @@
             }
 
             generateDynamicStyles(totalTeams);
-            
+
             gameState.teams = [];
             for (let i = 0; i < totalTeams; i++) {
                 gameState.teams.push({
@@ -834,7 +875,7 @@
                     colorClass: colorPalette[i % colorPalette.length].name
                 });
             }
-            
+
             document.getElementById('setupContainer').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'block';
             document.getElementById('bg-orbit').style.display = 'block';
@@ -853,8 +894,6 @@
             }
         }
 
-<<<<<<< HEAD
-=======
         // ================================================================
         // Fungsi baru untuk menangani perubahan skor
         // ================================================================
@@ -875,17 +914,10 @@
             }
         }
 
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         function renderScores() {
             const container = document.getElementById('scoresContainer');
             if (!gameState.teams) return;
             container.innerHTML = gameState.teams.map(team => `
-<<<<<<< HEAD
-                <div class="score-card bg-gradient-to-br from-slate-500/90 to-slate-600 border-2 border-slate-400/30 rounded-lg text-center transition-all duration-300 relative overflow-hidden w-full max-w-[140px] h-[100px] flex flex-col justify-between hover:-translate-y-0.5 hover:from-slate-400/90 hover:to-slate-500 ${team.colorClass}">
-                    <div class="score-card-header py-2 font-semibold text-white text-base">TEAM ${team.name}</div>
-                    <div class="p-2 flex-1 flex items-center justify-center">
-                        <div class="text-4xl font-bold text-white">${team.score}</div>
-=======
                 <div class="score-card ${team.colorClass}">
                     <div class="score-card-header">TEAM ${team.name}</div>
                     <div class="score-card-body">
@@ -894,7 +926,6 @@
                                value="${team.score}" 
                                data-team-name="${team.name}"
                                id="score-input-${team.name}">
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
                     </div>
                 </div>
             `).join('');
@@ -968,11 +999,11 @@
             }
             selectedBidPoints = customBid;
             document.getElementById('bidPointsDisplay').textContent = selectedBidPoints;
-            
+
             const categoryQuestions = questionsByCategory[selectedCategory] || sampleQuestions;
             document.getElementById('auctionQuestion').textContent = categoryQuestions[Math.floor(Math.random() * categoryQuestions.length)];
             renderAuctionTeams();
-            
+
             closeModal('auctionStep2Modal');
             openModal('auctionStep3Modal');
         }
@@ -1002,10 +1033,6 @@
         function submitRebutan(correct) {
             if (!selectedTeam) { alert('Pilih tim terlebih dahulu!'); return; }
             const team = gameState.teams.find(t => t.name === selectedTeam);
-<<<<<<< HEAD
-            if (team) { team.score += correct ? 100 : -50; }
-            renderScores();
-=======
             if (team) {
                 team.score += correct ? 100 : -50;
                 // ================================================================
@@ -1013,7 +1040,6 @@
                 // ================================================================
                 document.getElementById(`score-input-${team.name}`).value = team.score;
             }
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
             saveState();
             closeModal('rebutanModal');
         }
@@ -1021,18 +1047,13 @@
         function submitAuction(correct) {
             if (!selectedTeam) { alert('Pilih tim terlebih dahulu!'); return; }
             const team = gameState.teams.find(t => t.name === selectedTeam);
-<<<<<<< HEAD
-            if (team) { team.score += correct ? selectedBidPoints : -selectedBidPoints; }
-            renderScores();
-=======
             if (team) {
                 team.score += correct ? bidAmount : -bidAmount;
-                 // ================================================================
+                // ================================================================
                 // Update nilai input setelah perubahan skor
                 // ================================================================
                 document.getElementById(`score-input-${team.name}`).value = team.score;
             }
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
             saveState();
             closeModal('auctionStep3Modal');
         }
@@ -1061,10 +1082,6 @@
             });
         });
     </script>
-<<<<<<< HEAD
-    </body>
-=======
 </body>
 
->>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
 </html>
