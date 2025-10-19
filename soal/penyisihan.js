@@ -5,7 +5,7 @@ const dataPenyisihan1 = [
     "waktu": 10,
     "goldenZone": true,
     "pertanyaan": "Sebutkan tiga komponen utama dalam sistem komputer!",
-    "jawaban": "[Hardware Software Brainware"
+    "jawaban": ["Hardware Software Brainware"]
   },
   {
     "id": "A2",

@@ -208,8 +208,8 @@
             bonusApplied: {} 
         };
 
-        const GRID_ROWS = 6; 
-        const GRID_COLS = 6; 
+        const GRID_ROWS = Math.sqrt(questionsData.length);
+        const GRID_COLS = Math.sqrt(questionsData.length);
 
         // Audio
         let timeUpAudio = null;
