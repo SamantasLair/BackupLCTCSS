@@ -29,6 +29,449 @@
             to { transform: rotate(-360deg); }
         }
 
+<<<<<<< HEAD
+=======
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            /* Added padding-top to account for the new fixed header */
+            padding-top: 100px;
+            position: relative;
+            z-index: 1;
+            min-height: calc(100vh - 40px);
+        }
+
+        /* HEADER */
+        .header-section {
+            /* Updated to be a fixed header bar */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem; /* approx p-4 */
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            
+            /* Kept from original styles */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideDown 0.6s ease;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-img {
+            width: 40px; /* approx w-10 */
+            height: 40px; /* approx h-10 */
+        }
+
+        .header-title {
+            /* Adjusted size for header bar */
+            font-size: 1.5rem; /* approx text-2xl */
+            font-weight: 700;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent; /* Fallback */
+        }
+
+        .header-title span {
+            font-size: 0.875rem; /* approx text-sm */
+            margin-left: 4px; /* approx ml-1 */
+        }
+
+        /* SCORES */
+        .scores-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+            justify-items: center;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, rgba(107, 114, 128, 0.9) 0%, rgba(75, 85, 99, 1) 100%);
+            border: 2px solid rgba(156, 163, 175, 0.3);
+            border-radius: 8px;
+            padding: 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 140px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .score-card:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(156, 163, 175, 0.9) 0%, rgba(107, 114, 128, 1) 100%);
+        }
+
+        .score-card-header {
+            padding: 8px 0;
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .score-card-body {
+            padding: 8px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            outline: none;
+            border: none;
+            padding: 0;
+        }
+
+        /* GAME MODES */
+        .game-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .mode-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.15);
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .mode-card:hover::before {
+            left: 100%;
+        }
+
+        .mode-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .mode-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mode-description {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .mode-button {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1f2937;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .mode-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.4s ease;
+            position: relative;
+        }
+
+        .modal-header {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .rebutan-question, .auction-question {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .teams-grid, .auction-teams {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .team-btn, .auction-team {
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .team-btn:hover, .auction-team:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .team-btn.selected, .auction-team.selected {
+            transform: scale(1.05);
+            font-weight: 700;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .auction-points {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .bid-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .bid-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 1.3rem;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #dc2626;
+            transform: scale(1.2);
+        }
+
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 999;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .reset-btn {
+            left: auto;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
+
+        .reset-btn:hover {
+             box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        }
+
+
+        .setup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            z-index: 2000;
+            text-align: center;
+        }
+
+        .setup-container h2 {
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .setup-container input {
+            padding: 10px;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            width: 200px;
+        }
+
+        .setup-container button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .setup-container button:hover {
+            transform: scale(1.05);
+        }
+
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -43,6 +486,7 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+<<<<<<< HEAD
         
         .animate-glowPulse { animation: glowPulse 6s ease-in-out infinite; }
         .animate-rotateCounterClockwise { animation: rotateCounterClockwise 12s linear infinite; }
@@ -60,11 +504,22 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: left 0.5s ease;
+=======
+        /* Sembunyikan panah atas/bawah di input number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield; /* Untuk Firefox */
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         }
     </style>
     <style id="dynamicStyles"></style>
 </head>
 
+<<<<<<< HEAD
 <body class="bg-black min-h-screen text-white overflow-x-hidden relative">
     <!-- SETUP MODAL -->
     <div id="setupContainer" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/70 hidden">
@@ -80,6 +535,19 @@
     <div class="orbit-container fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0" id="bg-orbit" style="display:none;">
         <div class="orbit absolute rounded-full animate-rotateCounterClockwise w-[500px] h-[500px] top-[50px]">
             <div class="planet absolute w-32 h-32 rounded-full opacity-90 pointer-events-none animate-glowPulse" style="background: radial-gradient(circle, rgba(245, 68, 68, 0.5)); color: rgba(245, 68, 68, 0.4); box-shadow: 0 0 80px 40px currentColor, 0 0 200px 100px currentColor;"></div>
+=======
+<body>
+    <div id="setupContainer" class="setup-container" style="display:none;">
+        <h2>Atur Jumlah Tim</h2>
+        <input type="number" id="teamInput" value="3" min="2" max="26">
+        <br>
+        <button onclick="startGame()">Mulai Game</button>
+    </div>
+
+    <div class="orbit-container" id="bg-orbit" style="display:none;">
+        <div class="orbit orbit-red">
+            <div class="planet planet-red"></div>
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         </div>
         <div class="orbit absolute rounded-full animate-rotateCounterClockwise w-[300px] h-[300px] top-[100px]" style="animation-duration: 6s;">
             <div class="planet absolute w-32 h-32 rounded-full opacity-90 pointer-events-none animate-glowPulse" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.5)); color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 80px 40px currentColor, 0 0 200px 100px currentColor;"></div>
@@ -90,6 +558,7 @@
     <a href="#" onclick="resetGame(event)" id="resetBtn" class="fixed bottom-5 right-5 py-2.5 px-5 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg no-underline font-semibold transition-all duration-300 z-[99] border-2 border-white/10 text-sm hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40" style="display:none;">RESET</a>
 
 
+<<<<<<< HEAD
     <div class="container max-w-7xl mx-auto p-5 pt-24 relative z-10 min-h-screen" style="display:none;" id="mainContainer">
         <!-- HEADER -->
         <div class="header-section fixed top-0 left-0 w-full p-4 z-20 backdrop-blur-lg flex items-center gap-4 animate-slideDown">
@@ -109,6 +578,24 @@
                 <div class="text-4xl mb-2.5">🔥</div>
                 <div class="text-xl font-bold mb-2.5 bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">REBUTAN</div>
                 <div class="text-slate-300 text-sm leading-relaxed mb-3">
+=======
+    <div class="container" style="display:none;" id="mainContainer">
+        <div class="header-section">
+            <div class="logo-container">
+                 <img src="../resources/himacom.png" alt="Himacom Logo" class="logo-img">
+                <img src="../resources/logocss.png" alt="CSS Logo" class="logo-img">
+                <h1 class="header-title">CSS<span>2.0</span></h1>
+            </div>
+        </div>
+
+        <div class="scores-container" id="scoresContainer"></div>
+
+        <div class="game-modes">
+            <div class="mode-card">
+                <div class="mode-icon">🔥</div>
+                <div class="mode-title">REBUTAN</div>
+                <div class="mode-description">
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
                     Pertanyaan untuk semua tim. Tim pertama yang menjawab benar mendapatkan poin!
                 </div>
                 <button class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-800 border-none py-2.5 px-5 rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 w-full hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30" onclick="startRebutan()">Main Rebutan</button>
@@ -125,6 +612,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- MODAL REBUTAN -->
     <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn" id="rebutanModal">
         <div class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
@@ -135,10 +623,22 @@
             <div class="btn-group grid grid-cols-2 gap-2.5 mt-4">
                 <button class="btn-success bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30" onclick="submitRebutan(true)">✓ BENAR</button>
                 <button class="btn-danger bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 px-4 border-none rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30" onclick="submitRebutan(false)">✕ SALAH</button>
+=======
+    <div class="modal" id="rebutanModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('rebutanModal')">✕</button>
+            <div class="modal-header">🔥 REBUTAN</div>
+            <div class="rebutan-question" id="rebutanQuestion">Berapa hasil dari 2 + 2?</div>
+            <div class="teams-grid" id="rebutanTeams"></div>
+            <div class="btn-group">
+                <button class="btn-success" onclick="submitRebutan(true)">✓ BENAR</button>
+                <button class="btn-danger" onclick="submitRebutan(false)">✕ SALAH</button>
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- MODAL AUCTION STEP 1: PILIH KATEGORI -->
     <div class="modal hidden fixed inset-0 bg-black/70 z-[100] justify-center items-center animate-fadeIn" id="auctionStep1Modal">
         <div class="modal-content bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-8 max-w-lg w-11/12 animate-slideUp relative">
@@ -154,6 +654,16 @@
                 <button class="category-btn py-3 px-4 border-2 border-green-500/50 bg-green-500/10 text-green-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-green-500/20 hover:border-green-500 focus:bg-green-500/30" onclick="selectCategory(event, 'MTK')">🔢 MTK</button>
                 <button class="category-btn py-3 px-4 border-2 border-blue-500/50 bg-blue-500/10 text-blue-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-blue-500/20 hover:border-blue-500 focus:bg-blue-500/30" onclick="selectCategory(event, 'IPS')">📚 IPS</button>
                 <button class="category-btn py-3 px-4 border-2 border-purple-500/50 bg-purple-500/10 text-purple-400 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:bg-purple-500/20 hover:border-purple-500 focus:bg-purple-500/30" onclick="selectCategory(event, 'BAHASA')">✍️ BAHASA</button>
+=======
+    <div class="modal" id="auctionModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('auctionModal')">✕</button>
+            <div class="modal-header">🏆 LELANG</div>
+            <div class="auction-question" id="auctionQuestion">Siapa presiden pertama Indonesia?</div>
+            <div class="auction-controls">
+                <p class="auction-points">Masukkan nominal poin yang ditawarkan</p>
+                <input type="number" class="bid-input" id="bidAmount" placeholder="Contoh: 100" min="1">
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
             </div>
             <button class="w-full bg-gradient-to-r from-amber-500 to-amber-400 text-white py-2.5 rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40" onclick="proceedToAuctionStep2()">Lanjut ke Bid Points →</button>
         </div>
@@ -187,7 +697,9 @@
     </div>
 
     <script>
-        // Array warna yang bervariasi
+        // ================================================================
+        // Variabel dan State Management
+        // ================================================================
         const colorPalette = [
             { bg: '#ff4444', light: 'rgba(255, 68, 68, 0.1)', name: 'team-a' },
             { bg: '#3b82ff', light: 'rgba(59, 130, 246, 0.1)', name: 'team-b' },
@@ -341,17 +853,59 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+        // ================================================================
+        // Fungsi baru untuk menangani perubahan skor
+        // ================================================================
+        function handleScoreChange(event) {
+            const input = event.currentTarget;
+            const teamName = input.dataset.teamName;
+            let newScore = parseInt(input.value, 10);
+
+            if (isNaN(newScore)) {
+                newScore = 0;
+                input.value = newScore;
+            }
+
+            const team = gameState.teams.find(t => t.name === teamName);
+            if (team) {
+                team.score = newScore;
+                saveState();
+            }
+        }
+
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
         function renderScores() {
             const container = document.getElementById('scoresContainer');
             if (!gameState.teams) return;
             container.innerHTML = gameState.teams.map(team => `
+<<<<<<< HEAD
                 <div class="score-card bg-gradient-to-br from-slate-500/90 to-slate-600 border-2 border-slate-400/30 rounded-lg text-center transition-all duration-300 relative overflow-hidden w-full max-w-[140px] h-[100px] flex flex-col justify-between hover:-translate-y-0.5 hover:from-slate-400/90 hover:to-slate-500 ${team.colorClass}">
                     <div class="score-card-header py-2 font-semibold text-white text-base">TEAM ${team.name}</div>
                     <div class="p-2 flex-1 flex items-center justify-center">
                         <div class="text-4xl font-bold text-white">${team.score}</div>
+=======
+                <div class="score-card ${team.colorClass}">
+                    <div class="score-card-header">TEAM ${team.name}</div>
+                    <div class="score-card-body">
+                        <input type="number" 
+                               class="team-score" 
+                               value="${team.score}" 
+                               data-team-name="${team.name}"
+                               id="score-input-${team.name}">
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
                     </div>
                 </div>
             `).join('');
+
+            // ================================================================
+            // Tambahkan listener setelah elemen dibuat
+            // ================================================================
+            gameState.teams.forEach(team => {
+                const scoreInput = document.getElementById(`score-input-${team.name}`);
+                scoreInput.addEventListener('change', handleScoreChange);
+            });
         }
 
         const sampleQuestions = [
@@ -448,8 +1002,18 @@
         function submitRebutan(correct) {
             if (!selectedTeam) { alert('Pilih tim terlebih dahulu!'); return; }
             const team = gameState.teams.find(t => t.name === selectedTeam);
+<<<<<<< HEAD
             if (team) { team.score += correct ? 100 : -50; }
             renderScores();
+=======
+            if (team) {
+                team.score += correct ? 100 : -50;
+                // ================================================================
+                // Update nilai input setelah perubahan skor
+                // ================================================================
+                document.getElementById(`score-input-${team.name}`).value = team.score;
+            }
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
             saveState();
             closeModal('rebutanModal');
         }
@@ -457,8 +1021,18 @@
         function submitAuction(correct) {
             if (!selectedTeam) { alert('Pilih tim terlebih dahulu!'); return; }
             const team = gameState.teams.find(t => t.name === selectedTeam);
+<<<<<<< HEAD
             if (team) { team.score += correct ? selectedBidPoints : -selectedBidPoints; }
             renderScores();
+=======
+            if (team) {
+                team.score += correct ? bidAmount : -bidAmount;
+                 // ================================================================
+                // Update nilai input setelah perubahan skor
+                // ================================================================
+                document.getElementById(`score-input-${team.name}`).value = team.score;
+            }
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
             saveState();
             closeModal('auctionStep3Modal');
         }
@@ -487,5 +1061,10 @@
             });
         });
     </script>
+<<<<<<< HEAD
     </body>
+=======
+</body>
+
+>>>>>>> 2738bf6ecc36fef461211e499c5e6ce782fdcbae
 </html>
