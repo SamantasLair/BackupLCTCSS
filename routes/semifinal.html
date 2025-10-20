@@ -541,32 +541,32 @@
             stopTimeUpSound();
             timeUpAudio = new Audio("../resources/timeup.mp3");
             timeUpAudio.play().catch((err) => {
-            console.log("Sound tidak dapat diputar:", err);
+                console.log("Sound tidak dapat diputar:", err);
             });
             let playCount = 0;
             audioLoopInterval = setInterval(() => {
-            playCount++;
-            if (playCount < 3) {
-                timeUpAudio = new Audio("../resources/timeup.mp3");
-                timeUpAudio.play().catch((err) => {
-                console.log("Sound tidak dapat diputar:", err);
-                });
-            } else {
-                clearInterval(audioLoopInterval);
-                audioLoopInterval = null;
-            }
+                playCount++;
+                if (playCount < 3) {
+                    timeUpAudio = new Audio("../resources/timeup.mp3");
+                    timeUpAudio.play().catch((err) => {
+                        console.log("Sound tidak dapat diputar:", err);
+                    });
+                } else {
+                    clearInterval(audioLoopInterval);
+                    audioLoopInterval = null;
+                }
             }, 1000);
         }
 
         function stopTimeUpSound() {
             if (timeUpAudio) {
-            timeUpAudio.pause();
-            timeUpAudio.currentTime = 0;
-            timeUpAudio = null;
+                timeUpAudio.pause();
+                timeUpAudio.currentTime = 0;
+                timeUpAudio = null;
             }
             if (audioLoopInterval) {
-            clearInterval(audioLoopInterval);
-            audioLoopInterval = null;
+                clearInterval(audioLoopInterval);
+                audioLoopInterval = null;
             }
         }
 
@@ -786,14 +786,14 @@
         // ================================================================
         // INTERACTION LOGIC
         // ================================================================
-      async function handleCellClick(event) {
+        async function handleCellClick(event) {
             const button = event.currentTarget;
             const cellId = button.dataset.cellId;
 
             if (gameState.selected[cellId]) return;
 
             const res = await qPopUp(cellId);
-            
+
             const team = gameState.teams.find((x) => x.name === res.team);
             let bonusAwardedInThisClick = false;
 
@@ -839,7 +839,7 @@
             }
 
             button.classList.remove("hover:scale-105", "cursor-pointer");
-            
+
             if (!bonusAwardedInThisClick) {
                 saveState();
             }
@@ -998,7 +998,7 @@
                             delta: pointsWrong,
                         });
                     } else {
-                     resolve({ cancelled: true, team: selectedTeam, delta: 0 });
+                        resolve({ cancelled: true, team: selectedTeam, delta: 0 });
                     }
                 };
 
