@@ -1,304 +1,366 @@
 <!DOCTYPE html>
 <html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Babak Penyisihan</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS 2.0 - Babak Penyisihan</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        poppins: ['Poppins', 'sans-serif']
-                    },
-                    animation: {
-                        'shake': 'shake 0.4s ease-in-out',
-                        'pulse-danger': 'pulse-danger 0.5s infinite',
-                        'glow-pulse': 'glow-pulse 6s ease-in-out infinite',
-                        'rotate-counter': 'rotate-counter 12s linear infinite',
-                        'rotate-counter-fast': 'rotate-counter 6s linear infinite'
-                    },
-                    keyframes: {
-                        shake: {
-                            '0%, 100%': { transform: 'translateX(0)' },
-                            '20%, 60%': { transform: 'translateX(-4px)' },
-                            '40%, 80%': { transform: 'translateX(4px)' }
-                        },
-                        'pulse-danger': {
-                            '0%, 100%': { transform: 'scale(1)' },
-                            '50%': { transform: 'scale(1.05)' }
-                        },
-                        'glow-pulse': {
-                            '0%, 100%': { transform: 'scale(1)' },
-                            '50%': { transform: 'scale(1.1)' }
-                        },
-                        'rotate-counter': {
-                            'from': { transform: 'rotate(0deg)' },
-                            'to': { transform: 'rotate(-360deg)' }
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              poppins: ["Poppins", "sans-serif"],
+            },
+            animation: {
+              shake: "shake 0.4s ease-in-out",
+              "pulse-danger": "pulse-danger 0.5s infinite",
+              "glow-pulse": "glow-pulse 6s ease-in-out infinite",
+              "rotate-counter": "rotate-counter 12s linear infinite",
+              "rotate-counter-fast": "rotate-counter 6s linear infinite",
+            },
+            keyframes: {
+              shake: {
+                "0%, 100%": { transform: "translateX(0)" },
+                "20%, 60%": { transform: "translateX(-4px)" },
+                "40%, 80%": { transform: "translateX(4px)" },
+              },
+              "pulse-danger": {
+                "0%, 100%": { transform: "scale(1)" },
+                "50%": { transform: "scale(1.05)" },
+              },
+              "glow-pulse": {
+                "0%, 100%": { transform: "scale(1)" },
+                "50%": { transform: "scale(1.1)" },
+              },
+              "rotate-counter": {
+                from: { transform: "rotate(0deg)" },
+                to: { transform: "rotate(-360deg)" },
+              },
+            },
+          },
+        },
+      };
     </script>
 
     <style>
-        /* Sembunyikan panah atas/bawah di input number */
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* Sembunyikan panah untuk Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+      /* Sembunyikan panah atas/bawah di input number */
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      /* Sembunyikan panah untuk Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
     </style>
-</head>
+  </head>
 
-<body class="min-h-screen bg-black font-poppins overflow-hidden">
-    <div class="fixed inset-0 opacity-5 pointer-events-none"
-        style="background: linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px); background-size: 10px 10px;">
+  <body class="min-h-screen bg-black font-poppins overflow-hidden">
+    <div
+      class="fixed inset-0 opacity-5 pointer-events-none"
+      style="
+        background: linear-gradient(90deg, white 1px, transparent 1px),
+          linear-gradient(white 1px, transparent 1px);
+        background-size: 10px 10px;
+      "
+    ></div>
+
+    <div
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0"
+    >
+      <div
+        class="absolute w-[500px] h-[500px] rounded-full animate-rotate-counter"
+      >
+        <div
+          class="absolute w-[120px] h-[120px] rounded-full bg-red-500/50 shadow-[0_0_80px_40px_rgba(239,68,68,0.4),0_0_200px_100px_rgba(239,68,68,0.4)] animate-glow-pulse"
+        ></div>
+      </div>
+      <div
+        class="absolute w-[300px] h-[300px] top-[100px] left-[100px] rounded-full animate-rotate-counter-fast"
+      >
+        <div
+          class="absolute w-[120px] h-[120px] rounded-full bg-blue-500/50 shadow-[0_0_80px_40px_rgba(59,130,246,0.4),0_0_200px_100px_rgba(59,130,246,0.4)] animate-glow-pulse"
+        ></div>
+      </div>
     </div>
 
-    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0">
-        <div class="absolute w-[500px] h-[500px] rounded-full animate-rotate-counter">
-            <div
-                class="absolute w-[120px] h-[120px] rounded-full bg-red-500/50 shadow-[0_0_80px_40px_rgba(239,68,68,0.4),0_0_200px_100px_rgba(239,68,68,0.4)] animate-glow-pulse">
-            </div>
+    <dialog
+      id="q-dialog"
+      class="rounded-2xl p-0 backdrop:bg-black/50 bg-white/90 opacity-0 shadow-2xl fixed transition-all duration-300 border-0"
+    >
+      <form method="dialog" class="min-w-[60rem] max-w-[90vw] rounded-2xl">
+        <header class="px-6 py-4 text-center border-b border-gray-200">
+          <h3 class="font-bold text-2xl font-poppins text-gray-800">
+            Pertanyaan
+          </h3>
+        </header>
+
+        <section
+          class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center"
+        >
+          <blockquote
+            id="q-text"
+            class="italic text-lg text-black font-bold font-poppins leading-relaxed"
+          >
+            "Soal tidak terdeteksi"
+          </blockquote>
+        </section>
+
+        <section class="px-6 py-4 text-center">
+          <button
+            type="button"
+            onclick="onToggleAnswer()"
+            id="toggle-answer-btn"
+            class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 mb-3"
+          >
+            Tampilkan Jawaban
+          </button>
+          <div
+            id="answer-section"
+            class="hidden min-h-[80px] items-center justify-center bg-green-50 rounded-lg p-4 border-2 border-green-200"
+          >
+            <blockquote
+              id="answer-text"
+              class="italic text-lg text-green-800 font-bold font-poppins leading-relaxed"
+            >
+              "Jawaban"
+            </blockquote>
+          </div>
+        </section>
+
+        <div class="flex items-center justify-center mb-6 gap-3 px-6">
+          <button
+            type="button"
+            id="start-timer-btn"
+            class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+          >
+            Start ▶
+          </button>
+          <div
+            id="timer-display"
+            class="text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner"
+          >
+            00:00
+          </div>
         </div>
-        <div class="absolute w-[300px] h-[300px] top-[100px] left-[100px] rounded-full animate-rotate-counter-fast">
-            <div
-                class="absolute w-[120px] h-[120px] rounded-full bg-blue-500/50 shadow-[0_0_80px_40px_rgba(59,130,246,0.4),0_0_200px_100px_rgba(59,130,246,0.4)] animate-glow-pulse">
-            </div>
+
+        <div class="relative px-6 pb-6 flex items-center justify-center">
+          <div
+            id="team-pills-container"
+            class="flex flex-wrap gap-2 justify-center max-w-xl"
+          ></div>
+
+          <div class="absolute right-6 bottom-6 flex gap-2">
+            <button
+              id="q-wrong"
+              value="wrong"
+              class="h-10 w-10 rounded-lg grid place-items-center cursor-pointer bg-red-500 hover:bg-red-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md"
+            >
+              ✗
+            </button>
+            <button
+              id="q-ok"
+              value="ok"
+              class="h-10 w-10 rounded-lg cursor-pointer grid place-items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md"
+            >
+              ✓
+            </button>
+          </div>
         </div>
-    </div>
-
-    <dialog id="q-dialog"
-        class="rounded-2xl p-0 backdrop:bg-black/50 bg-white/90 opacity-0 shadow-2xl fixed transition-all duration-300 border-0">
-        <form method="dialog" class="min-w-[60rem] max-w-[90vw] rounded-2xl">
-            <header class="px-6 py-4 text-center border-b border-gray-200">
-                <h3 class="font-bold text-2xl font-poppins text-gray-800">Pertanyaan</h3>
-            </header>
-
-            <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center">
-                <blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">"Soal
-                    tidak
-                    terdeteksi"</blockquote>
-            </section>
-
-            <section class="px-6 py-4 text-center">
-                <button type="button" onclick=onToggleAnswer() id="toggle-answer-btn"
-                    class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 mb-3">
-                    Tampilkan Jawaban
-                </button>
-                <div id="answer-section"
-                    class="hidden min-h-[80px] items-center justify-center bg-green-50 rounded-lg p-4 border-2 border-green-200">
-                    <blockquote id="answer-text"
-                        class="italic text-lg text-green-800 font-bold font-poppins leading-relaxed">"Jawaban"
-                    </blockquote>
-                </div>
-            </section>
-
-            <div class="flex items-center justify-center mb-6 gap-3 px-6">
-                <button type="button" id="start-timer-btn"
-                    class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0">
-                    Start ▶
-                </button>
-                <div id="timer-display"
-                    class="text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner">
-                    00:00
-                </div>
-            </div>
-
-            <div class="relative px-6 pb-6 flex items-center justify-center">
-                <div id="team-pills-container" class="flex flex-wrap gap-2 justify-center max-w-xl">
-                </div>
-
-                <div class="absolute right-6 bottom-6 flex gap-2">
-                    <button id="q-wrong" value="wrong"
-                        class="h-10 w-10 rounded-lg grid place-items-center cursor-pointer bg-red-500 hover:bg-red-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
-                        ✗
-                    </button>
-                    <button id="q-ok" value="ok"
-                        class="h-10 w-10 rounded-lg cursor-pointer grid place-items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xl transition-all hover:scale-110 shadow-md">
-                        ✓
-                    </button>
-                </div>
-            </div>
-        </form>
+      </form>
     </dialog>
 
-    <div class="relative z-10 py-4 max-w-6xl w-full mx-auto flex flex-col min-h-screen">
-        <div class="fixed top-0 left-0 p-4 flex items-center gap-2 z-20">
-            <img src="../resources/himacom.png" class="w-10 h-10" alt="">
-            <img src="../resources/logocss.png" class="w-10 h-10" alt="">
-            <h1 class="text-white text-2xl font-bold font-poppins">CSS<span class="text-sm ml-1">2.0</span></h1>
+    <div
+      class="relative z-10 py-4 max-w-6xl w-full mx-auto flex flex-col min-h-screen"
+    >
+      <div class="fixed top-0 left-0 p-4 flex items-center gap-2 z-20">
+        <img src="../resources/himacom.png" class="w-10 h-10" alt="" />
+        <img src="../resources/logocss.png" class="w-10 h-10" alt="" />
+        <div class="flex flex-col">
+          <h1 class="text-white text-2xl font-bold font-poppins">
+            CSS<span class="text-sm ml-1">2.0</span>
+          </h1>
+          <h1 class="text-white text-lg font-bold font-poppins">
+            Babak Semifinal
+          </h1>
         </div>
+      </div>
 
-        <div class="flex flex-col items-center justify-center flex-grow">
-            <div id="team-container"
-                class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"></div>
+      <div class="flex flex-col items-center justify-center flex-grow">
+        <div
+          id="team-container"
+          class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"
+        ></div>
 
-            <div id="game-grid" class="grid gap-4 mb-8"></div>
-        </div>
+        <div id="game-grid" class="grid gap-4 mb-8"></div>
+      </div>
 
-        <div class="fixed bottom-0 right-0 p-4 z-20">
-            <button onclick="resetBoard()"
-                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
-                Reset
-            </button>
-        </div>
+      <div class="fixed bottom-0 right-0 p-4 z-20">
+        <button
+          onclick="resetBoard()"
+          class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg"
+        >
+          Reset
+        </button>
+      </div>
 
-        <div class="fixed bottom-0 left-0 p-4 z-20">
-            <a href="homepage.html"
-                class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg">
-                Back
-            </a>
-        </div>
+      <div class="fixed bottom-0 left-0 p-4 z-20">
+        <a
+          href="homepage.html"
+          class="inline-block px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 text-sm shadow-lg"
+        >
+          Back
+        </a>
+      </div>
     </div>
 
     <script src="../soal/penyisihan.js"></script>
 
     <script>
-        // ================================================================
-        // STATE MANAGEMENT
-        // ================================================================
-        let gameState = {
-            teams: [],
-            selected: {} // <-- DIUBAH: Dari array ke object
-        };
+      // ================================================================
+      // STATE MANAGEMENT
+      // ================================================================
+      let gameState = {
+        teams: [],
+        selected: {}, // <-- DIUBAH: Dari array ke object
+      };
 
-        let rows = 0; // Akan diatur oleh calculateGridSize
-        let cols = 0; // Akan diatur oleh calculateGridSize
+      let rows = 0; // Akan diatur oleh calculateGridSize
+      let cols = 0; // Akan diatur oleh calculateGridSize
 
-        // Audio untuk timer habis
-        let timeUpAudio = null;
-        let audioLoopInterval = null;
+      // Audio untuk timer habis
+      let timeUpAudio = null;
+      let audioLoopInterval = null;
 
-        // Team color configurations
-        const teamColorConfigs = {
-            A: {
-                bg: 'from-red-400 to-red-500',
-                bgDark: 'from-red-500 to-red-600',
-                border: 'border-red-600',
-                text: 'text-red-500',
-                hover: 'hover:bg-red-400',
-                selected: 'bg-red-400'
-            },
-            B: {
-                bg: 'from-blue-400 to-blue-500',
-                bgDark: 'from-blue-500 to-blue-600',
-                border: 'border-blue-600',
-                text: 'text-blue-500',
-                hover: 'hover:bg-blue-400',
-                selected: 'bg-blue-400'
-            },
-            C: {
-                bg: 'from-yellow-400 to-yellow-500',
-                bgDark: 'from-yellow-500 to-yellow-600',
-                border: 'border-yellow-600',
-                text: 'text-yellow-500',
-                hover: 'hover:bg-yellow-400',
-                selected: 'bg-yellow-400'
-            },
-            D: {
-                bg: 'from-green-400 to-green-500',
-                bgDark: 'from-green-500 to-green-600',
-                border: 'border-green-600',
-                text: 'text-green-500',
-                hover: 'hover:bg-green-400',
-                selected: 'bg-green-400'
-            },
-            E: {
-                bg: 'from-purple-400 to-purple-500',
-                bgDark: 'from-purple-500 to-purple-600',
-                border: 'border-purple-600',
-                text: 'text-purple-500',
-                hover: 'hover:bg-purple-400',
-                selected: 'bg-purple-400'
-            },
-            F: {
-                bg: 'from-pink-400 to-pink-500',
-                bgDark: 'from-pink-500 to-pink-600',
-                border: 'border-pink-600',
-                text: 'text-pink-500',
-                hover: 'hover:bg-pink-400',
-                selected: 'bg-pink-400'
-            },
-            G: {
-                bg: 'from-indigo-400 to-indigo-500',
-                bgDark: 'from-indigo-500 to-indigo-600',
-                border: 'border-indigo-600',
-                text: 'text-indigo-500',
-                hover: 'hover:bg-indigo-400',
-                selected: 'bg-indigo-400'
-            },
-            H: {
-                bg: 'from-orange-400 to-orange-500',
-                bgDark: 'from-orange-500 to-orange-600',
-                border: 'border-orange-600',
-                text: 'text-orange-500',
-                hover: 'hover:bg-orange-400',
-                selected: 'bg-orange-400'
-            }
-        };
+      // Team color configurations
+      const teamColorConfigs = {
+        A: {
+          bg: "from-red-400 to-red-500",
+          bgDark: "from-red-500 to-red-600",
+          border: "border-red-600",
+          text: "text-red-500",
+          hover: "hover:bg-red-400",
+          selected: "bg-red-400",
+        },
+        B: {
+          bg: "from-blue-400 to-blue-500",
+          bgDark: "from-blue-500 to-blue-600",
+          border: "border-blue-600",
+          text: "text-blue-500",
+          hover: "hover:bg-blue-400",
+          selected: "bg-blue-400",
+        },
+        C: {
+          bg: "from-yellow-400 to-yellow-500",
+          bgDark: "from-yellow-500 to-yellow-600",
+          border: "border-yellow-600",
+          text: "text-yellow-500",
+          hover: "hover:bg-yellow-400",
+          selected: "bg-yellow-400",
+        },
+        D: {
+          bg: "from-green-400 to-green-500",
+          bgDark: "from-green-500 to-green-600",
+          border: "border-green-600",
+          text: "text-green-500",
+          hover: "hover:bg-green-400",
+          selected: "bg-green-400",
+        },
+        E: {
+          bg: "from-purple-400 to-purple-500",
+          bgDark: "from-purple-500 to-purple-600",
+          border: "border-purple-600",
+          text: "text-purple-500",
+          hover: "hover:bg-purple-400",
+          selected: "bg-purple-400",
+        },
+        F: {
+          bg: "from-pink-400 to-pink-500",
+          bgDark: "from-pink-500 to-pink-600",
+          border: "border-pink-600",
+          text: "text-pink-500",
+          hover: "hover:bg-pink-400",
+          selected: "bg-pink-400",
+        },
+        G: {
+          bg: "from-indigo-400 to-indigo-500",
+          bgDark: "from-indigo-500 to-indigo-600",
+          border: "border-indigo-600",
+          text: "text-indigo-500",
+          hover: "hover:bg-indigo-400",
+          selected: "bg-indigo-400",
+        },
+        H: {
+          bg: "from-orange-400 to-orange-500",
+          bgDark: "from-orange-500 to-orange-600",
+          border: "border-orange-600",
+          text: "text-orange-500",
+          hover: "hover:bg-orange-400",
+          selected: "bg-orange-400",
+        },
+      };
 
-        function loadState() {
-            const saved = localStorage.getItem('gameBoardState');
-            if (saved) {
-                gameState = JSON.parse(saved);
-                // DIUBAH: Pastikan selected adalah object, bukan array (untuk transisi state lama)
-                if (!gameState.selected || Array.isArray(gameState.selected)) {
-                    gameState.selected = {};
-                }
-            } else {
-                gameState.teams = [
-                    { name: "A", score: 0 },
-                    { name: "B", score: 0 },
-                    { name: "C", score: 0 },
-                    { name: "D", score: 0 },
-                ];
-                gameState.selected = {}; // <-- DIUBAH: Inisialisasi sebagai object
-            }
+      function loadState() {
+        const saved = localStorage.getItem("gameBoardState");
+        if (saved) {
+          gameState = JSON.parse(saved);
+          // DIUBAH: Pastikan selected adalah object, bukan array (untuk transisi state lama)
+          if (!gameState.selected || Array.isArray(gameState.selected)) {
+            gameState.selected = {};
+          }
+        } else {
+          gameState.teams = [
+            { name: "A", score: 0 },
+            { name: "B", score: 0 },
+            { name: "C", score: 0 },
+            { name: "D", score: 0 },
+          ];
+          gameState.selected = {}; // <-- DIUBAH: Inisialisasi sebagai object
         }
+      }
 
-        function saveState() {
-            localStorage.setItem('gameBoardState', JSON.stringify(gameState));
+      function saveState() {
+        localStorage.setItem("gameBoardState", JSON.stringify(gameState));
+      }
+
+      function resetBoard() {
+        if (
+          confirm(
+            "Apakah Anda yakin ingin mereset seluruh papan permainan dan skor?"
+          )
+        ) {
+          localStorage.removeItem("gameBoardState");
+          loadState();
+          renderTeams();
+          createGrid();
         }
+      }
 
-        function resetBoard() {
-            if (confirm('Apakah Anda yakin ingin mereset seluruh papan permainan dan skor?')) {
-                localStorage.removeItem('gameBoardState');
-                loadState();
-                renderTeams();
-                createGrid();
-            }
-        }
+      // ================================================================
+      // UI RENDERING
+      // ================================================================
+      const teamContainer = document.getElementById("team-container");
+      const gridContainer = document.getElementById("game-grid");
+      let questions = {};
 
-        // ================================================================
-        // UI RENDERING
-        // ================================================================
-        const teamContainer = document.getElementById("team-container");
-        const gridContainer = document.getElementById('game-grid');
-        let questions = {};
+      function renderTeams() {
+        teamContainer.innerHTML = "";
 
-        function renderTeams() {
-            teamContainer.innerHTML = "";
+        gameState.teams.forEach((team) => {
+          const colors = teamColorConfigs[team.name] || teamColorConfigs["A"];
+          const div = document.createElement("div");
+          div.className = `rounded-lg overflow-hidden shadow-lg h-20 w-24 flex flex-col justify-between bg-gradient-to-br ${colors.bgDark} border-2 ${colors.border} transform transition-all hover:scale-105`;
 
-            gameState.teams.forEach((team) => {
-                const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
-                const div = document.createElement("div");
-                div.className = `rounded-lg overflow-hidden shadow-lg h-20 w-24 flex flex-col justify-between bg-gradient-to-br ${colors.bgDark} border-2 ${colors.border} transform transition-all hover:scale-105`;
-
-                div.innerHTML = `
+          div.innerHTML = `
                     <div class="text-center py-1 bg-gradient-to-br ${colors.bg}">
                         <span class="text-xl font-semibold text-white">${team.name}</span>
                     </div>
@@ -311,426 +373,452 @@
                     </div>
                 `;
 
-                teamContainer.appendChild(div);
+          teamContainer.appendChild(div);
 
-                const scoreInput = div.querySelector(`#score-${team.name}`);
-                scoreInput.addEventListener('change', handleScoreChange);
-            });
+          const scoreInput = div.querySelector(`#score-${team.name}`);
+          scoreInput.addEventListener("change", handleScoreChange);
+        });
+      }
+
+      function handleScoreChange(event) {
+        const input = event.currentTarget;
+        const teamName = input.dataset.teamName;
+        let newScore = parseInt(input.value, 10);
+
+        if (isNaN(newScore)) {
+          newScore = 0;
+          input.value = newScore;
         }
 
-        function handleScoreChange(event) {
-            const input = event.currentTarget;
-            const teamName = input.dataset.teamName;
-            let newScore = parseInt(input.value, 10);
+        const team = gameState.teams.find((t) => t.name === teamName);
+        if (team) {
+          team.score = newScore;
+          saveState();
+        }
+      }
 
-            if (isNaN(newScore)) {
-                newScore = 0;
-                input.value = newScore;
-            }
-
-            const team = gameState.teams.find(t => t.name === teamName);
-            if (team) {
-                team.score = newScore;
-                saveState();
-            }
+      function loadQuestions() {
+        if (typeof dataPenyisihan1 === "undefined") {
+          console.error(
+            "dataPenyisihan1 tidak ditemukan! Pastikan file penyisihan.js sudah di-load."
+          );
+          alert("Error: Data soal tidak ditemukan!");
+          return;
         }
 
-        function loadQuestions() {
-            if (typeof dataPenyisihan1 === 'undefined') {
-                console.error('dataPenyisihan1 tidak ditemukan! Pastikan file penyisihan.js sudah di-load.');
-                alert('Error: Data soal tidak ditemukan!');
-                return;
-            }
+        questions = {};
+        dataPenyisihan1.forEach((q) => {
+          questions[q.id] = q;
+        });
 
-            questions = {};
-            dataPenyisihan1.forEach(q => {
-                questions[q.id] = q;
-            });
+        console.log(
+          "Soal berhasil dimuat:",
+          Object.keys(questions).length,
+          "soal"
+        );
+        calculateGridSize();
+      }
 
-            console.log('Soal berhasil dimuat:', Object.keys(questions).length, 'soal');
-            calculateGridSize();
+      function calculateGridSize() {
+        const totalQuestions = Object.keys(questions).length;
+        if (totalQuestions === 0) {
+          console.warn("Tidak ada soal yang tersedia!");
+          return;
         }
 
-        function calculateGridSize() {
-            const totalQuestions = Object.keys(questions).length;
-            if (totalQuestions === 0) {
-                console.warn('Tidak ada soal yang tersedia!');
-                return;
+        const rowLetters = new Set();
+        Object.keys(questions).forEach((id) => {
+          rowLetters.add(id.charAt(0));
+        });
+        rows = rowLetters.size;
+
+        let maxCol = 0;
+        Object.keys(questions).forEach((id) => {
+          const colNum = parseInt(id.substring(1));
+          if (colNum > maxCol) maxCol = colNum;
+        });
+        cols = maxCol;
+
+        console.log(`Grid dinamis: ${rows} baris x ${cols} kolom`);
+
+        // DIUBAH: Pastikan selected adalah object
+        if (!gameState.selected || Array.isArray(gameState.selected)) {
+          gameState.selected = {};
+        }
+      }
+
+      function createGrid() {
+        gridContainer.innerHTML = "";
+        gridContainer.style.gridTemplateColumns = `repeat(${cols}, 6rem)`;
+
+        for (let r = 0; r < rows; r++) {
+          const rowLetter = String.fromCharCode(65 + r);
+          for (let c = 0; c < cols; c++) {
+            const cellId = rowLetter + (c + 1);
+            const hasQuestion = questions[cellId] !== undefined;
+
+            if (!hasQuestion) {
+              const placeholder = document.createElement("div");
+              placeholder.className = "h-20 rounded-lg bg-transparent";
+              gridContainer.appendChild(placeholder);
+              continue;
             }
 
-            const rowLetters = new Set();
-            Object.keys(questions).forEach(id => {
-                rowLetters.add(id.charAt(0));
-            });
-            rows = rowLetters.size;
+            const button = document.createElement("button");
 
-            let maxCol = 0;
-            Object.keys(questions).forEach(id => {
-                const colNum = parseInt(id.substring(1));
-                if (colNum > maxCol) maxCol = colNum;
-            });
-            cols = maxCol;
+            // --- LOGIKA RENDER DIUBAH ---
+            const selectedState = gameState.selected[cellId]; // Cek state berdasarkan cellId
+            let buttonClass = "";
 
-            console.log(`Grid dinamis: ${rows} baris x ${cols} kolom`);
-
-            // DIUBAH: Pastikan selected adalah object
-            if (!gameState.selected || Array.isArray(gameState.selected)) {
-                gameState.selected = {};
-            }
-        }
-
-        function createGrid() {
-            gridContainer.innerHTML = "";
-            gridContainer.style.gridTemplateColumns = `repeat(${cols}, 6rem)`;
-
-            for (let r = 0; r < rows; r++) {
-                const rowLetter = String.fromCharCode(65 + r);
-                for (let c = 0; c < cols; c++) {
-                    const cellId = rowLetter + (c + 1);
-                    const hasQuestion = questions[cellId] !== undefined;
-
-                    if (!hasQuestion) {
-                        const placeholder = document.createElement('div');
-                        placeholder.className = 'h-20 rounded-lg bg-transparent';
-                        gridContainer.appendChild(placeholder);
-                        continue;
-                    }
-
-                    const button = document.createElement('button');
-                    
-                    // --- LOGIKA RENDER DIUBAH ---
-                    const selectedState = gameState.selected[cellId]; // Cek state berdasarkan cellId
-                    let buttonClass = '';
-
-                    if (selectedState) {
-                        const team = gameState.teams.find(t => t.name === selectedState);
-                        if (team) {
-                            // Warna tim
-                            const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
-                            buttonClass = `bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg`;
-                        } else {
-                            // Warna abu-abu (jika state = 'gray' atau error)
-                            buttonClass = 'bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
-                        }
-                    } else {
-                        // Belum dipilih
-                        buttonClass = 'bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80';
-                    }
-
-                    button.className = `h-20 rounded-lg font-semibold text-xl transition-all duration-300 ${selectedState ? '' : 'hover:scale-105 cursor-pointer'} ${buttonClass}`;
-                    // --- AKHIR PERUBAHAN ---
-
-                    button.dataset.row = r;
-                    button.dataset.col = c;
-                    button.dataset.cellId = cellId; // Tambahkan cellId untuk referensi
-                    button.innerText = cellId;
-                    button.onclick = handleCellClick;
-
-                    gridContainer.appendChild(button);
-                }
-            }
-        }
-
-        // ================================================================
-        // TIMER LOGIC
-        // ================================================================
-        let timerInterval = null;
-        let timeRemaining = 0;
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        }
-
-        function updateTimerDisplay() {
-            const display = document.getElementById('timer-display');
-            display.textContent = formatTime(timeRemaining);
-            display.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 shadow-inner";
-            if (timeRemaining <= 5 && timeRemaining > 3) {
-                display.className += " text-yellow-500";
-                display.style.textShadow = "0 0 10px rgba(245, 158, 11, 0.5)";
-            } else if (timeRemaining <= 3 && timeRemaining > 0) {
-                display.className += " text-red-500 animate-pulse-danger";
-                display.style.textShadow = "0 0 10px rgba(239, 68, 68, 0.7)";
+            if (selectedState) {
+              const team = gameState.teams.find(
+                (t) => t.name === selectedState
+              );
+              if (team) {
+                // Warna tim
+                const colors =
+                  teamColorConfigs[team.name] || teamColorConfigs["A"];
+                buttonClass = `bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg`;
+              } else {
+                // Warna abu-abu (jika state = 'gray' atau error)
+                buttonClass =
+                  "bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg";
+              }
             } else {
-                display.className += " text-emerald-500";
-                display.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
+              // Belum dipilih
+              buttonClass =
+                "bg-black/50 border-2 border-white/60 text-white hover:bg-gradient-to-br hover:from-gray-300/90 hover:to-gray-400 hover:shadow-xl hover:border-white/80";
             }
+
+            button.className = `h-20 rounded-lg font-semibold text-xl transition-all duration-300 ${
+              selectedState ? "" : "hover:scale-105 cursor-pointer"
+            } ${buttonClass}`;
+            // --- AKHIR PERUBAHAN ---
+
+            button.dataset.row = r;
+            button.dataset.col = c;
+            button.dataset.cellId = cellId; // Tambahkan cellId untuk referensi
+            button.innerText = cellId;
+            button.onclick = handleCellClick;
+
+            gridContainer.appendChild(button);
+          }
         }
+      }
 
-        function playTimeUpSound() {
-            stopTimeUpSound();
-            timeUpAudio = new Audio('../resources/timeup.mp3');
-            timeUpAudio.play().catch(err => { console.log('Sound tidak dapat diputar:', err); });
-            let playCount = 0;
-            audioLoopInterval = setInterval(() => {
-                playCount++;
-                if (playCount < 3) {
-                    timeUpAudio = new Audio('../resources/timeup.mp3');
-                    timeUpAudio.play().catch(err => { console.log('Sound tidak dapat diputar:', err); });
-                } else {
-                    clearInterval(audioLoopInterval);
-                    audioLoopInterval = null;
-                }
-            }, 1000);
+      // ================================================================
+      // TIMER LOGIC
+      // ================================================================
+      let timerInterval = null;
+      let timeRemaining = 0;
+
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, "0")}:${String(secs).padStart(
+          2,
+          "0"
+        )}`;
+      }
+
+      function updateTimerDisplay() {
+        const display = document.getElementById("timer-display");
+        display.textContent = formatTime(timeRemaining);
+        display.className =
+          "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 shadow-inner";
+        if (timeRemaining <= 5 && timeRemaining > 3) {
+          display.className += " text-yellow-500";
+          display.style.textShadow = "0 0 10px rgba(245, 158, 11, 0.5)";
+        } else if (timeRemaining <= 3 && timeRemaining > 0) {
+          display.className += " text-red-500 animate-pulse-danger";
+          display.style.textShadow = "0 0 10px rgba(239, 68, 68, 0.7)";
+        } else {
+          display.className += " text-emerald-500";
+          display.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
         }
+      }
 
-        function stopTimeUpSound() {
-            if (timeUpAudio) {
-                timeUpAudio.pause();
-                timeUpAudio.currentTime = 0;
-                timeUpAudio = null;
-            }
-            if (audioLoopInterval) {
-                clearInterval(audioLoopInterval);
-                audioLoopInterval = null;
-            }
+      function playTimeUpSound() {
+        stopTimeUpSound();
+        timeUpAudio = new Audio("../resources/timeup.mp3");
+        timeUpAudio.play().catch((err) => {
+          console.log("Sound tidak dapat diputar:", err);
+        });
+        let playCount = 0;
+        audioLoopInterval = setInterval(() => {
+          playCount++;
+          if (playCount < 3) {
+            timeUpAudio = new Audio("../resources/timeup.mp3");
+            timeUpAudio.play().catch((err) => {
+              console.log("Sound tidak dapat diputar:", err);
+            });
+          } else {
+            clearInterval(audioLoopInterval);
+            audioLoopInterval = null;
+          }
+        }, 1000);
+      }
+
+      function stopTimeUpSound() {
+        if (timeUpAudio) {
+          timeUpAudio.pause();
+          timeUpAudio.currentTime = 0;
+          timeUpAudio = null;
         }
-
-        function startTimer(duration) {
-            const startBtn = document.getElementById('start-timer-btn');
-            startBtn.disabled = true;
-            timeRemaining = duration;
-            updateTimerDisplay();
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
-                if (timeRemaining <= 0) {
-                    stopTimer();
-                    playTimeUpSound();
-                }
-            }, 1000);
+        if (audioLoopInterval) {
+          clearInterval(audioLoopInterval);
+          audioLoopInterval = null;
         }
+      }
 
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
+      function startTimer(duration) {
+        const startBtn = document.getElementById("start-timer-btn");
+        startBtn.disabled = true;
+        timeRemaining = duration;
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+          timeRemaining--;
+          updateTimerDisplay();
+          if (timeRemaining <= 0) {
+            stopTimer();
+            playTimeUpSound();
+          }
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
         }
+      }
 
-        // ================================================================
-        // INTERACTION LOGIC
-        // ================================================================
-        async function handleCellClick(event) {
-            const button = event.currentTarget;
-            const cellId = button.dataset.cellId; // <-- DIUBAH: Gunakan cellId
+      // ================================================================
+      // INTERACTION LOGIC
+      // ================================================================
+      async function handleCellClick(event) {
+        const button = event.currentTarget;
+        const cellId = button.dataset.cellId; // <-- DIUBAH: Gunakan cellId
 
-            // DIUBAH: Cek state berdasarkan cellId
-            if (gameState.selected[cellId]) return;
+        // DIUBAH: Cek state berdasarkan cellId
+        if (gameState.selected[cellId]) return;
 
-            const res = await qPopUp(cellId);
+        const res = await qPopUp(cellId);
 
-            if (res.cancelled && !res.team) {
-                // Jika dibatalkan (misal tutup modal), tandai sbg 'gray'
-                button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
-                gameState.selected[cellId] = 'gray'; // Simpan state 'gray'
-            
-            } else if (res.team) {
-                // Jika tim ada (baik benar atau salah)
-                const team = gameState.teams.find(x => x.name === res.team);
-                if (team) {
-                    const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
-                    // Ganti warna kotak sesuai tim
-                    button.className = `
+        if (res.cancelled) {
+          // Jika dibatalkan (misal tutup modal), tandai sbg 'gray'
+          button.className =
+            "h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg";
+          gameState.selected[cellId] = "gray"; // Simpan state 'gray'
+        } else if (res.team) {
+          // Jika tim ada (baik benar atau salah)
+          const team = gameState.teams.find((x) => x.name === res.team);
+          if (team) {
+            const colors = teamColorConfigs[team.name] || teamColorConfigs["A"];
+            // Ganti warna kotak sesuai tim
+            button.className = `
                 h-20 rounded-lg font-semibold text-xl bg-gradient-to-br ${colors.bg} 
                 border-2 ${colors.border} text-white shadow-lg transition-all duration-300
             `;
-                    // DIUBAH: Simpan nama tim di state
-                    gameState.selected[cellId] = team.name; 
-                    
-                    team.score += res.delta;
-                    document.getElementById(`score-${team.name}`).value = team.score;
-                }
-            }
-            
-            // Hapus interaksi hover setelah diklik
-            button.classList.remove('hover:scale-105', 'cursor-pointer');
-            saveState();
+            // DIUBAH: Simpan nama tim di state
+            gameState.selected[cellId] = team.name;
+
+            team.score += res.delta;
+            document.getElementById(`score-${team.name}`).value = team.score;
+          }
         }
 
+        // Hapus interaksi hover setelah diklik
+        button.classList.remove("hover:scale-105", "cursor-pointer");
+        saveState();
+      }
 
-        async function qPopUp(cellId) {
-            const dlg = document.getElementById('q-dialog');
-            const qText = document.getElementById('q-text');
-            const ansText = document.getElementById('answer-text');
-            const answerSection = document.getElementById('answer-section');
-            const toggleAnswerBtn = document.getElementById('toggle-answer-btn');
-            const okBtn = document.getElementById('q-ok');
-            const wrongBtn = document.getElementById('q-wrong');
-            const startBtn = document.getElementById('start-timer-btn');
-            const timerDisplay = document.getElementById('timer-display');
-            const pillsContainer = document.getElementById('team-pills-container');
+      async function qPopUp(cellId) {
+        const dlg = document.getElementById("q-dialog");
+        const qText = document.getElementById("q-text");
+        const ansText = document.getElementById("answer-text");
+        const answerSection = document.getElementById("answer-section");
+        const toggleAnswerBtn = document.getElementById("toggle-answer-btn");
+        const okBtn = document.getElementById("q-ok");
+        const wrongBtn = document.getElementById("q-wrong");
+        const startBtn = document.getElementById("start-timer-btn");
+        const timerDisplay = document.getElementById("timer-display");
+        const pillsContainer = document.getElementById("team-pills-container");
 
-            // Generate tombol tim
-            pillsContainer.innerHTML = '';
-            gameState.teams.forEach(team => {
-                const colors = teamColorConfigs[team.name] || teamColorConfigs['A'];
-                const pill = document.createElement('button');
-                pill.type = 'button';
-                pill.dataset.team = team.name;
-                pill.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;
-                pill.textContent = team.name;
-                pillsContainer.appendChild(pill);
+        // Generate tombol tim
+        pillsContainer.innerHTML = "";
+        gameState.teams.forEach((team) => {
+          const colors = teamColorConfigs[team.name] || teamColorConfigs["A"];
+          const pill = document.createElement("button");
+          pill.type = "button";
+          pill.dataset.team = team.name;
+          pill.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;
+          pill.textContent = team.name;
+          pillsContainer.appendChild(pill);
+        });
+
+        const pills = Array.from(
+          pillsContainer.querySelectorAll("button[data-team]")
+        );
+        const soal = questions[cellId];
+
+        // 🔹 SET PERTANYAAN & JAWABAN
+        if (soal) {
+          qText.textContent = soal.pertanyaan || "Pertanyaan tidak ditemukan.";
+          ansText.textContent =
+            soal.jawaban?.join(", ") || "Belum ada jawaban.";
+          // Set timer display awal
+          timerDisplay.textContent = formatTime(soal.waktu || 0);
+        } else {
+          qText.textContent = `Soal untuk ${cellId} tidak ditemukan dalam database.`;
+          ansText.textContent = "Tidak tersedia.";
+          timerDisplay.textContent = "00:00";
+        }
+        answerSection.classList.add("hidden");
+        answerSection.classList.remove("flex");
+        toggleAnswerBtn.textContent = "Tampilkan Jawaban";
+        toggleAnswerBtn.onclick = () => {
+          const visible = !answerSection.classList.contains("hidden");
+          if (visible) {
+            answerSection.classList.add("hidden");
+            answerSection.classList.remove("flex");
+            toggleAnswerBtn.textContent = "Tampilkan Jawaban";
+          } else {
+            answerSection.classList.remove("hidden");
+            answerSection.classList.add("flex");
+            toggleAnswerBtn.textContent = "Sembunyikan Jawaban";
+          }
+        };
+
+        stopTimer();
+        stopTimeUpSound();
+        startBtn.disabled = false;
+        timerDisplay.className =
+          "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner";
+        timerDisplay.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
+        // (timerDisplay.textContent sudah di-set di atas)
+
+        let selectedTeam = null;
+
+        return new Promise((resolve) => {
+          const onPillClick = (e) => {
+            selectedTeam = e.currentTarget.dataset.team;
+            pills.forEach((p) => {
+              const colors =
+                teamColorConfigs[p.dataset.team] || teamColorConfigs["A"];
+              if (p.dataset.team === selectedTeam) {
+                p.className = `border-2 border-transparent rounded-lg px-5 py-2.5 cursor-pointer text-xl font-semibold transition-all ${colors.selected} text-white shadow-md scale-105`;
+              } else {
+                p.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;
+              }
             });
+          };
 
-            const pills = Array.from(pillsContainer.querySelectorAll('button[data-team]'));
-            const soal = questions[cellId];
+          const shakePills = () => {
+            pills.forEach((p) => {
+              p.classList.add("animate-shake");
+              setTimeout(() => p.classList.remove("animate-shake"), 400);
+            });
+          };
 
-
-            // 🔹 SET PERTANYAAN & JAWABAN
-            if (soal) {
-                qText.textContent = soal.pertanyaan || 'Pertanyaan tidak ditemukan.';
-                ansText.textContent = soal.jawaban?.join(', ') || 'Belum ada jawaban.';
-                // Set timer display awal
-                timerDisplay.textContent = formatTime(soal.waktu || 0);
-            } else {
-                qText.textContent = `Soal untuk ${cellId} tidak ditemukan dalam database.`;
-                ansText.textContent = 'Tidak tersedia.';
-                timerDisplay.textContent = '00:00';
+          const onOkClick = (e) => {
+            if (!selectedTeam) {
+              e.preventDefault();
+              shakePills();
             }
-            answerSection.classList.add('hidden');
-            answerSection.classList.remove('flex');
-            toggleAnswerBtn.textContent = 'Tampilkan Jawaban';
-            toggleAnswerBtn.onclick = () => {
-                const visible = !answerSection.classList.contains('hidden');
-                if (visible) {
-                    answerSection.classList.add('hidden');
-                    answerSection.classList.remove('flex');
-                    toggleAnswerBtn.textContent = 'Tampilkan Jawaban';
-                } else {
-                    answerSection.classList.remove('hidden');
-                    answerSection.classList.add('flex');
-                    toggleAnswerBtn.textContent = 'Sembunyikan Jawaban';
-                }
-            };
+          };
 
+          const onWrongClick = (e) => {
+            if (!selectedTeam) {
+              e.preventDefault();
+              shakePills();
+            }
+          };
+
+          const onStartTimer = () => {
+            if (soal?.waktu) {
+              console.log("Timer dimulai:", soal.waktu, "detik");
+              startTimer(soal.waktu);
+            } else {
+              console.warn("Waktu tidak ditemukan untuk soal ini, default 15s");
+              startTimer(15); // Default timer jika tidak ada
+            }
+          };
+
+          const escHandler = (event) => {
+            if (event.key === "Escape") {
+              stopTimeUpSound();
+              // Jangan resolve, biarkan onClose yang handle
+            }
+          };
+
+          const onClose = () => {
             stopTimer();
             stopTimeUpSound();
-            startBtn.disabled = false;
-            timerDisplay.className = "text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner";
-            timerDisplay.style.textShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
-            // (timerDisplay.textContent sudah di-set di atas)
+            document.removeEventListener("keydown", escHandler);
+            dlg.removeEventListener("close", onClose);
+            pills.forEach((p) => p.removeEventListener("click", onPillClick));
+            okBtn.removeEventListener("click", onOkClick);
+            wrongBtn.removeEventListener("click", onWrongClick);
+            startBtn.removeEventListener("click", onStartTimer);
 
-            let selectedTeam = null;
+            dlg.classList.remove("translate-y-0", "opacity-100");
 
-            return new Promise((resolve) => {
-                const onPillClick = (e) => {
-                    selectedTeam = e.currentTarget.dataset.team;
-                    pills.forEach(p => {
-                        const colors = teamColorConfigs[p.dataset.team] || teamColorConfigs['A'];
-                        if (p.dataset.team === selectedTeam) {
-                            p.className = `border-2 border-transparent rounded-lg px-5 py-2.5 cursor-pointer text-xl font-semibold transition-all ${colors.selected} text-white shadow-md scale-105`;
-                        } else {
-                            p.className = `border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;
-                        }
-                    });
-                };
+            if (dlg.returnValue === "ok" && selectedTeam) {
+              resolve({ cancelled: false, team: selectedTeam, delta: 100 });
+            } else if (dlg.returnValue === "wrong" && selectedTeam) {
+              resolve({ cancelled: false, team: selectedTeam, delta: -100 });
+            } else {
+              // Jika ditutup (ESC atau tombol close)
+              resolve({ cancelled: true, team: selectedTeam, delta: 0 });
+            }
+          };
 
-                const shakePills = () => {
-                    pills.forEach(p => {
-                        p.classList.add('animate-shake');
-                        setTimeout(() => p.classList.remove('animate-shake'), 400);
-                    });
-                };
+          pills.forEach((p) => p.addEventListener("click", onPillClick));
+          okBtn.addEventListener("click", onOkClick);
+          wrongBtn.addEventListener("click", onWrongClick);
+          startBtn.addEventListener("click", onStartTimer);
+          document.addEventListener("keydown", escHandler);
+          dlg.addEventListener("close", onClose, { once: true });
 
-                const onOkClick = (e) => {
-                    if (!selectedTeam) {
-                        e.preventDefault();
-                        shakePills();
-                    }
-                };
-
-                const onWrongClick = (e) => {
-                    if (!selectedTeam) {
-                        e.preventDefault();
-                        shakePills();
-                    }
-                };
-
-                const onStartTimer = () => {
-                    if (soal?.waktu) {
-                        console.log('Timer dimulai:', soal.waktu, 'detik');
-                        startTimer(soal.waktu);
-                    } else {
-                        console.warn('Waktu tidak ditemukan untuk soal ini, default 15s');
-                        startTimer(15); // Default timer jika tidak ada
-                    }
-                };
-
-                const escHandler = (event) => {
-                    if (event.key === 'Escape') {
-                        stopTimeUpSound();
-                        // Jangan resolve, biarkan onClose yang handle
-                    }
-                };
-
-                const onClose = () => {
-                    stopTimer();
-                    stopTimeUpSound();
-                    document.removeEventListener('keydown', escHandler);
-                    dlg.removeEventListener('close', onClose);
-                    pills.forEach(p => p.removeEventListener('click', onPillClick));
-                    okBtn.removeEventListener('click', onOkClick);
-                    wrongBtn.removeEventListener('click', onWrongClick);
-                    startBtn.removeEventListener('click', onStartTimer);
-
-                    dlg.classList.remove('translate-y-0', 'opacity-100');
-
-                    if (dlg.returnValue === 'ok' && selectedTeam) {
-                        resolve({ cancelled: false, team: selectedTeam, delta: 100 });
-                    } else if (dlg.returnValue === 'wrong' && selectedTeam) {
-                        resolve({ cancelled: false, team: selectedTeam, delta: -100 });
-                    } else {
-                        // Jika ditutup (ESC atau tombol close)
-                        resolve({ cancelled: true, team: selectedTeam, delta: 0 });
-                    }
-                };
-
-                pills.forEach(p => p.addEventListener('click', onPillClick));
-                okBtn.addEventListener('click', onOkClick);
-                wrongBtn.addEventListener('click', onWrongClick);
-                startBtn.addEventListener('click', onStartTimer);
-                document.addEventListener('keydown', escHandler);
-                dlg.addEventListener('close', onClose, { once: true });
-
-                dlg.showModal();
-                setTimeout(() => dlg.classList.add('translate-y-0', 'opacity-100'), 10);
-            });
-        }
-
-        // ================================================================
-        // INITIALIZATION
-        // ================================================================
-        window.addEventListener('beforeunload', () => {
-            stopTimeUpSound();
+          dlg.showModal();
+          setTimeout(
+            () => dlg.classList.add("translate-y-0", "opacity-100"),
+            10
+          );
         });
+      }
 
-        window.addEventListener('load', () => {
-            console.log('=== CSS 2.0 Game Board Initialization ===');
+      // ================================================================
+      // INITIALIZATION
+      // ================================================================
+      window.addEventListener("beforeunload", () => {
+        stopTimeUpSound();
+      });
 
-            loadState();
-            loadQuestions();
-            renderTeams();
-            createGrid(); // createGrid sekarang akan membaca state yang benar
+      window.addEventListener("load", () => {
+        console.log("=== CSS 2.0 Game Board Initialization ===");
 
-            console.log('Grid size:', rows, 'x', cols);
-            console.log('Total soal tersedia:', Object.keys(questions).length);
-            console.log('Teams:', gameState.teams.map(t => t.name).join(', '));
+        loadState();
+        loadQuestions();
+        renderTeams();
+        createGrid(); // createGrid sekarang akan membaca state yang benar
 
-            // Animasi fade-in (opsional, tapi bagus)
-            document.querySelectorAll('#game-grid button').forEach((button, i) => {
-                button.style.opacity = '0';
-                button.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    button.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    button.style.opacity = '1';
-                    button.style.transform = 'translateY(0)';
-                }, i * 30);
-            });
+        console.log("Grid size:", rows, "x", cols);
+        console.log("Total soal tersedia:", Object.keys(questions).length);
+        console.log("Teams:", gameState.teams.map((t) => t.name).join(", "));
+
+        // Animasi fade-in (opsional, tapi bagus)
+        document.querySelectorAll("#game-grid button").forEach((button, i) => {
+          button.style.opacity = "0";
+          button.style.transform = "translateY(20px)";
+          setTimeout(() => {
+            button.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            button.style.opacity = "1";
+            button.style.transform = "translateY(0)";
+          }, i * 30);
         });
+      });
     </script>
-</body>
-
+  </body>
 </html>
