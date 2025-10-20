@@ -5,98 +5,99 @@ const dataPenyisihan1 = [
     "waktu": 10,
     "goldenZone": true,
     "pertanyaan": "Sebutkan tiga komponen utama dalam sistem komputer!",
-    "jawaban": ["Hardware Software Brainware"]
+    "jawaban": "Input, Proses, Output"
   },
   {
     "id": "A2",
-    "waktu": 10,
+    "waktu": 15,
     "goldenZone": false,
-    "pertanyaan": "Program bawaan generasi lama yang langsung berjalan saat komputer dinyalakan untuk mengecek dan mengatur perangkat keras disebut apa?",
-    "jawaban": ["BIOS", "Basic Input/Output System"]
+    "pertanyaan": "Program bawaan yang berjalan saat komputer pertama kali dinyalakan untuk mengecek perangkat keras disebut?",
+    "jawaban": "BIOS"
   },
   {
     "id": "A3",
-    "waktu": 10,
-    "pertanyaan": "Apa kepanjangan dari HDMI?",
-    "jawaban": ["High-Definition Multimedia Interface"]
+    "waktu": 5,
+    "pertanyaan": "Apa kepanjangan dari CPU?",
+    "jawaban": "Central Processing Unit"
   },
   {
     "id": "A4",
     "waktu": 10,
-    "pertanyaan": "Komponen CPU yang bertugas melakukan operasi aritmatika dan logika disebut?",
-    "jawaban": ["ALU", "Arithmetic Logic Unit"]
+    "pertanyaan": "Komponen CPU yang bertugas melakukan perhitungan aritmatika dan logika disebut?",
+    "jawaban": "ALU (Arithmetic Logic Unit)"
   },
   {
     "id": "B1",
-    "waktu": 10,
-    "pertanyaan": "Perangkat lunak yang berfungsi menghubungkan sistem operasi dengan perangkat keras disebut?",
-    "jawaban": ["Driver"]
+    "waktu": 15,
+    "pertanyaan": "Perangkat keras yang digunakan untuk menampilkan hasil proses komputer adalah?",
+    "jawaban": "Monitor"
   },
   {
     "id": "B2",
-    "waktu": 10,
-    "pertanyaan": "Ekstensi file pada Windows yang menunjukkan bahwa file dapat dijalankan adalah?",
-    "jawaban": [".exe", "Execute file"]
+    "waktu": 8,
+    "pertanyaan": "Ekstensi file yang digunakan untuk dokumen Microsoft Word adalah?",
+    "jawaban": ".docx"
   },
   {
     "id": "B3",
-    "waktu": 10,
-    "pertanyaan": "Perangkat lunak bawaan pada router Wi-Fi yang dapat diperbarui disebut?",
-    "jawaban": ["Firmware"]
+    "waktu": 12,
+    "pertanyaan": "Sebutkan dua contoh perangkat input komputer!",
+    "jawaban": "Keyboard dan Mouse"
   },
   {
     "id": "B4",
     "waktu": 10,
-    "pertanyaan": "Jenis penyimpanan kombinasi antara HDD dan SSD disebut?",
-    "jawaban": ["SSHD", "Solid State Hybrid Drive"]
+    "pertanyaan": "Jenis penyimpanan yang menggunakan piringan magnetik disebut?",
+    "jawaban": "Hard Disk Drive (HDD)"
   },
+
+  // ===== SEDANG =====
   {
     "id": "C1",
-    "waktu": 10,
-    "pertanyaan": "Perangkat lunak yang berfungsi sebagai perantara antara aplikasi dan sistem operasi disebut?",
-    "jawaban": ["Middleware"]
+    "waktu": 15,
+    "pertanyaan": "Perangkat lunak yang bertugas mengelola seluruh sumber daya komputer disebut?",
+    "jawaban": "Sistem Operasi"
   },
   {
     "id": "C2",
     "waktu": 10,
-    "pertanyaan": "Perangkat lunak yang menerjemahkan source code menjadi machine code disebut?",
-    "jawaban": ["Compiler"]
+    "pertanyaan": "Perangkat lunak yang menerjemahkan bahasa pemrograman tingkat tinggi menjadi bahasa mesin disebut?",
+    "jawaban": "Compiler"
   },
   {
     "id": "C3",
-    "waktu": 10,
-    "pertanyaan": "Perangkat lunak ilegal yang digunakan tanpa izin pemilik hak cipta disebut?",
-    "jawaban": ["Pirated Software"]
+    "waktu": 20,
+    "pertanyaan": "Sebutkan perbedaan utama antara RAM dan ROM!",
+    "jawaban": "RAM bersifat sementara dan dapat ditulis ulang, sedangkan ROM bersifat permanen dan hanya bisa dibaca"
   },
   {
     "id": "C4",
     "waktu": 10,
-    "pertanyaan": "Satuan yang digunakan untuk mengukur kecepatan CPU adalah?",
-    "jawaban": ["Hertz"]
+    "pertanyaan": "Perangkat keras yang digunakan untuk menghubungkan komputer ke jaringan internet adalah?",
+    "jawaban": "Modem atau Network Card"
   },
   {
     "id": "D1",
-    "waktu": 10,
-    "pertanyaan": "Papan sirkuit utama untuk menghubungkan semua komponen penting komputer disebut?",
-    "jawaban": ["Motherboard"]
+    "waktu": 15,
+    "pertanyaan": "Papan sirkuit utama tempat semua komponen komputer terhubung disebut?",
+    "jawaban": "Motherboard"
   },
   {
     "id": "D2",
-    "waktu": 10,
-    "pertanyaan": "Sebutkan dua perangkat penyimpanan permanen di dalam casing komputer!",
-    "jawaban": ["HDD", "Hard Disk Drive", "SSD", "Solid State Drive"]
+    "waktu": 12,
+    "pertanyaan": "Sebutkan dua contoh sistem operasi open-source!",
+    "jawaban": "Linux dan Ubuntu"
   },
   {
     "id": "D3",
     "waktu": 10,
-    "pertanyaan": "Perangkat input dengan bola kecil di atas keyboard laptop disebut?",
-    "jawaban": ["Trackball", "Pointing Stick"]
+    "pertanyaan": "Protokol jaringan yang digunakan untuk mengirim email adalah?",
+    "jawaban": "SMTP (Simple Mail Transfer Protocol)"
   },
   {
     "id": "D4",
-    "waktu": 10,
-    "pertanyaan": "Komponen yang berperan dalam proses penerimaan dan pengiriman data ke luar sistem adalah?",
-    "jawaban": ["Perangkat Input dan Output"]
+    "waktu": 8,
+    "pertanyaan": "Satuan kecepatan transfer data pada jaringan biasanya diukur dalam?",
+    "jawaban": "Mbps (Megabit per second)"
   },
 ];
-
