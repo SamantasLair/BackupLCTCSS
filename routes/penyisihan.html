@@ -522,7 +522,7 @@
 
             const res = await qPopUp(cellId);
 
-            if (res.cancelled) {
+            if (res.cancelled && !res.team) {
                 // Jika dibatalkan (misal tutup modal), tandai sbg 'gray'
                 button.className = 'h-20 rounded-lg font-semibold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg';
                 gameState.selected[cellId] = 'gray'; // Simpan state 'gray'
@@ -684,7 +684,7 @@
                         resolve({ cancelled: false, team: selectedTeam, delta: -100 });
                     } else {
                         // Jika ditutup (ESC atau tombol close)
-                        resolve({ cancelled: false, team: selectedTeam, delta: 0 });
+                        resolve({ cancelled: true, team: selectedTeam, delta: 0 });
                     }
                 };
 
