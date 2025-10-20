@@ -786,64 +786,64 @@
         // ================================================================
         // INTERACTION LOGIC
         // ================================================================
-        async function handleCellClick(event) {
+      async function handleCellClick(event) {
             const button = event.currentTarget;
             const cellId = button.dataset.cellId;
 
             if (gameState.selected[cellId]) return;
 
             const res = await qPopUp(cellId);
-            if (res.cancelled) return;
-
+            
             const team = gameState.teams.find((x) => x.name === res.team);
             let bonusAwardedInThisClick = false;
 
-            if (res.delta > 0 && team) {
-                // Jawaban BENAR
-                const colors = teamColorConfigs[team.name] || teamColorConfigs["A"];
-                button.className = `h-16 w-16 rounded-full font-bold text-xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg transition-all duration-300 flex items-center justify-center`;
-
-                const soal = questions[cellId];
-                if (soal && soal.goldenZone) {
-                    button.innerHTML = `
-                        <div class="relative flex items-center justify-center">
-                            <span>${cellId}</span>
-                            <span class="absolute -top-4 -right-3 text-yellow-400 text-lg">⭐</span>
-                        </div>
-                    `;
-                } else {
-                    button.innerText = cellId;
-                }
-
-                team.score += res.delta;
-                document.getElementById(`score-${team.name}`).value = team.score;
-                gameState.selected[cellId] = team.name;
-
-                updateTeamZones(team.name);
-                bonusAwardedInThisClick = checkForBonus(cellId, team.name);
-            } else if (res.delta < 0 && team) {
-                // Jawaban SALAH
-                button.className =
-                    "h-16 w-16 rounded-full font-bold text-xl bg-black border-2 border-gray-700 text-gray-700 shadow-inner cursor-not-allowed flex items-center justify-center";
-                button.innerText = "✗";
-
-                team.score += res.delta;
-                document.getElementById(`score-${team.name}`).value = team.score;
-                gameState.selected[cellId] = "failed";
-            } else {
-                // Tidak ada tim yang dipilih
+            if (res.cancelled) {
+                // Jika dibatalkan (misal tutup modal), tandai sbg 'gray'
                 button.className =
                     "h-16 w-16 rounded-full font-bold text-xl bg-gradient-to-br from-gray-400 to-gray-500 border-2 border-gray-600 text-gray-900 shadow-lg flex items-center justify-center";
                 gameState.selected[cellId] = "gray";
+            } else if (res.team) {
+                // Jika tim ada (baik benar atau salah)
+                if (team) {
+                    if (res.delta > 0) {
+                        // Jawaban BENAR
+                        const colors = teamColorConfigs[team.name] || teamColorConfigs["A"];
+                        button.className = `h-16 w-16 rounded-full font-bold text-xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} text-white shadow-lg transition-all duration-300 flex items-center justify-center`;
+
+                        const soal = questions[cellId];
+                        if (soal && soal.goldenZone) {
+                            button.innerHTML = `
+                                <div class="relative flex items-center justify-center">
+                                    <span>${cellId}</span>
+                                    <span class="absolute -top-4 -right-3 text-yellow-400 text-lg">⭐</span>
+                                </div>
+                            `;
+                        } else {
+                            button.innerText = cellId;
+                        }
+
+                        gameState.selected[cellId] = team.name;
+                        updateTeamZones(team.name);
+                        bonusAwardedInThisClick = checkForBonus(cellId, team.name);
+                    } else {
+                        // Jawaban SALAH
+                        button.className =
+                            "h-16 w-16 rounded-full font-bold text-xl bg-black border-2 border-gray-700 text-gray-700 shadow-inner cursor-not-allowed flex items-center justify-center";
+                        button.innerText = "✗";
+                        gameState.selected[cellId] = "failed";
+                    }
+
+                    team.score += res.delta;
+                    document.getElementById(`score-${team.name}`).value = team.score;
+                }
             }
 
-            button.onclick = null;
-
+            button.classList.remove("hover:scale-105", "cursor-pointer");
+            
             if (!bonusAwardedInThisClick) {
                 saveState();
             }
         }
-
         async function qPopUp(cellId) {
             const dlg = document.getElementById("q-dialog");
             const qText = document.getElementById("q-text");
