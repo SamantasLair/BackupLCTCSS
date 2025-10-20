@@ -195,7 +195,8 @@
             <div id="team-container"
                 class="flex flex-wrap gap-4 items-center justify-center mb-10 w-full max-w-4xl px-4"></div>
 
-            <div id="game-grid" class="grid gap-4 mb-8"></div>
+            <div id="game-grid" class="grid gap-2 mb-8 relative" style="grid-template-columns: repeat(6, 4rem);"></div>
+
         </div>
 
         <!-- Bottom Buttons -->
@@ -431,7 +432,6 @@
 
         function createGrid() {
             gridContainer.innerHTML = "";
-            gridContainer.style.gridTemplateColumns = `repeat(${GRID_COLS}, 5rem)`;
 
             for (let r = 0; r < GRID_ROWS; r++) {
                 for (let c = 0; c < GRID_COLS; c++) {
@@ -482,11 +482,11 @@
 
                     if (soal.goldenZone === true) {
                         button.innerHTML = `
-                <div class="relative flex items-center justify-center">
-                    <span>${cellId}</span>
-                    <span class="absolute -top-4 -right-3 text-yellow-400 text-lg">⭐</span>
-                </div>
-            `;
+                            <div class="relative flex items-center justify-center">
+                                <span>${cellId}</span>
+                                <span class="absolute -top-4 -right-3 text-yellow-400 text-lg">⭐</span>
+                            </div>
+                        `;
                         if (!selectedState) {
                             button.classList.add("shadow-[0_0_15px_rgba(234,179,8,0.9)]");
                         }
@@ -703,14 +703,15 @@
         function showBonusAnimation(startRow, startCol, teamName, direction) {
             const grid = document.getElementById("game-grid");
             if (!grid) return;
-
-            const buttonSize = 5 * 16;
-            const gapSize = 0.5 * 16;
-            const cellSize = buttonSize + gapSize;
-            const offset = gapSize / 2;
-            const singleBoxSize = buttonSize + 2 * offset;
             const lineLength = 4;
             const [dr, dc] = direction;
+
+            // Ukuran tombol di grid (sesuai dengan w-16 h-16 = 4rem = 64px)
+            const buttonSize = 64;
+            // Gap antar tombol (sesuai dengan gap-2 = 0.5rem = 8px)
+            const gapSize = 8;
+            // Total jarak per sel
+            const cellSize = buttonSize + gapSize;
 
             const teamConfig = teamColorConfigs[teamName];
             const borderColor =
@@ -731,11 +732,9 @@
                 }
 
                 const zone = document.createElement("div");
-                zone.className = "absolute pointer-events-none border-[3px] border-white rounded-xl animate-[zone-flash_4s_ease-out] z-50";
-                zone.style.top = `${currentRow * cellSize - offset}px`;
-                zone.style.left = `${currentCol * cellSize - offset}px`;
-                zone.style.width = `${singleBoxSize}px`;
-                zone.style.height = `${singleBoxSize}px`;
+                zone.className = "absolute pointer-events-none border-[3px] border-white rounded-full animate-[zone-flash_4s_ease-out] z-50 w-16 h-16 ";
+                zone.style.top = `${currentRow * cellSize}px`;
+                zone.style.left = `${currentCol * cellSize}px`;
                 zone.style.borderColor = borderColor;
                 zone.style.boxShadow = `0 0 20px ${borderColor}, 0 0 40px ${borderColor}`;
 
@@ -753,6 +752,7 @@
             pointsText.className = "bonus-points-text";
             pointsText.textContent = "+100 COMBO!";
 
+            // Posisi di tengah-tengah 4 sel
             const middleRow = startRow + 1.5 * dr;
             const middleCol = startCol + 1.5 * dc;
             const centerX = middleCol * cellSize + buttonSize / 2;
