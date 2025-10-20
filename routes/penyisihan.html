@@ -666,7 +666,7 @@
         if (soal) {
           qText.textContent = soal.pertanyaan || "Pertanyaan tidak ditemukan.";
           ansText.textContent =
-            soal.jawaban?.join(", ") || "Belum ada jawaban.";
+            soal.jawaban || "Belum ada jawaban.";
           // Set timer display awal
           timerDisplay.textContent = formatTime(soal.waktu || 0);
         } else {
@@ -748,7 +748,6 @@
           const escHandler = (event) => {
             if (event.key === "Escape") {
               stopTimeUpSound();
-              // Jangan resolve, biarkan onClose yang handle
             }
           };
 

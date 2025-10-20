@@ -216,7 +216,7 @@
     </div>
 
     <!-- // ================================================================
-    // DATA SOAL (Contoh - Ganti dengan data dari soalSemifinal.js)
+    // DATA SOAL (soalSemifinal.js)
     // ================================================================ -->
 
     <script src="../soal/soalSemifinal.js"></script>
@@ -539,21 +539,34 @@
 
         function playTimeUpSound() {
             stopTimeUpSound();
-            console.log("Time up!");
-            // Audio disabled for demo - uncomment if you have the file
-            // timeUpAudio = new Audio('../resources/timeup.mp3');
-            // timeUpAudio.play().catch(err => console.log('Sound tidak dapat diputar:', err));
+            timeUpAudio = new Audio("../resources/timeup.mp3");
+            timeUpAudio.play().catch((err) => {
+            console.log("Sound tidak dapat diputar:", err);
+            });
+            let playCount = 0;
+            audioLoopInterval = setInterval(() => {
+            playCount++;
+            if (playCount < 3) {
+                timeUpAudio = new Audio("../resources/timeup.mp3");
+                timeUpAudio.play().catch((err) => {
+                console.log("Sound tidak dapat diputar:", err);
+                });
+            } else {
+                clearInterval(audioLoopInterval);
+                audioLoopInterval = null;
+            }
+            }, 1000);
         }
 
         function stopTimeUpSound() {
             if (timeUpAudio) {
-                timeUpAudio.pause();
-                timeUpAudio.currentTime = 0;
-                timeUpAudio = null;
+            timeUpAudio.pause();
+            timeUpAudio.currentTime = 0;
+            timeUpAudio = null;
             }
             if (audioLoopInterval) {
-                clearInterval(audioLoopInterval);
-                audioLoopInterval = null;
+            clearInterval(audioLoopInterval);
+            audioLoopInterval = null;
             }
         }
 
@@ -985,7 +998,7 @@
                             delta: pointsWrong,
                         });
                     } else {
-                        resolve({ cancelled: true });
+                     resolve({ cancelled: true, team: selectedTeam, delta: 0 });
                     }
                 };
 
