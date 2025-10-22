@@ -1,0 +1,20 @@
+PAKET SOAL
+tambah count down di paket soal
+jangan langsung kettutup
+tambah tampilkan jwaban -> lanjut
+
+
+REBUTAN
+tunjukin jawaban di babak rebutan, 
+tahan di waktu 0
+soal tidak muncul lagi
+
+mulai waktu setelah mc membaca (5 detik) -> waktu habis -> diberikan waktu tambahan jika (ada tim yang mau merebut) -> misal 10 detik diberikan waktu untuk tim menjawab 
+
+jadi waktu di tampilkan 2x.
+
+
+LELASNG
+tetep di tahan di state,
+jawaban di tampilin,
+minus tidak bisa ikut lelang,

@@ -4,14 +4,14 @@ const dataPenyisihan1 = [
     "id": "A1",
     "waktu": 10,
     "goldenZone": true,
-    "pertanyaan": "Sebutkan tiga komponen utama dalam sistem komputer!",
+    "pertanyaan": "../soal/images/penyisihan/A1.png",
     "jawaban": "Input, Proses, Output"
   },
   {
     "id": "A2",
     "waktu": 15,
     "goldenZone": false,
-    "pertanyaan": "Program bawaan yang berjalan saat komputer pertama kali dinyalakan untuk mengecek perangkat keras disebut?",
+    "pertanyaan": "../soal/images/penyisihan/A2.png",
     "jawaban": "BIOS"
   },
   {
@@ -99,5 +99,66 @@ const dataPenyisihan1 = [
     "waktu": 8,
     "pertanyaan": "Satuan kecepatan transfer data pada jaringan biasanya diukur dalam?",
     "jawaban": "Mbps (Megabit per second)"
+  },
+];
+
+const dataPenyisihan2 = [
+  // ===== MUDAH =====
+  {
+    "id": "A1",
+    "waktu": 10,
+    "pertanyaan": "contoh sesi 2",
+    "jawaban": "Input, Proses, Output"
+  },
+  {
+    "id": "A2",
+    "waktu": 15,
+    "pertanyaan": "Program bawaan yang berjalan saat komputer pertama kali dinyalakan untuk mengecek perangkat keras disebut?",
+    "jawaban": "BIOS"
+  },
+  {
+    "id": "A3",
+    "waktu": 5,
+    "pertanyaan": "Apa kepanjangan dari CPU?",
+    "jawaban": "Central Processing Unit"
+  },
+
+  {
+    "id": "B1",
+    "waktu": 15,
+    "pertanyaan": "Perangkat keras yang digunakan untuk menampilkan hasil proses komputer adalah?",
+    "jawaban": "Monitor"
+  },
+  {
+    "id": "B2",
+    "waktu": 8,
+    "pertanyaan": "Ekstensi file yang digunakan untuk dokumen Microsoft Word adalah?",
+    "jawaban": ".docx"
+  },
+  {
+    "id": "B3",
+    "waktu": 12,
+    "pertanyaan": "Sebutkan dua contoh perangkat input komputer!",
+    "jawaban": "Keyboard dan Mouse"
+  },
+
+  // ===== SEDANG =====
+  {
+    "id": "C1",
+    "waktu": 15,
+    "pertanyaan": "Perangkat lunak yang bertugas mengelola seluruh sumber daya komputer disebut?",
+    "jawaban": "Sistem Operasi"
+  },
+  {
+    "id": "C2",
+    "waktu": 10,
+    "pertanyaan": "Perangkat lunak yang menerjemahkan bahasa pemrograman tingkat tinggi menjadi bahasa mesin disebut?",
+    "jawaban": "Compiler"
+  },
+  {
+    "id": "C3",
+    "waktu": 20,
+    "pertanyaan": "Sebutkan perbedaan utama antara RAM dan ROM!",
+    "jawaban": "RAM bersifat sementara dan dapat ditulis ulang, sedangkan ROM bersifat permanen dan hanya bisa dibaca"
   },
 ];

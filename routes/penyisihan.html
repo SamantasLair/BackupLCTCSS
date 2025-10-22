@@ -93,7 +93,7 @@
         </h3>
       </header>
 
-      <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center">
+      <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center" id="q-section">
         <blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">
           "Soal tidak terdeteksi"
         </blockquote>
@@ -149,7 +149,7 @@
           CSS<span class="text-sm ml-1">2.0</span>
         </h1>
         <h1 class="text-white text-lg font-bold font-poppins">
-          Babak Semifinal
+          Babak Penyisihan
         </h1>
       </div>
     </div>
@@ -275,7 +275,6 @@
           { name: "A", score: 0 },
           { name: "B", score: 0 },
           { name: "C", score: 0 },
-          { name: "D", score: 0 },
         ];
         gameState.selected = {}; // <-- DIUBAH: Inisialisasi sebagai object
       }
@@ -588,6 +587,7 @@
     async function qPopUp(cellId) {
       const dlg = document.getElementById("q-dialog");
       const qText = document.getElementById("q-text");
+      const qSection = document.getElementById("q-section");
       const ansText = document.getElementById("answer-text");
       const answerSection = document.getElementById("answer-section");
       const toggleAnswerBtn = document.getElementById("toggle-answer-btn");
@@ -616,7 +616,11 @@
 
       // 🔹 SET PERTANYAAN & JAWABAN
       if (soal) {
-        qText.textContent = soal.pertanyaan || "Pertanyaan tidak ditemukan.";
+        if(soal.pertanyaan.includes("png")) {
+          qSection.innerHTML = `<img src="${soal.pertanyaan}" class="h-full w-full">`;
+        }else{
+          qText.textContent = soal.pertanyaan || "Pertanyaan tidak ditemukan.";
+        }
         ansText.textContent =
           soal.jawaban || "Belum ada jawaban.";
         // Set timer display awal

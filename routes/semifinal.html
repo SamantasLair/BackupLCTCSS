@@ -282,11 +282,10 @@
                 { name: "A", score: 500, zones: 0 },
                 { name: "B", score: 500, zones: 0 },
                 { name: "C", score: 500, zones: 0 },
-                { name: "D", score: 500, zones: 0 },
             ];
             gameState.selected = {};
             gameState.bonusApplied = {};
-            gameState.comboCount = { A: 0, B: 0, C: 0, D: 0 };
+            gameState.comboCount = { A: 0, B: 0, C: 0};
         }
 
         function loadState() {
@@ -298,7 +297,7 @@
                         gameState.selected = {};
                     if (!gameState.bonusApplied) gameState.bonusApplied = {};
                     if (!gameState.comboCount)
-                        gameState.comboCount = { A: 0, B: 0, C: 0, D: 0 };
+                        gameState.comboCount = { A: 0, B: 0, C: 0};
                 } else {
                     initializeDefaultState();
                 }
