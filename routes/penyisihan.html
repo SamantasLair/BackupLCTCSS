@@ -619,7 +619,9 @@
         if(soal.pertanyaan.includes("png")) {
           qSection.innerHTML = `<img src="${soal.pertanyaan}" class="h-full w-full">`;
         }else{
-          qText.textContent = soal.pertanyaan || "Pertanyaan tidak ditemukan.";
+          qSection.innerHTML = `<blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">
+          ${soal.pertanyaan || "Pertanyaan tidak ditemukan."}
+        </blockquote>`;
         }
         ansText.textContent =
           soal.jawaban || "Belum ada jawaban.";

@@ -129,7 +129,7 @@
                 </h3>
             </header>
 
-            <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center">
+            <section class="px-6 py-6 text-center min-h-[120px] flex items-center justify-center" id="q-section">
                 <blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">
                     "Soal tidak terdeteksi"
                 </blockquote>
@@ -846,6 +846,7 @@
         async function qPopUp(cellId) {
             const dlg = document.getElementById("q-dialog");
             const qText = document.getElementById("q-text");
+            const qSection = document.getElementById("q-section");
             const ansText = document.getElementById("answer-text");
             const answerSection = document.getElementById("answer-section");
             const toggleAnswerBtn = document.getElementById("toggle-answer-btn");
@@ -886,6 +887,13 @@
             );
 
             if (soal) {
+                if(soal.pertanyaan.includes("png")) {
+                    qSection.innerHTML = `<img src="${soal.pertanyaan}" class="h-full w-full">`;
+                }else{
+                    qSection.innerHTML = `<blockquote id="q-text" class="italic text-lg text-black font-bold font-poppins leading-relaxed">
+                ${soal.pertanyaan || "Pertanyaan tidak ditemukan."}
+                </blockquote>`;
+                }
                 qText.textContent = soal.pertanyaan || "Pertanyaan tidak ditemukan.";
                 ansText.textContent = soal.jawaban || "Belum ada jawaban.";
                 timerDisplay.textContent = formatTime(soal.waktu || 0);
