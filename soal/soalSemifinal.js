@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 const dataSemifinal1 = [
   // ===== A =====
   {
