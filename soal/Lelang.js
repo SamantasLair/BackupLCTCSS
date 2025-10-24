@@ -53,7 +53,7 @@ const soalLelang = [
     ]
   },
   {
-    "name": "Pengetahuan Umum",
+    "name": "Pengetahuwan Umum",
     "questions": [
       { "waktu": 10, "pertanyaan": "Berapa jumlah negara di PBB saat ini (2024)?", "jawaban": "193" },
       { "waktu": 10, "pertanyaan": "Apa warna bendera negara Swiss?", "jawaban": "Merah dengan palang putih" }
