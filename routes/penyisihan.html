@@ -9,14 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet"/>
   <script>
-    tailwind.config={theme:{extend:{fontFamily:{poppins:["Poppins","sans-serif"]},animation:{shake:"shake 0.4s ease-in-out","pulse-danger":"pulse-danger 0.5s infinite","glow-pulse":"glow-pulse 6s ease-in-out infinite","rotate-counter":"rotate-counter 12s linear infinite","rotate-counter-fast":"rotate-counter 6s linear infinite"},keyframes:{shake:{"0%,100%":{transform:"translateX(0)"},"20%,60%":{transform:"translateX(-4px)"},"40%,80%":{transform:"translateX(4px)"}}, "pulse-danger":{"0%,100%":{transform:"scale(1)"},"50%":{transform:"scale(1.05)"}}, "glow-pulse":{"0%,100%":{transform:"scale(1)"},"50%":{transform:"scale(1.1)"}}, "rotate-counter":{from:{transform:"rotate(0deg)"},to:{transform:"rotate(-360deg)"}}}}}};
+    tailwind.config={theme:{extend:{fontFamily:{poppins:["Poppins","sans-serif"]},animation:{shake:"shake 0.4s ease-in-out","pulse-danger":"pulse-danger 0.5s infinite","glow-pulse":"glow-pulse 6s ease-in-out infinite","rotate-counter":"rotate-counter 12s linear infinite","rotate-counter-fast":"rotate-counter 6s linear infinite","slideUp":"slideUp 0.25s ease-out","fadeIn":"fadeIn 0.2s ease-out"},keyframes:{shake:{"0%,100%":{transform:"translateX(0)"},"20%,60%":{transform:"translateX(-4px)"},"40%,80%":{transform:"translateX(4px)"}}, "pulse-danger":{"0%,100%":{transform:"scale(1)"},"50%":{transform:"scale(1.05)"}}, "glow-pulse":{"0%,100%":{transform:"scale(1)"},"50%":{transform:"scale(1.1)"}}, "rotate-counter":{from:{transform:"rotate(0deg)"},to:{transform:"rotate(-360deg)"}}, slideUp:{from:{opacity:"0",transform:"translateY(12px)"},to:{opacity:"1",transform:"translateY(0)"}}, fadeIn:{from:{opacity:"0"},to:{opacity:"1"}}}}}};
   </script>
   <style>
+    body{font-family:'Poppins',sans-serif;background-image:linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);background-size:10px 10px}
     input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
     input[type="number"]{-moz-appearance:textfield}
   </style>
 </head>
-<body class="min-h-screen bg-black font-poppins overflow-hidden">
+<body class="min-h-screen bg-black font-poppins overflow-hidden text-white">
   <div class="fixed inset-0 opacity-5 pointer-events-none" style="background:linear-gradient(90deg,white 1px,transparent 1px),linear-gradient(white 1px,transparent 1px);background-size:10px 10px;"></div>
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none z-0">
     <div class="absolute w-[500px] h-[500px] rounded-full animate-rotate-counter">
@@ -64,12 +65,12 @@
     </form>
   </dialog>
 
-  <div id="setupContainer" class="fixed inset-0 flex items-center justify-center bg-black/80 z-50">
-    <div class="bg-white rounded-2xl p-6 w-[92%] max-w-md">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Setup Penyisihan</h2>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Tim</label>
-      <input id="teamCountInput" type="number" min="1" max="8" value="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-      <button onclick="startGame()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all">Mulai Game</button>
+  <div id="setupContainer" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/70">
+    <div class="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/20 rounded-xl p-10 text-center animate-slideUp">
+      <h2 class="mb-5 text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">Atur Jumlah Tim</h2>
+      <input type="number" id="teamInput" value="3" min="2" max="26" class="p-2.5 border-2 border-amber-500/30 rounded-md bg-white/10 text-white text-base mb-4 w-52 text-center">
+      <br>
+      <button onclick="startGame()" class="bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 px-8 border-none rounded-md font-semibold cursor-pointer transition-all duration-300 hover:scale-105">Mulai Game</button>
     </div>
   </div>
 
@@ -112,9 +113,28 @@
     let timerInterval=null,timeRemaining=0;
     let rebuttalTimerInterval=null,rebuttalRemaining=0;
 
+    function showCustomConfirm(message,onConfirm){
+      if(document.getElementById("customConfirmModal"))return;
+      const confirmModal=document.createElement("div");
+      confirmModal.id="customConfirmModal";
+      confirmModal.className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/70 animate-fadeIn";
+      confirmModal.innerHTML=`
+        <div class="bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-white/20 rounded-xl p-8 text-center animate-slideUp max-w-sm w-11/12">
+          <p class="text-white text-lg mb-8">${message}</p>
+          <div class="flex justify-center gap-4">
+            <button id="customConfirmCancelBtn" class="bg-slate-500 text-white py-2 px-6 rounded-md font-semibold transition-transform hover:scale-105">Batal</button>
+            <button id="customConfirmOkBtn" class="bg-red-500 text-white py-2 px-6 rounded-md font-semibold transition-transform hover:scale-105">Yakin</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(confirmModal);
+      document.getElementById("customConfirmOkBtn").onclick=()=>{confirmModal.remove();if(typeof onConfirm==="function")onConfirm()};
+      document.getElementById("customConfirmCancelBtn").onclick=()=>{confirmModal.remove()}
+    }
+
     function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(gameState))}
     function clearState(){localStorage.removeItem(STORAGE_KEY)}
-    function resetBoard(){if(confirm("Reset permainan?")){clearState();location.reload()}}
+    function resetBoard(){showCustomConfirm("Yakin reset permainan?",()=>{clearState();location.reload()})}
 
     function loadQuestions(){
       if(typeof dataPenyisihan1==="undefined"){alert("Error: Data soal tidak ditemukan!");return}
@@ -271,7 +291,7 @@
       const dialogHint=document.getElementById("dialog-phase-hint");
       const soal=questions[cellId];
       const qSection=document.getElementById("q-section");
-      if(soal){if(soal.pertanyaan.includes("png")){qSection.innerHTML=`<img src="${soal.pertanyaan}" class="h-full w-full">`}else{qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">${soal.pertanyaan||"Pertanyaan tidak ditemukan."}</blockquote>`}ansText.textContent=soal.jawaban||"Belum ada jawaban.";timerDisplay.textContent=formatTime(soal.waktu||0)}else{qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">Soal untuk ${cellId} tidak ditemukan.</blockquote>`;ansText.textContent="Tidak tersedia.";timerDisplay.textContent="00:00"}
+      if(soal){if((soal.pertanyaan||"").includes("png")){qSection.innerHTML=`<img src="${soal.pertanyaan}" class="h-full w-full">`}else{qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">${soal.pertanyaan||"Pertanyaan tidak ditemukan."}</blockquote>`}ansText.textContent=soal.jawaban||"Belum ada jawaban.";timerDisplay.textContent=formatTime(soal.waktu||0)}else{qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">Soal untuk ${cellId} tidak ditemukan.</blockquote>`;ansText.textContent="Tidak tersedia.";timerDisplay.textContent="00:00"}
       answerSection.classList.add("hidden");answerSection.classList.remove("flex");
       toggleAnswerBtn.textContent="Tampilkan Jawaban";
       toggleAnswerBtn.onclick=()=>{const vis=!answerSection.classList.contains("hidden");if(vis){answerSection.classList.add("hidden");answerSection.classList.remove("flex");toggleAnswerBtn.textContent="Tampilkan Jawaban"}else{answerSection.classList.remove("hidden");answerSection.classList.add("flex");toggleAnswerBtn.textContent="Sembunyikan Jawaban"}};
@@ -359,13 +379,13 @@
 
     function totalTeamsAvailable(){return Object.keys(teamColorConfigs).length}
     function startGame(){
-      const input=document.getElementById("teamCountInput");
+      const input=document.getElementById("teamInput");
       let n=parseInt(input.value,10);
-      if(isNaN(n)||n<1)n=1;
-      if(n>totalTeamsAvailable())n=totalTeamsAvailable();
-      const letters=Object.keys(teamColorConfigs);
+      if(isNaN(n)) n=3;
+      if(n<2) n=2;
+      if(n>26) n=26;
       gameState={teams:[],selected:{},currentPhase:"wajib",wajibTurnIndex:0,wajibAnsweredCount:0};
-      for(let i=0;i<n;i++){gameState.teams.push({name:letters[i],score:0})}
+      for(let i=0;i<n;i++){const name=String.fromCharCode(65+i);gameState.teams.push({name,score:0})}
       saveState();
       setupContainer.classList.add("hidden");
       mainContainer.classList.remove("hidden");
