@@ -223,24 +223,86 @@
       else if(timeRemaining<=3&&timeRemaining>0){d.className+=" text-red-500 animate-pulse-danger";d.style.textShadow="0 0 10px rgba(239,68,68,0.7)"}
       else{d.className+=" text-emerald-500";d.style.textShadow="0 0 10px rgba(16,185,129,0.5)"}
     }
-    function playTimeUpSound(){
-      stopTimeUpSound();timeUpAudio=new Audio("../resources/timeup.mp3");timeUpAudio.play().catch(()=>{});
-      let count=0;audioLoopInterval=setInterval(()=>{count++;if(count<3){timeUpAudio=new Audio("../resources/timeup.mp3");timeUpAudio.play().catch(()=>{})}else{clearInterval(audioLoopInterval);audioLoopInterval=null}},1000)
-    }
-    function stopTimeUpSound(){if(timeUpAudio){timeUpAudio.pause();timeUpAudio.currentTime=0;timeUpAudio=null}if(audioLoopInterval){clearInterval(audioLoopInterval);audioLoopInterval=null}}
-    function startTimer(duration,onTimeUp){
-      const startBtn=document.getElementById("start-timer-btn");startBtn.disabled=true;
-      timeRemaining=duration;updateTimerDisplay();
-      timerInterval=setInterval(()=>{timeRemaining--;updateTimerDisplay();if(timeRemaining<=0){stopTimer();playTimeUpSound();if(typeof onTimeUp==="function") onTimeUp()}},1000)
-    }
-    function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null}}
 
-    function startRebuttalTimer(onPickTimeout){
-      const btn=document.getElementById("start-rebuttal-btn");const disp=document.getElementById("rebuttal-timer-display");
-      btn.disabled=true;rebuttalRemaining=5;disp.textContent="00:05";
-      rebuttalTimerInterval=setInterval(()=>{rebuttalRemaining--;disp.textContent=`00:0${Math.max(rebuttalRemaining,0)}`;if(rebuttalRemaining<=0){stopRebuttalTimer();if(typeof onPickTimeout==="function") onPickTimeout()}},1000)
+    function playTimeUpSound(){
+      stopTimeUpSound();
+      try{
+        timeUpAudio=new Audio("../resources/timeup.mp3");
+        timeUpAudio.currentTime=0;
+        timeUpAudio.play().catch(()=>{});
+        let count=0;
+        audioLoopInterval=setInterval(()=>{
+          count++;
+          if(count<3){
+            const a=new Audio("../resources/timeup.mp3");
+            a.currentTime=0;
+            a.play().catch(()=>{});
+          }else{
+            clearInterval(audioLoopInterval);
+            audioLoopInterval=null;
+          }
+        },1000);
+      }catch(_){}
     }
-    function stopRebuttalTimer(){if(rebuttalTimerInterval){clearInterval(rebuttalTimerInterval);rebuttalTimerInterval=null}}
+    function stopTimeUpSound(){
+      if(timeUpAudio){
+        timeUpAudio.pause();
+        timeUpAudio.currentTime=0;
+        timeUpAudio=null;
+      }
+      if(audioLoopInterval){
+        clearInterval(audioLoopInterval);
+        audioLoopInterval=null;
+      }
+    }
+
+    function startTimer(duration,onTimeUp){
+      const startBtn=document.getElementById("start-timer-btn");
+      startBtn.disabled=true;
+      timeRemaining=duration;
+      updateTimerDisplay();
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval=setInterval(()=>{
+        timeRemaining--;
+        updateTimerDisplay();
+        if(timeRemaining<=0){
+          stopTimer();
+          playTimeUpSound();
+          if(typeof onTimeUp==="function"){
+            try{onTimeUp()}catch(_){}
+          }
+        }
+      },1000);
+    }
+    function stopTimer(){
+      if(timerInterval){
+        clearInterval(timerInterval);
+        timerInterval=null;
+      }
+    }
+
+    function startRebuttalTimer(){
+      const btn=document.getElementById("start-rebuttal-btn");
+      const disp=document.getElementById("rebuttal-timer-display");
+      btn.disabled=true;
+      rebuttalRemaining=5;
+      disp.textContent="00:05";
+      if(rebuttalTimerInterval) clearInterval(rebuttalTimerInterval);
+      rebuttalTimerInterval=setInterval(()=>{
+        rebuttalRemaining--;
+        disp.textContent=`00:0${Math.max(rebuttalRemaining,0)}`;
+        if(rebuttalRemaining<=0){
+          stopRebuttalTimer();
+          playTimeUpSound();
+        }
+      },1000);
+    }
+    function stopRebuttalTimer(){
+      if(rebuttalTimerInterval){
+        clearInterval(rebuttalTimerInterval);
+        rebuttalTimerInterval=null;
+      }
+    }
 
     async function handleCellClick(e){
       const button=e.currentTarget;const cellId=button.dataset.cellId;
@@ -297,7 +359,8 @@
       toggleAnswerBtn.onclick=()=>{const vis=!answerSection.classList.contains("hidden");if(vis){answerSection.classList.add("hidden");answerSection.classList.remove("flex");toggleAnswerBtn.textContent="Tampilkan Jawaban"}else{answerSection.classList.remove("hidden");answerSection.classList.add("flex");toggleAnswerBtn.textContent="Sembunyikan Jawaban"}};
       stopTimer();stopTimeUpSound();startBtn.disabled=false;
       timerDisplay.className="text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner";timerDisplay.style.textShadow="0 0 10px rgba(16,185,129,0.5)";
-      rebuttalControls.style.display="none";startRebuttalBtn.disabled=false;
+      rebuttalControls.style.display="none";
+      startRebuttalBtn.disabled=false;
       pillsContainer.innerHTML="";
       gameState.teams.forEach(team=>{const colors=teamColorConfigs[team.name]||teamColorConfigs["A"];const pill=document.createElement("button");pill.type="button";pill.dataset.team=team.name;pill.className=`border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;pill.textContent=team.name;pillsContainer.appendChild(pill)});
       const pills=Array.from(pillsContainer.querySelectorAll("button[data-team]"));
@@ -340,7 +403,7 @@
         }
       };
       const onStartTimer=()=>{const dur=soal?.waktu?soal.waktu:15;startTimer(dur,()=>{if(mode==="wajib-initial"){enterWajibLempar()} })};
-      const onStartRebuttal=()=>{startRebuttalTimer(()=>{dlg.returnValue="cancel";dlg.close()})};
+      const onStartRebuttal=()=>{startRebuttalTimer()};
       const escHandler=(ev)=>{if(ev.key==="Escape"){stopTimeUpSound()}};
       return new Promise(resolve=>{
         pills.forEach(p=>p.addEventListener("click",onPillClick));
