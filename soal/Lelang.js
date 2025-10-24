@@ -4,7 +4,7 @@
 
 const soalLelang = [
   {
-    "name": "Sejarah",
+    "name": "Sejarahh",
     "questions": [
       { "waktu": 10, "pertanyaan": "Siapa presiden pertama Filipina?", "jawaban": "Emilio Aguinaldo" },
       { "waktu": 10, "pertanyaan": "Perang Dunia I dimulai pada tahun berapa?", "jawaban": "1914" }
