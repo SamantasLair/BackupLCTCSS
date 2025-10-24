@@ -17,7 +17,6 @@
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 10px 10px;
-            /* Sembunyikan panah input number */
             input[type="number"]::-webkit-inner-spin-button,
             input[type="number"]::-webkit-outer-spin-button {
                 -webkit-appearance: none;
@@ -243,7 +242,7 @@
                 class="modal-header text-2xl font-bold mb-5 text-center bg-gradient-to-r from-amber-400 to-amber-500 text-transparent bg-clip-text">
                 Pilih Kategori Lelang</div>
             <div id="categoryGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -264,7 +263,7 @@
             <div id="paketQuestionSelection">
                 <p class="text-center text-slate-300 mb-4">Silakan pilih kotak soal:</p>
                 <div id="paketQuestionGrid" class="grid grid-cols-6 gap-3">
-                    </div>
+                </div>
             </div>
 
             <div id="paketQuestionDisplay" class="hidden">
@@ -357,7 +356,7 @@
             </div>
 
             <div id="rebutanTeams" class="w-full flex flex-wrap justify-center items-center gap-5 mb-6">
-                </div>
+            </div>
 
             <div id="rebutanTimerContainer" class="flex flex-col items-center justify-center gap-4 my-4">
                 <div id="rebutanTimerDisplay" class="text-6xl font-bold text-white">5</div>
@@ -410,16 +409,23 @@
             <div id="auctionBiddingPhase">
                 <p id="auctionCategoryInfo" class="text-center text-slate-300 mb-4 text-lg">Kategori: Sejarah</p>
                 <div class="auction-controls mb-6">
-                    <p class="text-sm text-slate-300 mb-2 text-center">Masukkan nominal poin lelang tertinggi</p>
-                    <input type="number"
-                        class="w-full p-3 bg-white/10 border-2 border-amber-500/30 rounded-md text-white text-base text-center placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                        id="bidAmount" placeholder="Contoh: 100" min="1">
+                    <p class="text-sm text-slate-300 mb-2 text-center">Masukkan nominal poin lelang tertinggi (min. 100, kelipatan 100)</p>
+                    <div class="flex items-center justify-center gap-2">
+                        <input type="number"
+                            class="flex-grow p-3 bg-white/10 border-2 border-amber-500/30 rounded-md text-white text-base text-center placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                            id="bidAmount" placeholder="Contoh: 100" min="100" step="100">
+                        <button type="button" onclick="increaseBid()"
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md transition-transform duration-200 hover:scale-105"
+                            title="Tambah 100 Poin">
+                            +100
+                        </button>
+                    </div>
                 </div>
 
                 <p class="text-center text-slate-300 mb-3 text-base font-medium">Pilih tim pemenang lelang:</p>
 
                 <div id="auctionTeams" class="auction-teams flex flex-wrap justify-center items-center gap-4 mb-6">
-                    </div>
+                </div>
 
                 <button
                     class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-md font-semibold transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30"
@@ -483,7 +489,7 @@
     <script src="../soal/Lelang.js"></script>
 
     <script>
-        // Array warna yang bervariasi
+        // --- CONFIG & STATE ---
         const colorPalette = [
             { bg: '#ff4444', light: 'rgba(255, 68, 68, 0.1)', name: 'team-a' },
             { bg: '#3b82ff', light: 'rgba(59, 130, 246, 0.1)', name: 'team-b' },
@@ -513,22 +519,20 @@
             { bg: '#eeeeee', light: 'rgba(238, 238, 238, 0.1)', name: 'team-z' },
         ];
 
-        // --- REBUTAN QUESTIONS ---
-        // Data lama (sampleQuestions) dihapus, diganti dengan rebutanQuestionsState
         let currentRebutanQuestion = null;
-        let rebutanQuestionsState = []; // Variabel BARU untuk menyimpan state {q, a, used}
-
+        let rebutanQuestionsState = [];
 
         let gameState = { teams: [], paket: { questions: [], currentTeamIndex: 0, answeredCount: 0 }, auctionCategories: [] };
-        let totalTeams = 5;
+        let totalTeams = 3;
         let timerInterval;
         let selectedRebuttalTeam = null;
         let currentPaketQuestionIndex = null;
         let currentAuction = { categoryIndex: null, questionIndex: null };
         let currentBid = { teamName: null, amount: 0 };
-        let selectedTeam = null; // Used for Rebutan and Auction Bidding
+        let selectedTeam = null;
 
-        // FUNGSI BARU: Menginisialisasi state soal rebutan dari file eksternal
+        // --- INITIALIZATION & STATE MANAGEMENT ---
+
         function initializeRebutanState() {
             if (typeof soalRebutanFinal === 'undefined') {
                 console.error("RebutanFinal.js tidak dimuat atau variabel tidak ditemukan.");
@@ -539,43 +543,38 @@
             rebutanQuestionsState = soalRebutanFinal.map(q => ({
                 q: q.pertanyaan,
                 a: q.jawaban,
-                waktu: q.waktu || 10, // REVISI: Menambahkan properti waktu
+                waktu: q.waktu || 10,
                 used: false
             }));
         }
 
-        // FUNGSI DIPERBARUI: Menggunakan data dari soalPaketFinal
         function initializePaketQuestions() {
-            // Cek jika soalPaketFinal ada
             if (typeof soalPaketFinal === 'undefined') {
                 console.error("soalPaketFinal.js tidak dimuat atau variabel tidak ditemukan.");
                 return [];
             }
 
-            // Kita gunakan urutan A1-A6, E1-E6 sesuai file
             return soalPaketFinal.map(q => ({
-                label: q.id, // Menggunakan ID dari file
+                label: q.id,
                 text: q.pertanyaan,
                 answer: q.jawaban,
-                waktu: q.waktu || 10, // REVISI: Menambahkan properti waktu
+                waktu: q.waktu || 10,
                 answered: false
             }));
         }
 
-        // FUNGSI DIPERBARUI: Menggunakan data dari soalLelang
         function initializeAuctionCategories() {
             if (typeof soalLelang === 'undefined') {
                 console.error("Lelang.js tidak dimuat atau variabel tidak ditemukan.");
                 return [];
             }
 
-            // Menambahkan 'answered: false' ke setiap pertanyaan
             return soalLelang.map(category => ({
                 name: category.name,
                 questions: category.questions.map(q => ({
                     text: q.pertanyaan,
                     answer: q.jawaban,
-                    waktu: q.waktu || 10, // REVISI: Menambahkan properti waktu
+                    waktu: q.waktu || 10,
                     answered: false
                 }))
             }));
@@ -588,7 +587,6 @@
                 totalTeams = state.totalTeams;
                 gameState = state;
 
-                // Ensure game data is initialized if loading old state
                 if (!gameState.auctionCategories || gameState.auctionCategories.length === 0) {
                     gameState.auctionCategories = initializeAuctionCategories();
                 }
@@ -596,9 +594,7 @@
                     gameState.paket = { questions: initializePaketQuestions(), currentTeamIndex: 0, answeredCount: 0 };
                 }
 
-                // BARU: Inisialisasi status soal rebutan
                 initializeRebutanState();
-
                 generateDynamicStyles(totalTeams);
 
                 document.getElementById('mainContainer').style.display = 'block';
@@ -627,7 +623,6 @@
                     .team-btn.${color.name}:hover, .auction-team.${color.name}:hover, .rebuttal-team-btn.${color.name}:hover { background: ${color.light}; }
                 `;
             }
-            // Add disabled style for auction
             css += `.auction-team:disabled { opacity: 0.4; cursor: not-allowed; border-color: #666; color: #666; background: #333; }`;
             css += `.auction-team:disabled:hover { background: #333; }`;
             css += `.team-btn:disabled { opacity: 0.4; cursor: not-allowed; }`;
@@ -636,7 +631,7 @@
         }
 
         function startGame() {
-            totalTeams = parseInt(document.getElementById('teamInput').value) || 5;
+            totalTeams = parseInt(document.getElementById('teamInput').value) || 3;
             if (totalTeams < 2 || totalTeams > 26) {
                 showCustomAlert('Jumlah tim harus antara 2-26');
                 return;
@@ -673,9 +668,8 @@
             });
         }
 
-        // ============================================
-        // MODIFIKASI renderScores DAN TAMBAHAN handleScoreChange
-        // ============================================
+        // --- SCORE RENDERING & HANDLING ---
+
         function renderScores() {
             const container = document.getElementById('scoresContainer');
             if (!gameState.teams) return;
@@ -692,7 +686,6 @@
                 </div>
             `).join('');
 
-             // Tambahkan event listener setelah elemen dibuat
             gameState.teams.forEach(team => {
                  const scoreInput = container.querySelector(`#score-${team.name}`);
                  if (scoreInput) {
@@ -707,30 +700,22 @@
             let newScore = parseInt(input.value, 10);
 
             if (isNaN(newScore)) {
-                newScore = 0; // Default ke 0 jika input tidak valid
+                newScore = 0;
                 input.value = newScore;
             }
 
             const team = gameState.teams.find((t) => t.name === teamName);
             if (team) {
                 team.score = newScore;
-                saveState(); // Simpan state setelah skor diubah
+                saveState();
             }
         }
-        // ============================================
-        // AKHIR MODIFIKASI
-        // ============================================
-
 
         function playSound() {
             try {
                 const sound = document.getElementById('timesUpSound');
                 sound.currentTime = 0;
                 sound.play().catch(e => console.log("Autoplay was prevented. User interaction needed."));
-                // Revisi: Tidak perlu pause manual jika durasi mp3 pendek
-                // setTimeout(() => {
-                //     sound.pause();
-                // }, 2000);
             } catch (e) {
                 console.error("Error playing sound:", e);
             }
@@ -744,10 +729,8 @@
 
         function renderPaketGrid() {
             const { questions, currentTeamIndex, answeredCount } = gameState.paket;
-            // Failsafe jika 'questions' tidak ada
             if (!questions || questions.length === 0) {
                 console.error("Data soal paket tidak ditemukan atau kosong di gameState.");
-                 // Tampilkan pesan error atau tutup modal
                 showCustomAlert("Error: Data soal Paket tidak dapat dimuat.");
                 closeModal('paketModal');
                 return;
@@ -774,7 +757,7 @@
 
             document.getElementById('paketQuestionSelection').classList.remove('hidden');
             document.getElementById('paketQuestionDisplay').classList.add('hidden');
-            document.getElementById('paketAnswer').classList.add('hidden'); // Hide answer
+            document.getElementById('paketAnswer').classList.add('hidden');
         }
 
         function selectPaketBox(questionIndex) {
@@ -797,7 +780,6 @@
         function startPaketTimer() {
             document.getElementById('startPaketTimerBtn').style.display = 'none';
             document.getElementById('paketMainControls').classList.remove('hidden');
-
             document.getElementById('paketBtnBenar').disabled = false;
             document.getElementById('paketBtnSalah').disabled = false;
 
@@ -814,9 +796,6 @@
                     if (timeLeft === 0) {
                         playSound();
                     }
-                } else {
-                    // Berhenti ketika mencapai 0, tapi jangan clear interval
-                    // agar tetap di state 0
                 }
             }, 1000);
         }
@@ -826,53 +805,40 @@
             document.getElementById('paketBtnBenar').disabled = true;
             document.getElementById('paketBtnSalah').disabled = true;
 
-             // Tampilkan Tombol Tampilkan Jawaban SEKARANG
             const showAnswerContainer = document.getElementById('paketShowAnswerContainer');
             showAnswerContainer.classList.remove('hidden');
             document.getElementById('showPaketAnswerBtn').onclick = () => {
                 document.getElementById('paketAnswer').textContent = `Jawaban: ${gameState.paket.questions[currentPaketQuestionIndex].answer}`;
                 document.getElementById('paketAnswer').classList.remove('hidden');
-                showAnswerContainer.classList.add('hidden'); // Sembunyikan setelah diklik
+                showAnswerContainer.classList.add('hidden');
 
-                 // Tampilkan tombol Lanjut HANYA setelah jawaban ditampilkan
                  if (isCorrect) {
                      document.getElementById('paketNextTurnContainer').classList.remove('hidden');
                  } else {
-                     // Jika salah, setup rebutan SETELAH jawaban ditampilkan
                      setupRebuttal();
                  }
             };
 
-
             if (isCorrect) {
                 const teamIndex = gameState.paket.currentTeamIndex;
                 gameState.teams[teamIndex].score += 100;
-                // Tombol Lanjut akan muncul setelah klik Tampilkan Jawaban
-                // document.getElementById('paketNextTurnContainer').classList.remove('hidden');
-
-            } else {
-                // Jawaban salah, setup rebutan akan dipanggil setelah klik Tampilkan Jawaban
-                // setupRebuttal();
             }
+
             renderScores();
             saveState();
         }
 
         function handleLanjutRebutan() {
-             // Sembunyikan kontrol utama
              document.getElementById('paketMainControls').classList.add('hidden');
              document.getElementById('paketBtnBenar').disabled = true;
              document.getElementById('paketBtnSalah').disabled = true;
 
-             // Tampilkan Tombol Tampilkan Jawaban
             const showAnswerContainer = document.getElementById('paketShowAnswerContainer');
             showAnswerContainer.classList.remove('hidden');
             document.getElementById('showPaketAnswerBtn').onclick = () => {
                 document.getElementById('paketAnswer').textContent = `Jawaban: ${gameState.paket.questions[currentPaketQuestionIndex].answer}`;
                 document.getElementById('paketAnswer').classList.remove('hidden');
-                showAnswerContainer.classList.add('hidden'); // Sembunyikan setelah diklik
-
-                // Setup rebutan SETELAH jawaban ditampilkan
+                showAnswerContainer.classList.add('hidden');
                 setupRebuttal();
             };
         }
@@ -880,7 +846,7 @@
         function setupRebuttal() {
             const currentTeam = gameState.teams[gameState.paket.currentTeamIndex];
             const rebuttalTeamsContainer = document.getElementById('paketRebuttalTeams');
-            selectedRebuttalTeam = null; // Reset selection
+            selectedRebuttalTeam = null;
 
             rebuttalTeamsContainer.innerHTML = gameState.teams
                 .filter(team => team.name !== currentTeam.name)
@@ -892,47 +858,35 @@
                 `).join('');
 
             document.getElementById('paketRebuttalSection').classList.remove('hidden');
-            // Pastikan tombol tampilkan jawaban rebutan muncul
             document.getElementById('paketShowRebuttalAnswerContainer').classList.remove('hidden');
             document.getElementById('showPaketRebuttalAnswerBtn').onclick = showRebuttalAnswerAndEnable;
-
-            // Pastikan kontrol rebutan (Benar/Salah) nonaktif awalnya
             document.getElementById('paketRebuttalBtnBenar').disabled = true;
             document.getElementById('paketRebuttalBtnSalah').disabled = true;
 
-            let timeLeft = 5; // Waktu rebutan
+            let timeLeft = 5;
             const timerDisplay = document.getElementById('paketTimerDisplay');
-            timerDisplay.textContent = timeLeft; // Update timer display ke 5
+            timerDisplay.textContent = timeLeft;
 
-            clearInterval(timerInterval); // Hentikan timer sebelumnya
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 if (timeLeft > 0) {
                     timeLeft--;
-                    timerDisplay.textContent = timeLeft; // Update timer display
+                    timerDisplay.textContent = timeLeft;
                     if (timeLeft === 0) {
                         playSound();
-                        // Jika waktu habis & belum ada yang dipilih/handle, tampilkan Lanjut
                         if (!document.getElementById('paketRebuttalSection').classList.contains('hidden') && !selectedRebuttalTeam) {
-                           // Tampilkan tombol Lanjut agar host bisa melanjutkan jika tidak ada yg rebut.
                            document.getElementById('paketNextTurnContainer').classList.remove('hidden');
                         }
                     }
-                } else {
-                     // Timer tetap di 0
                 }
             }, 1000);
         }
 
-
         function showRebuttalAnswerAndEnable() {
-            const answerDisplay = document.getElementById('paketAnswer'); // Jawaban tetap sama
+            const answerDisplay = document.getElementById('paketAnswer');
             answerDisplay.textContent = `Jawaban: ${gameState.paket.questions[currentPaketQuestionIndex].answer}`;
             answerDisplay.classList.remove('hidden');
-
-            // Sembunyikan tombol "Tampilkan Jawaban Rebutan"
             document.getElementById('paketShowRebuttalAnswerContainer').classList.add('hidden');
-
-            // Aktifkan tombol Rebutan Benar/Salah
             document.getElementById('paketRebuttalBtnBenar').disabled = false;
             document.getElementById('paketRebuttalBtnSalah').disabled = false;
         }
@@ -941,7 +895,6 @@
             selectedRebuttalTeam = teamName;
             document.querySelectorAll('.rebuttal-team-btn').forEach(btn => btn.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
-             // Sembunyikan tombol Lanjut jika ada tim yg dipilih
             document.getElementById('paketNextTurnContainer').classList.add('hidden');
         }
 
@@ -951,20 +904,16 @@
                 return;
             }
 
-            // Sembunyikan tombol rebutan benar/salah
             document.getElementById('paketRebuttalBtnBenar').disabled = true;
             document.getElementById('paketRebuttalBtnSalah').disabled = true;
-
-            // Pastikan jawaban sudah terlihat
             document.getElementById('paketAnswer').classList.remove('hidden');
 
             const team = gameState.teams.find(t => t.name === selectedRebuttalTeam);
             if (team) {
-                team.score += isCorrect ? 100 : -50;
+                team.score += isCorrect ? 100 : -100;
             }
             selectedRebuttalTeam = null;
 
-            // Tampilkan tombol Lanjut setelah handle rebutan
             document.getElementById('paketNextTurnContainer').classList.remove('hidden');
 
             renderScores();
@@ -972,24 +921,19 @@
         }
 
         function nextPaketTurn() {
-            // Reset UI Paket Soal ke state awal (pemilihan kotak)
             document.getElementById('paketAnswer').classList.add('hidden');
             document.getElementById('paketShowAnswerContainer').classList.add('hidden');
             document.getElementById('paketNextTurnContainer').classList.add('hidden');
             document.getElementById('paketRebuttalSection').classList.add('hidden');
-             // Sembunyikan juga tombol tampilkan jawaban rebutan jika masih ada
             document.getElementById('paketShowRebuttalAnswerContainer').classList.add('hidden');
 
-            // Tandai soal terjawab
             if (currentPaketQuestionIndex !== null && gameState.paket.questions[currentPaketQuestionIndex]) {
                  gameState.paket.questions[currentPaketQuestionIndex].answered = true;
              }
             gameState.paket.answeredCount++;
-            // Pindah giliran tim
             gameState.paket.currentTeamIndex = (gameState.paket.currentTeamIndex + 1) % totalTeams;
-            currentPaketQuestionIndex = null; // Reset index soal terpilih
+            currentPaketQuestionIndex = null;
 
-            // Render ulang grid pemilihan
             renderPaketGrid();
             saveState();
         }
@@ -1000,33 +944,28 @@
             currentRebutanQuestion = getRandomQuestion();
             if (!currentRebutanQuestion) {
                  showCustomAlert('Semua soal rebutan sudah digunakan atau gagal dimuat!');
-                // Opsional: Reset soal jika habis
-                // initializeRebutanState();
-                // currentRebutanQuestion = getRandomQuestion();
-                // if (!currentRebutanQuestion) return; // Tetap gagal
                  return;
             }
 
             document.getElementById('rebutanQuestion').textContent = currentRebutanQuestion.q;
             renderRebutanTeams();
 
-            document.getElementById('rebutanTimerDisplay').textContent = '5'; // Waktu untuk buzz
+            document.getElementById('rebutanTimerDisplay').textContent = '5';
             const startBtn = document.getElementById('startRebutanTimerBtn');
             startBtn.style.display = 'block';
-            startBtn.textContent = 'Mulai Waktu Rebut'; // Buzz time
-            startBtn.onclick = startRebutanRebutTimer; // Timer untuk buzz
+            startBtn.textContent = 'Mulai Waktu Rebut';
+            startBtn.onclick = startRebutanRebutTimer;
 
-            document.getElementById('rebutanControlsContainer').classList.add('hidden'); // Sembunyikan kontrol Benar/Salah
-            document.getElementById('rebutanAnswer').classList.add('hidden'); // Sembunyikan jawaban
-            document.getElementById('rebutanNextBtnContainer').classList.add('hidden'); // Sembunyikan tombol Lanjut
+            document.getElementById('rebutanControlsContainer').classList.add('hidden');
+            document.getElementById('rebutanAnswer').classList.add('hidden');
+            document.getElementById('rebutanNextBtnContainer').classList.add('hidden');
 
             openModal('rebutanModal');
         }
 
-
         function startRebutanRebutTimer() {
             document.getElementById('startRebutanTimerBtn').style.display = 'none';
-            let timeLeft = 5; // Waktu untuk tim menekan tombol (buzz)
+            let timeLeft = 5;
             const timerDisplay = document.getElementById('rebutanTimerDisplay');
             timerDisplay.textContent = timeLeft;
 
@@ -1036,10 +975,8 @@
                     timeLeft--;
                     timerDisplay.textContent = timeLeft;
                 } else if (timeLeft === 0) {
-                     // Tetap 0, jangan clear interval, biarkan MC yg handle
                      playSound();
-                     timeLeft = -1; // Tandai sudah bunyi
-                     // Tampilkan tombol lanjut jika tidak ada yang buzz
+                     timeLeft = -1;
                      if (!selectedTeam) {
                          document.getElementById('rebutanNextBtnContainer').classList.remove('hidden');
                      }
@@ -1048,65 +985,50 @@
         }
 
         function selectTeam(event, teamName) {
-            // Hanya bisa pilih jika timer rebut (buzz) masih > 0 ATAU baru saja 0
             const timerDisplayVal = parseInt(document.getElementById('rebutanTimerDisplay').textContent);
-            if (selectedTeam || timerDisplayVal < 0) return; // Jika sudah ada yg terpilih atau timer sudah lewat jauh
+            if (selectedTeam || timerDisplayVal < 0) return;
 
-            clearInterval(timerInterval); // Stop timer buzz
+            clearInterval(timerInterval);
 
             selectedTeam = teamName;
             document.querySelectorAll('.team-btn').forEach(btn => {
-                btn.disabled = true; // Disable semua tombol tim
+                btn.disabled = true;
             });
             event.currentTarget.classList.add('selected');
-
-            // Sembunyikan tombol Lanjut jika sempat muncul
             document.getElementById('rebutanNextBtnContainer').classList.add('hidden');
-
-            startRebutanAnswerTimer(); // Mulai timer jawaban 10 detik
+            startRebutanAnswerTimer();
         }
 
         function showRebutanAnswerAndEnable() {
-             // Pastikan currentRebutanQuestion ada
             if (!currentRebutanQuestion) return;
 
             const answerDisplay = document.getElementById('rebutanAnswer');
             answerDisplay.textContent = `Jawaban: ${currentRebutanQuestion.a}`;
             answerDisplay.classList.remove('hidden');
-
-            // Sembunyikan tombol "Tampilkan Jawaban"
             document.getElementById('rebutanShowAnswerContainer').classList.add('hidden');
-
-            // Aktifkan tombol Benar/Salah
             document.getElementById('rebutanBtnBenar').disabled = false;
             document.getElementById('rebutanBtnSalah').disabled = false;
         }
 
-
         function startRebutanAnswerTimer() {
-            // Tampilkan container kontrol & tombol tampilkan jawaban
             document.getElementById('rebutanControlsContainer').classList.remove('hidden');
             document.getElementById('rebutanShowAnswerContainer').classList.remove('hidden');
             document.getElementById('showRebutanAnswerBtn').onclick = showRebutanAnswerAndEnable;
-
-             // Pastikan tombol Benar/Salah nonaktif awalnya
             document.getElementById('rebutanBtnBenar').disabled = true;
             document.getElementById('rebutanBtnSalah').disabled = true;
 
-             // Ambil waktu dari soal, default 10 detik
             let timeLeft = currentRebutanQuestion.waktu || 10;
             const timerDisplay = document.getElementById('rebutanTimerDisplay');
-            timerDisplay.textContent = timeLeft; // Set timer ke waktu jawaban
+            timerDisplay.textContent = timeLeft;
 
-            clearInterval(timerInterval); // Hentikan timer sebelumnya (timer buzz)
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 if (timeLeft > 0) {
                     timeLeft--;
                     timerDisplay.textContent = timeLeft;
                 } else if (timeLeft === 0) {
-                     // Tetap 0, jangan clear interval
                      playSound();
-                     timeLeft = -1; // Tandai sudah bunyi
+                     timeLeft = -1;
                 }
             }, 1000);
         }
@@ -1123,16 +1045,14 @@
 
         function submitRebutan(correct) {
             if (!selectedTeam) { showCustomAlert('Pilih tim terlebih dahulu!'); return; }
-             // Pastikan jawaban sudah ditampilkan sebelum submit
             if (document.getElementById('rebutanAnswer').classList.contains('hidden')) {
                  showCustomAlert('Tampilkan jawaban terlebih dahulu!');
                  return;
              }
 
             const team = gameState.teams.find(t => t.name === selectedTeam);
-            if (team) { team.score += correct ? 100 : -50; }
+            if (team) { team.score += correct ? 100 : -100; }
 
-             // Tandai soal sudah digunakan
             if (currentRebutanQuestion) {
                  const questionInState = rebutanQuestionsState.find(q => q.q === currentRebutanQuestion.q);
                  if (questionInState) {
@@ -1140,10 +1060,7 @@
                  }
             }
 
-
-            // Sembunyikan kontrol Benar/Salah
             document.getElementById('rebutanControlsContainer').classList.add('hidden');
-            // Tampilkan tombol Lanjut
             document.getElementById('rebutanNextBtnContainer').classList.remove('hidden');
 
             renderScores();
@@ -1151,6 +1068,19 @@
         }
 
         // --- LELANG (AUCTION) LOGIC ---
+        function increaseBid() {
+            const bidAmountInput = document.getElementById('bidAmount');
+            let currentBid = parseInt(bidAmountInput.value) || 0;
+
+            if (currentBid < 100 || currentBid % 100 !== 0) {
+                currentBid = 100;
+            } else {
+                currentBid += 100;
+            }
+
+            bidAmountInput.value = currentBid;
+        }
+
         function startAuction() {
             const categoryGrid = document.getElementById('categoryGrid');
             categoryGrid.innerHTML = gameState.auctionCategories.map((cat, index) => {
@@ -1169,7 +1099,6 @@
 
         function selectCategory(categoryIndex) {
             const category = gameState.auctionCategories[categoryIndex];
-             // Cari pertanyaan pertama yang belum dijawab
             const questionIndex = category.questions.findIndex(q => !q.answered);
 
             if (questionIndex === -1) {
@@ -1180,33 +1109,33 @@
             currentAuction = { categoryIndex, questionIndex };
             closeModal('categoryModal');
 
-            // Reset tampilan modal Lelang ke fase bidding
             document.getElementById('auctionBiddingPhase').classList.remove('hidden');
             document.getElementById('auctionAnsweringPhase').classList.add('hidden');
             document.getElementById('auctionModalTitle').textContent = '🏆 Lelang Poin';
             document.getElementById('auctionCategoryInfo').textContent = `Kategori: ${category.name}`;
             document.getElementById('bidAmount').value = '';
-            document.getElementById('auctionAnswer').classList.add('hidden'); // Sembunyikan jawaban sebelumnya
-            document.getElementById('auctionNextBtnContainer').classList.add('hidden'); // Sembunyikan tombol Lanjut
-            selectedTeam = null; // Reset tim terpilih untuk bidding
+            document.getElementById('auctionAnswer').classList.add('hidden');
+            document.getElementById('auctionNextBtnContainer').classList.add('hidden');
+            selectedTeam = null;
 
-            renderAuctionTeams(); // Tampilkan tim yang bisa bidding
+            renderAuctionTeams();
             openModal('auctionModal');
         }
 
         function lockBid() {
             const bidAmountInput = document.getElementById('bidAmount');
             const bidAmount = parseInt(bidAmountInput.value) || 0;
-            if (bidAmount <= 0) {
-                showCustomAlert('Masukkan nominal poin lelang yang valid (lebih dari 0)!');
-                bidAmountInput.focus(); // Fokus kembali ke input
+
+            if (bidAmount < 100 || bidAmount % 100 !== 0) {
+                showCustomAlert('Poin lelang harus minimal 100 dan kelipatan 100!');
+                bidAmountInput.focus();
                 return;
             }
+
             if (!selectedTeam) {
                 showCustomAlert('Pilih tim pemenang lelang terlebih dahulu!');
                 return;
             }
-             // Validasi skor tim pemenang lelang
             const winningTeamData = gameState.teams.find(t => t.name === selectedTeam);
             if (!winningTeamData || winningTeamData.score < bidAmount) {
                  showCustomAlert(`Skor Tim ${selectedTeam} (${winningTeamData ? winningTeamData.score : 'N/A'}) tidak mencukupi untuk tawaran ${bidAmount}!`);
@@ -1215,7 +1144,6 @@
 
             currentBid = { teamName: selectedTeam, amount: bidAmount };
 
-            // Pindah ke fase jawaban
             document.getElementById('auctionBiddingPhase').classList.add('hidden');
             document.getElementById('auctionAnsweringPhase').classList.remove('hidden');
 
@@ -1223,18 +1151,16 @@
             const category = gameState.auctionCategories[categoryIndex];
             const question = category.questions[questionIndex];
 
-            // Tampilkan info pemenang, bid, dan pertanyaan
             document.getElementById('auctionModalTitle').textContent = 'Jawab Pertanyaan Lelang';
             document.getElementById('auctionWinningTeam').textContent = currentBid.teamName;
             document.getElementById('auctionWinningBid').textContent = `${currentBid.amount} Poin`;
             document.getElementById('auctionQuestion').textContent = question.text;
-            document.getElementById('auctionAnswer').classList.add('hidden'); // Pastikan jawaban tersembunyi
+            document.getElementById('auctionAnswer').classList.add('hidden');
 
-            // Reset timer dan tombol
             document.getElementById('auctionTimerDisplay').textContent = question.waktu || 10;
-            document.getElementById('startAuctionTimerBtn').style.display = 'block'; // Tampilkan tombol Start
-            document.getElementById('auctionControlsContainer').classList.add('hidden'); // Sembunyikan kontrol Benar/Salah
-            document.getElementById('auctionNextBtnContainer').classList.add('hidden'); // Sembunyikan tombol Lanjut
+            document.getElementById('startAuctionTimerBtn').style.display = 'block';
+            document.getElementById('auctionControlsContainer').classList.add('hidden');
+            document.getElementById('auctionNextBtnContainer').classList.add('hidden');
         }
 
         function showAuctionAnswerAndEnable() {
@@ -1243,30 +1169,22 @@
             const answerDisplay = document.getElementById('auctionAnswer');
             answerDisplay.textContent = `Jawaban: ${question.answer}`;
             answerDisplay.classList.remove('hidden');
-
-             // Sembunyikan tombol "Tampilkan Jawaban"
             document.getElementById('auctionShowAnswerContainer').classList.add('hidden');
-
-            // Aktifkan tombol Benar/Salah
             document.getElementById('auctionBtnBenar').disabled = false;
             document.getElementById('auctionBtnSalah').disabled = false;
         }
 
         function startAuctionTimer() {
-             document.getElementById('startAuctionTimerBtn').style.display = 'none'; // Sembunyikan tombol Start
-
-            // Tampilkan container kontrol & tombol tampilkan jawaban
+             document.getElementById('startAuctionTimerBtn').style.display = 'none';
              document.getElementById('auctionControlsContainer').classList.remove('hidden');
              document.getElementById('auctionShowAnswerContainer').classList.remove('hidden');
              document.getElementById('showAuctionAnswerBtn').onclick = showAuctionAnswerAndEnable;
-
-             // Pastikan tombol Benar/Salah nonaktif awalnya
-            document.getElementById('auctionBtnBenar').disabled = true;
-            document.getElementById('auctionBtnSalah').disabled = true;
+             document.getElementById('auctionBtnBenar').disabled = true;
+             document.getElementById('auctionBtnSalah').disabled = true;
 
             const { categoryIndex, questionIndex } = currentAuction;
             const question = gameState.auctionCategories[categoryIndex].questions[questionIndex];
-            let timeLeft = question.waktu || 10; // Ambil waktu dari soal
+            let timeLeft = question.waktu || 10;
             const timerDisplay = document.getElementById('auctionTimerDisplay');
             timerDisplay.textContent = timeLeft;
 
@@ -1276,9 +1194,8 @@
                     timeLeft--;
                     timerDisplay.textContent = timeLeft;
                 } else if (timeLeft === 0) {
-                     // Tetap 0
                      playSound();
-                     timeLeft = -1; // Tandai sudah bunyi
+                     timeLeft = -1;
                 }
             }, 1000);
         }
@@ -1305,7 +1222,6 @@
         }
 
         function submitAuction(correct) {
-             // Pastikan jawaban sudah ditampilkan
              if (document.getElementById('auctionAnswer').classList.contains('hidden')) {
                  showCustomAlert('Tampilkan jawaban terlebih dahulu!');
                  return;
@@ -1316,45 +1232,37 @@
             }
 
             const { categoryIndex, questionIndex } = currentAuction;
-             // Tandai soal sudah dijawab
             if(gameState.auctionCategories[categoryIndex] && gameState.auctionCategories[categoryIndex].questions[questionIndex]) {
                  gameState.auctionCategories[categoryIndex].questions[questionIndex].answered = true;
              }
 
-
-            // Sembunyikan kontrol Benar/Salah
             document.getElementById('auctionControlsContainer').classList.add('hidden');
-             // Tampilkan tombol Lanjut
             document.getElementById('auctionNextBtnContainer').classList.remove('hidden');
 
-            renderScores(); // Update tampilan skor
-            saveState(); // Simpan state terbaru
+            renderScores();
+            saveState();
         }
 
-        // FUNGSI DIPERBARUI: Menggunakan rebutanQuestionsState
+        // --- UTILITIES ---
         function getRandomQuestion() {
             const availableQuestions = rebutanQuestionsState.filter(q => !q.used);
             if (availableQuestions.length === 0) {
-                 // Cek jika semua sudah dipakai, reset
                 const allUsed = rebutanQuestionsState.every(q => q.used);
                 if (allUsed && rebutanQuestionsState.length > 0) {
                      showCustomAlert('Semua soal rebutan telah digunakan! Mereset soal.');
                      rebutanQuestionsState.forEach(q => q.used = false);
-                     // Ambil lagi setelah reset
                      const resetAvailable = rebutanQuestionsState.filter(q => !q.used);
                      if (resetAvailable.length > 0) {
                          return resetAvailable[Math.floor(Math.random() * resetAvailable.length)];
                      } else {
-                         return null; // Gagal bahkan setelah reset
+                         return null;
                      }
                  } else {
-                     return null; // Tidak ada soal tersedia dan belum waktunya reset
+                     return null;
                  }
             }
-            // Pilih acak dari yang tersedia
             return availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
         }
-
 
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -1370,11 +1278,9 @@
                  modal.classList.add('hidden');
                  modal.classList.remove('flex');
             }
-            clearInterval(timerInterval); // Selalu hentikan timer saat modal ditutup
+            clearInterval(timerInterval);
 
-            // Reset spesifik per modal (opsional, bisa disesuaikan)
             if (modalId === 'auctionModal') {
-                // Beri sedikit waktu agar transisi selesai sebelum reset
                 setTimeout(() => {
                     document.getElementById('auctionBiddingPhase').classList.remove('hidden');
                     document.getElementById('auctionAnsweringPhase').classList.add('hidden');
@@ -1383,26 +1289,22 @@
                     document.getElementById('auctionControlsContainer').classList.add('hidden');
                     currentBid = { teamName: null, amount: 0 };
                     selectedTeam = null;
-                 }, 300); // 300ms sesuai durasi animasi
+                 }, 300);
             } else if (modalId === 'rebutanModal') {
                  setTimeout(() => {
                     document.getElementById('rebutanAnswer').classList.add('hidden');
                     document.getElementById('rebutanNextBtnContainer').classList.add('hidden');
                     document.getElementById('rebutanControlsContainer').classList.add('hidden');
-                     // Aktifkan kembali tombol tim untuk pertanyaan berikutnya
                      document.querySelectorAll('.team-btn').forEach(btn => btn.disabled = false);
                  }, 300);
             } else if (modalId === 'paketModal') {
-                 // Reset ke tampilan pemilihan grid jika belum selesai
-                 if (currentPaketQuestionIndex !== null) { // Hanya jika sedang menjawab soal
+                 if (currentPaketQuestionIndex !== null) {
                      setTimeout(() => {
-                         renderPaketGrid(); // Kembali ke grid
+                         renderPaketGrid();
                      }, 300);
                  }
             }
         }
-
-
 
         // --- Custom Alert & Confirm ---
         function showCustomAlert(message) {
