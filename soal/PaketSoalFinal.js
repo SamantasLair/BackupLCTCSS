@@ -8,8 +8,8 @@ const soalPaketFinal = [
   {
     "id": "A1",
     "waktu": 10,
-    "pertanyaan": "Samudra yang memisahkan benua Amerika dan Eropa adalah...",
-    "jawaban": "Samudra Atlantik"
+    "pertanyaan": "../soal/images/penyisihan/A2.png",
+    "jawaban": "../soal/images/penyisihan/A2.png"
   },
   {
     "id": "A2",

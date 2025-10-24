@@ -5,7 +5,7 @@ const dataPenyisihan1 = [
     "waktu": 10,
     "goldenZone": true,
     "pertanyaan": "../soal/images/penyisihan/A1.png",
-    "jawaban": "Input, Proses, Output"
+    "jawaban": "../soal/images/penyisihan/A2.png"
   },
   {
     "id": "A2",

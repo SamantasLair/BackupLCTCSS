@@ -339,7 +339,6 @@
 
     async function qPopUp(cellId){
       const dlg=document.getElementById("q-dialog");
-      const ansText=document.getElementById("answer-text");
       const answerSection=document.getElementById("answer-section");
       const toggleAnswerBtn=document.getElementById("toggle-answer-btn");
       const okBtn=document.getElementById("q-ok");
@@ -353,35 +352,112 @@
       const dialogHint=document.getElementById("dialog-phase-hint");
       const soal=questions[cellId];
       const qSection=document.getElementById("q-section");
-      if(soal){if((soal.pertanyaan||"").includes("png")){qSection.innerHTML=`<img src="${soal.pertanyaan}" class="h-full w-full">`}else{qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">${soal.pertanyaan||"Pertanyaan tidak ditemukan."}</blockquote>`}ansText.textContent=soal.jawaban||"Belum ada jawaban.";timerDisplay.textContent=formatTime(soal.waktu||0)}else{qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">Soal untuk ${cellId} tidak ditemukan.</blockquote>`;ansText.textContent="Tidak tersedia.";timerDisplay.textContent="00:00"}
-      answerSection.classList.add("hidden");answerSection.classList.remove("flex");
+
+      if(soal){
+        if((soal.pertanyaan||"").includes("png")){
+          qSection.innerHTML=`<img src="${soal.pertanyaan}" class="h-full w-full">`
+        }else{
+          qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">${soal.pertanyaan||"Pertanyaan tidak ditemukan."}</blockquote>`
+        }
+        timerDisplay.textContent=formatTime(soal.waktu||0)
+      }else{
+        qSection.innerHTML=`<blockquote class="italic text-lg text-black font-bold leading-relaxed">Soal untuk ${cellId} tidak ditemukan.</blockquote>`;
+        timerDisplay.textContent="00:00"
+      }
+
+      const jawaban=(soal&&soal.jawaban)?soal.jawaban:"Belum ada jawaban.";
+      const isImg=typeof jawaban==="string" && /\.(png|jpe?g|gif|webp|svg)$/i.test(jawaban);
+      if(isImg){
+        answerSection.innerHTML=`<img src="${jawaban}" class="max-h-72 object-contain mx-auto">`;
+      }else{
+        answerSection.innerHTML=`<blockquote id="answer-text" class="italic text-lg text-green-800 font-bold leading-relaxed">${jawaban}</blockquote>`;
+      }
+
+      answerSection.classList.add("hidden");
+      answerSection.classList.remove("flex");
       toggleAnswerBtn.textContent="Tampilkan Jawaban";
-      toggleAnswerBtn.onclick=()=>{const vis=!answerSection.classList.contains("hidden");if(vis){answerSection.classList.add("hidden");answerSection.classList.remove("flex");toggleAnswerBtn.textContent="Tampilkan Jawaban"}else{answerSection.classList.remove("hidden");answerSection.classList.add("flex");toggleAnswerBtn.textContent="Sembunyikan Jawaban"}};
+      toggleAnswerBtn.onclick=()=>{
+        const vis=!answerSection.classList.contains("hidden");
+        if(vis){
+          answerSection.classList.add("hidden");
+          answerSection.classList.remove("flex");
+          toggleAnswerBtn.textContent="Tampilkan Jawaban"
+        }else{
+          answerSection.classList.remove("hidden");
+          answerSection.classList.add("flex");
+          toggleAnswerBtn.textContent="Sembunyikan Jawaban"
+        }
+      };
+
       stopTimer();stopTimeUpSound();startBtn.disabled=false;
       timerDisplay.className="text-3xl font-bold font-mono min-w-[110px] text-center px-4 py-2 rounded-lg bg-gradient-to-br from-gray-600/30 to-gray-700/30 text-emerald-500 shadow-inner";timerDisplay.style.textShadow="0 0 10px rgba(16,185,129,0.5)";
       rebuttalControls.style.display="none";
       startRebuttalBtn.disabled=false;
+
       pillsContainer.innerHTML="";
-      gameState.teams.forEach(team=>{const colors=teamColorConfigs[team.name]||teamColorConfigs["A"];const pill=document.createElement("button");pill.type="button";pill.dataset.team=team.name;pill.className=`border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;pill.textContent=team.name;pillsContainer.appendChild(pill)});
+      gameState.teams.forEach(team=>{
+        const colors=teamColorConfigs[team.name]||teamColorConfigs["A"];
+        const pill=document.createElement("button");
+        pill.type="button";
+        pill.dataset.team=team.name;
+        pill.className=`border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`;
+        pill.textContent=team.name;
+        pillsContainer.appendChild(pill)
+      });
+
       const pills=Array.from(pillsContainer.querySelectorAll("button[data-team]"));
       let selectedTeam=null;
       let mode="";
       let currentTeam=null;
+
       function setBtnDisabled(btn,dis){btn.disabled=dis}
       function highlightSelected(teamName){
-        pills.forEach(p=>{const colors=teamColorConfigs[p.dataset.team]||teamColorConfigs["A"];if(p.dataset.team===teamName){p.className=`border-2 border-transparent rounded-lg px-5 py-2.5 cursor-pointer text-xl font-semibold transition-all ${colors.selected} text-white shadow-md scale-105`}else{p.className=`border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`}})
+        pills.forEach(p=>{
+          const colors=teamColorConfigs[p.dataset.team]||teamColorConfigs["A"];
+          if(p.dataset.team===teamName){
+            p.className=`border-2 border-transparent rounded-lg px-5 py-2.5 cursor-pointer text-xl font-semibold transition-all ${colors.selected} text-white shadow-md scale-105`
+          }else{
+            p.className=`border-2 border-gray-300 rounded-lg px-5 py-2.5 cursor-pointer bg-gray-100 text-xl font-semibold transition-all ${colors.hover} hover:text-white hover:border-transparent hover:scale-105`
+          }
+        })
       }
       function disableAllPills(){pills.forEach(p=>p.disabled=true)}
       function enablePills(filterFn){pills.forEach(p=>{p.disabled=!filterFn(p.dataset.team)})}
+
       function enterWajibInitial(){
-        mode="wajib-initial";currentTeam=gameState.teams[gameState.wajibTurnIndex]?.name||null;selectedTeam=currentTeam;highlightSelected(currentTeam);enablePills(t=>t===currentTeam);setBtnDisabled(okBtn,false);setBtnDisabled(wrongBtn,false);mainTimerControls.style.display="flex";rebuttalControls.style.display="none";dialogHint.textContent=`Soal Wajib • Giliran Tim ${currentTeam}`
+        mode="wajib-initial";
+        currentTeam=gameState.teams[gameState.wajibTurnIndex]?.name||null;
+        selectedTeam=currentTeam;
+        highlightSelected(currentTeam);
+        enablePills(t=>t===currentTeam);
+        setBtnDisabled(okBtn,false);
+        setBtnDisabled(wrongBtn,false);
+        mainTimerControls.style.display="flex";
+        rebuttalControls.style.display="none";
+        dialogHint.textContent=`Soal Wajib • Giliran Tim ${currentTeam}`
       }
       function enterWajibLempar(){
-        mode="wajib-lempar";setBtnDisabled(okBtn,true);setBtnDisabled(wrongBtn,true);enablePills(t=>t!==currentTeam);mainTimerControls.style.display="none";rebuttalControls.style.display="flex";dialogHint.textContent=`Fase Lempar • Tim selain ${currentTeam} dapat memilih selama 5 detik`;selectedTeam=null;highlightSelected("__none__")
+        mode="wajib-lempar";
+        setBtnDisabled(okBtn,true);
+        setBtnDisabled(wrongBtn,true);
+        enablePills(t=>t!==currentTeam);
+        mainTimerControls.style.display="none";
+        rebuttalControls.style.display="flex";
+        dialogHint.textContent=`Fase Lempar • Tim selain ${currentTeam} dapat memilih selama 5 detik`;
+        selectedTeam=null;
+        highlightSelected("__none__")
       }
       function enterRebutan(){
-        mode="rebutan";selectedTeam=null;enablePills(()=>true);setBtnDisabled(okBtn,true);setBtnDisabled(wrongBtn,true);mainTimerControls.style.display="flex";rebuttalControls.style.display="none";dialogHint.textContent="Babak Rebutan"
+        mode="rebutan";
+        selectedTeam=null;
+        enablePills(()=>true);
+        setBtnDisabled(okBtn,true);
+        setBtnDisabled(wrongBtn,true);
+        mainTimerControls.style.display="flex";
+        rebuttalControls.style.display="none";
+        dialogHint.textContent="Babak Rebutan"
       }
+
       const onPillClick=(e)=>{
         const t=e.currentTarget.dataset.team;
         if(mode==="rebutan"){
@@ -405,6 +481,7 @@
       const onStartTimer=()=>{const dur=soal?.waktu?soal.waktu:15;startTimer(dur,()=>{if(mode==="wajib-initial"){enterWajibLempar()} })};
       const onStartRebuttal=()=>{startRebuttalTimer()};
       const escHandler=(ev)=>{if(ev.key==="Escape"){stopTimeUpSound()}};
+
       return new Promise(resolve=>{
         pills.forEach(p=>p.addEventListener("click",onPillClick));
         okBtn.addEventListener("click",onOkClick);
@@ -412,6 +489,7 @@
         startBtn.addEventListener("click",onStartTimer);
         startRebuttalBtn.addEventListener("click",onStartRebuttal);
         document.addEventListener("keydown",escHandler);
+
         const onClose=()=>{
           stopTimer();stopTimeUpSound();stopRebuttalTimer();
           document.removeEventListener("keydown",escHandler);
@@ -434,6 +512,7 @@
             resolve({cancelled:true,team:null,delta:0})
           }
         };
+
         if(gameState.currentPhase==="wajib"){enterWajibInitial()}else{enterRebutan()}
         dlg.addEventListener("close",onClose,{once:true});
         dlg.showModal();setTimeout(()=>{dlg.classList.add("translate-y-0","opacity-100")},10);

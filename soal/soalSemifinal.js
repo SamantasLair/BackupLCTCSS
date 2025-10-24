@@ -4,8 +4,8 @@ const dataSemifinal1 = [
     id: "A1",
     waktu: 15,
     goldenZone: false,
-    pertanyaan: "Apa fungsi utama dari protokol BGP dalam jaringan internet global?",
-    jawaban: "Routing antar Autonomous System (AS)"
+    pertanyaan: "../soal/images/penyisihan/A2.png",
+    jawaban: "../soal/images/penyisihan/A1.png"
   },
   {
     id: "A2",
